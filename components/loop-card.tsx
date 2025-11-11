@@ -293,20 +293,22 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
             </div>
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {latestComment.author}
-            </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400">
-              2 weeks ago
-            </p>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="font-semibold text-sm text-gray-900 dark:text-white">
+                {latestComment.author}
+              </span>
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                2 weeks ago
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Review Content */}
-        <h5 className="font-semibold text-sm text-gray-900 dark:text-white mb-2">
+        <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-1.5">
           {latestComment.title}
-        </h5>
-        <p className="text-sm text-gray-700 dark:text-gray-300 mb-3 leading-relaxed line-clamp-3">
+        </h3>
+        <p className="text-xs text-gray-700 dark:text-gray-300 mb-3 leading-relaxed line-clamp-3">
           {latestComment.text}
         </p>
         
