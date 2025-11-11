@@ -16,7 +16,7 @@ export function LeftNavigation() {
 
   const secondaryNavItems = [
     { id: "about", label: "What is Loukii", icon: BookOpen, href: "/about" },
-    { id: "learn", label: "Learn more", icon: BookOpen, href: "/learn" },
+    { id: "learn", label: "Learn more", icon: Compass, href: "/learn" },
     { id: "faq", label: "FAQ", icon: HelpCircle, href: "/faq" },
   ];
 

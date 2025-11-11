@@ -34,7 +34,7 @@ export function FilterDropdown({ icon, label, options }: FilterDropdownProps) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 h-[38px] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-xs cursor-pointer hover:border-[#16A34A] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all"
+        className="ripple flex items-center gap-1.5 px-3 h-[38px] bg-gray-50 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-lg text-xs cursor-pointer hover:border-[#16A34A] hover:bg-gray-100 dark:hover:bg-gray-800 transition-all hover:shadow-sm"
       >
         {icon}
         <span className="text-gray-700 dark:text-gray-300 font-medium">{label}</span>

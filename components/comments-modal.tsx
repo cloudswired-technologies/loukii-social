@@ -133,7 +133,7 @@ export function CommentsModal({ isOpen, onClose, comments, totalComments }: Comm
         <div className="p-4 border-t border-gray-200 dark:border-gray-800">
           <button
             onClick={onClose}
-            className="w-full py-2.5 bg-[#16A34A] text-white text-sm font-medium rounded-xl hover:bg-[#15803d] transition-colors"
+            className="ripple w-full py-2.5 bg-[#16A34A] text-white text-sm font-medium rounded-xl hover:bg-[#15803d] transition-all hover:shadow-lg active:scale-95"
           >
             Close
           </button>
