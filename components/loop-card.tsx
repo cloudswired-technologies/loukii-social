@@ -159,7 +159,7 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
       {/* Image Slider */}
       {images && images.length > 0 && (
         <div 
-          className="relative w-full h-64 md:h-96 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden mb-4 shadow-sm"
+          className="relative w-full h-48 md:h-96 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden mb-4 shadow-sm"
           onMouseDown={(e) => {
             if (images.length <= 1) return;
             const startX = e.clientX;
@@ -205,15 +205,13 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
             document.addEventListener('touchend', handleTouchEnd);
           }}
         >
-          <div className="relative w-full h-[450px]">
-            <Image
-              src={images[currentImageIndex]}
-              alt="Post content"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
+          <Image
+            src={images[currentImageIndex]}
+            alt="Post content"
+            fill
+            className="object-cover object-center"
+            priority
+          />
           
           {/* Slider Controls */}
           {images.length > 1 && (
