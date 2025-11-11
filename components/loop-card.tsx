@@ -253,7 +253,7 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
       {/* Stats & Actions */}
       <div className="flex items-center justify-between mb-3 border-b border-gray-100 dark:border-gray-800">
         <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2.5">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
             <Eye className="w-4 h-4" />
             <span>{stats.views}</span>
           </div>
@@ -270,7 +270,7 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
         </div>
         <button 
           onClick={handleShare}
-          className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 hover:text-[#16A34A] transition-colors"
+          className="flex items-center gap-1.5 text-xs md:text-sm text-gray-600 dark:text-gray-400 hover:text-[#16A34A] transition-colors mb-2.5"
         >
           <Share2 className="w-4 h-4" />
           <span>Share</span>

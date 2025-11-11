@@ -153,9 +153,9 @@ export function ArticleCard({
         </div>
 
         {/* Right: Actions */}
-        <button className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-[#16A34A] hover:bg-gray-50 dark:hover:bg-gray-900 rounded-lg transition-all">
+        <button className="flex items-center gap-1.5 text-sm text-gray-600 dark:text-gray-400 hover:text-[#16A34A] transition-colors">
           <Share2 className="w-4 h-4" />
-          <span>{stats.shares}</span>
+          <span>Share</span>
         </button>
       </div>
 
