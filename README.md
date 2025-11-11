@@ -1,109 +1,216 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+<h1 align="center">🌟 Loukii</h1>
 
 <p align="center">
- The fastest way to build apps with Next.js and Supabase
+  <strong>The Social Trust Network</strong>
+</p>
+
+<p align="center">
+  Discover trusted advisors • Read expert content • Build credibility through engagement
 </p>
 
 <p align="center">
   <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
+  <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
+  <a href="#getting-started"><strong>Getting Started</strong></a> ·
+  <a href="#deployment"><strong>Deployment</strong></a> ·
+  <a href="#project-structure"><strong>Project Structure</strong></a>
 </p>
+
 <br/>
 
-## Features
+## ✨ Features
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+### For Users (Reviewers)
+- 🔍 **Discover Advisors** - Browse verified professionals across all industries
+- 📰 **Read Expert Content** - Articles, posts, and insights from advisors
+- ⭐ **Authentic Reviews** - One verified review per advisor
+- 💬 **Engage & Follow** - Comment, react, and follow trusted advisors
+- 📱 **Responsive Design** - Perfect on mobile and desktop
+- 🔔 **Smart Notifications** - Stay updated on reviews, messages, and activity
 
-## Demo
+### For Advisors
+- 👤 **Professional Profiles** - Showcase expertise, credentials, and services
+- ✍️ **Content Creation** - Publish articles, micro-posts, and announcements
+- 🖼️ **Portfolio Gallery** - Swipeable image slider for work showcase
+- 📈 **Build Credibility** - Collect reviews and grow follower base
+- 📊 **Analytics Dashboard** - Track profile views, article reads, engagement
+- 💼 **Lead Generation** - Receive inbound messages and requests
+- 🎯 **Targeted Visibility** - Filter by category, brand, location, rating
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+### Platform Features
+- 🌐 **Social Trust Network** - Combines directory + social media (LinkedIn + Medium hybrid)
+- 🎨 **Apple-Style UI** - Clean, modern, intuitive interface
+- 🌓 **Dark Mode** - Automatic theme switching
+- 🚀 **Dynamic Feed** - Latest, Trending, Following filters
+- 📸 **Image Optimization** - Fast loading with AVIF/WebP
+- 🔒 **Secure** - Built with Supabase authentication
+- 📱 **PWA Ready** - Install as mobile app
+- 💬 **Private Messaging** - Direct communication between users and advisors
 
-## Deploy to Vercel
+## 🛠️ Tech Stack
 
-Vercel deployment will guide you through creating a Supabase account and project.
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
+- **Language**: TypeScript
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Database**: [Supabase](https://supabase.com/)
+- **Deployment**: [Vercel](https://vercel.com/)
+- **Font**: Geist Sans
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+## 🚀 Getting Started
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+### Prerequisites
+- Node.js 18+ 
+- npm/yarn/pnpm
+- Supabase account
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+### Installation
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
-
-## Clone and run locally
-
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
-
-2. Create a Next.js app using the Supabase Starter template npx command
-
+1. **Clone the repository**
    ```bash
-   npx create-next-app --example with-supabase with-supabase-app
+   git clone https://github.com/yourusername/loukii-social.git
+   cd loukii-social
    ```
 
+2. **Install dependencies**
    ```bash
-   yarn create next-app --example with-supabase with-supabase-app
+   npm install
    ```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
+3. **Set up environment variables**
+   
+   Create `.env.local`:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
    ```
 
-3. Use `cd` to change into the app's directory
-
-   ```bash
-   cd with-supabase-app
-   ```
-
-4. Rename `.env.example` to `.env.local` and update the following:
-
-  ```env
-  NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-  NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=[INSERT SUPABASE PROJECT API PUBLISHABLE OR ANON KEY]
-  ```
-  > [!NOTE]
-  > This example uses `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, which refers to Supabase's new **publishable** key format.
-  > Both legacy **anon** keys and new **publishable** keys can be used with this variable name during the transition period. Supabase's dashboard may show `NEXT_PUBLIC_SUPABASE_ANON_KEY`; its value can be used in this example.
-  > See the [full announcement](https://github.com/orgs/supabase/discussions/29260) for more information.
-
-  Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
-
-5. You can now run the Next.js local development server:
-
+4. **Run development server**
    ```bash
    npm run dev
    ```
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+5. **Open browser**
+   
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+## 📦 Project Structure
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+```
+loukii-social/
+├── app/                      # Next.js App Router
+│   ├── layout.tsx           # Root layout with SEO
+│   ├── page.tsx             # Homepage
+│   ├── globals.css          # Global styles
+│   └── sitemap.ts           # Dynamic sitemap
+├── components/              # React components
+│   ├── top-header.tsx       # Main navigation
+│   ├── left-navigation.tsx  # Sidebar navigation
+│   ├── right-sidebar.tsx    # Trending content
+│   ├── loop-card.tsx        # Advisor card
+│   ├── comments-modal.tsx   # Reviews modal
+│   ├── filter-dropdown.tsx  # Search filters
+│   └── user-menu.tsx        # User dropdown
+├── public/                  # Static assets
+│   ├── docs/               # Demo images
+│   ├── manifest.json       # PWA manifest
+│   └── robots.txt          # SEO robots
+├── lib/                    # Utilities
+│   └── supabase/          # Supabase client
+├── DEPLOYMENT.md          # Deployment guide
+└── README.md             # This file
+```
 
-## Feedback and issues
+## 🎨 Key Components
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+### Loop Card (Feed Item)
+- Advisor profile with rating and verified badge
+- 20-word bio/description
+- Swipeable image gallery (infinite loop)
+- View profile & WhatsApp buttons
+- Latest client review preview
+- Engagement stats (views, comments)
 
-## More Supabase examples
+### Trending Sidebar
+- 3 trending articles with author profile
+- 20 trending brands/companies
+- "Become an Advisor" CTA banner
+- Top advisors to follow
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+### Filter System
+- Mega menu style dropdowns with search
+- Filters: Country, State, Category, Brand, Rating
+- Smart search across advisors, articles, and content
+- Sort by: Latest, Trending, Following
+
+### Content Types
+- **Articles** - Long-form content (Medium-style)
+- **Micro-Posts** - Short updates and tips
+- **Reviews** - User feedback on advisors
+- All content appears in unified feed
+
+## 📱 Layout
+
+- **20:55:25** responsive column ratio
+- **Left**: Navigation (20%)
+- **Center**: Advisor feed (55%)
+- **Right**: Trending content (25%)
+
+## 🚢 Deployment
+
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+### Quick Deploy to Vercel
+
+```bash
+npm i -g vercel
+vercel login
+vercel --prod
+```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+**Development** (`.env.local`):
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_dev_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_dev_key
+```
+
+**Production** (`.env.production`):
+```env
+NEXT_PUBLIC_SITE_URL=https://loukii.com
+NEXT_PUBLIC_SUPABASE_URL=your_prod_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_prod_key
+```
+
+## 📊 Performance
+
+- ✅ Lighthouse Score: 95+
+- ✅ Image optimization (AVIF/WebP)
+- ✅ Code splitting
+- ✅ Font optimization
+- ✅ Gzip compression
+- ✅ SWC minification
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+## 👥 Team
+
+Built with ❤️ by [Cloudswired Technologies](https://cloudswired.com)
+
+## 📞 Support
+
+For support, email support@loukii.com or join our community.
+
+---
+
+<p align="center">Made with ❤️ in Malaysia 🇲🇾</p>

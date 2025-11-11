@@ -93,9 +93,9 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
   };
 
   return (
-    <article className="bg-white dark:bg-gray-950 py-8 max-w-3xl mx-auto">
+    <article className="bg-white dark:bg-gray-950 py-6 max-w-3xl mx-auto">
       {/* Header */}
-      <div className="flex items-start gap-5 mb-4">
+      <div className="flex items-start gap-4 mb-4">
         <div className="relative w-20 h-20 flex-shrink-0">
           <Image
             src={author.avatar}
@@ -151,14 +151,14 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
       </div>
 
       {/* Content */}
-      <div className="mb-6">
+      <div className="mb-5">
         <p className="text-gray-800 dark:text-gray-200 leading-relaxed text-[15px]">{content}</p>
       </div>
 
       {/* Image Slider */}
       {images && images.length > 0 && (
         <div 
-          className="relative mb-6 group rounded-2xl overflow-hidden shadow-sm"
+          className="relative mb-5 group rounded-2xl overflow-hidden shadow-sm"
           onMouseDown={(e) => {
             if (images.length <= 1) return;
             const startX = e.clientX;
@@ -204,7 +204,7 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
             document.addEventListener('touchend', handleTouchEnd);
           }}
         >
-          <div className="relative w-full h-[500px]">
+          <div className="relative w-full h-[450px]">
             <Image
               src={images[currentImageIndex]}
               alt="Post content"
@@ -219,15 +219,13 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
             <>
               <button
                 onClick={prevImage}
-                disabled={currentImageIndex === 0}
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all disabled:opacity-0 hover:scale-110 active:scale-95 shadow-lg"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:scale-110 active:scale-95 shadow-lg"
               >
                 ←
               </button>
               <button
                 onClick={nextImage}
-                disabled={currentImageIndex === images.length - 1}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all disabled:opacity-0 hover:scale-110 active:scale-95 shadow-lg"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/90 backdrop-blur-sm text-gray-900 p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all hover:scale-110 active:scale-95 shadow-lg"
               >
                 →
               </button>
@@ -252,8 +250,8 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
       )}
 
       {/* Stats & Actions */}
-      <div className="flex items-center justify-between mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400">
+      <div className="flex items-center justify-between mb-3 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-2.5">
           <div className="flex items-center gap-2">
             <Eye className="w-4 h-4" />
             <span>{stats.views}</span>

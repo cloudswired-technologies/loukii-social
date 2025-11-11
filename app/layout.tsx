@@ -9,8 +9,56 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Loukii - The Social Trust Network",
-  description: "Discover trusted advisors and build credibility through real reviews, content, and engagement.",
+  title: "Loukii - The Social Trust Network for Advisors",
+  description: "Discover trusted advisors across all industries. Read authentic reviews, explore expert content, and connect with verified professionals. A social platform where trust grows organically.",
+  keywords: ["advisor directory", "trusted advisors", "professional reviews", "advisor network", "expert content", "verified professionals", "advisor discovery", "social trust network", "Malaysia advisors"],
+  authors: [{ name: "Loukii", url: "https://loukii.com" }],
+  creator: "Cloudswired Technologies",
+  publisher: "Loukii",
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_MY",
+    url: defaultUrl,
+    title: "Loukii - The Social Trust Network for Advisors",
+    description: "Discover trusted advisors across all industries. Read authentic reviews, explore expert content, and connect with verified professionals.",
+    siteName: "Loukii",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Loukii - The Social Trust Network",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Loukii - The Social Trust Network for Advisors",
+    description: "Discover trusted advisors across all industries. Read authentic reviews, explore expert content, and connect with verified professionals.",
+    images: ["/og-image.png"],
+    creator: "@loukii",
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icon.png", type: "image/png", sizes: "32x32" },
+    ],
+    apple: [
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
+  manifest: "/manifest.json",
 };
 
 const geistSans = Geist({
@@ -25,7 +73,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en-MY" suppressHydrationWarning>
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
+      </head>
       <body className={`${geistSans.className} antialiased`}>
         <ThemeProvider
           attribute="class"
