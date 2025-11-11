@@ -1,0 +1,164 @@
+Baik, ini versi **Loukii Product Documentation v2.0** yang kau nak — **plain text penuh**, tak ada table, tak ada formatting pelik, tersusun kemas dan mudah nak copy masuk Word atau Notepad:
+
+---
+
+**LOUKII PRODUCT DOCUMENTATION (Version 2.0)**
+“The Social Trust Network”
+
+1. OVERVIEW
+   Loukii is a social-driven advisor discovery platform that combines the best of a review directory (like Trustpilot) and a social media network (like LinkedIn and Medium).
+   It allows users to find trusted advisors and advisors to build credibility through real reviews, content, and engagement.
+
+---
+
+2. OBJECTIVES
+
+* Help users discover trustworthy advisors through transparent reviews.
+* Allow advisors to build credibility through engagement, articles, and activity.
+* Transform a static directory into a dynamic social ecosystem where trust grows organically.
+
+---
+
+3. USER ROLES
+
+Normal User (Reviewer)
+
+* Discover and follow advisors.
+* Read articles or posts published by advisors.
+* Leave one verified review per advisor.
+* Comment or react to advisor posts.
+* Manage their account, view own activities, messages, and notifications.
+
+Advisor
+
+* Register and verify professional details.
+* Have a public profile containing bio, contact, services, reviews, and published articles or posts.
+* Create and publish articles, micro-posts, or announcements.
+* Gain followers, receive reviews, and reply to comments.
+* View analytics: profile views, article reads, review count, engagement.
+* Send and receive messages from users.
+
+Admin
+
+* Manage users, advisors, reviews, and posts.
+* Moderate content and handle flagged items.
+* Manage service categories, brands, companies, states, and countries.
+* Oversee analytics and platform configuration.
+
+---
+
+4. PLATFORM STRUCTURE
+
+Homepage (3 Columns):
+Left: Navigation and Filters (Advisors, Explore Feed, Account, What is Loukii, Learn More, FAQ)
+Middle: Feed area (articles, posts, updates) sorted by Latest, Trending, Following.
+Right: Discovery column (Trending Articles, Top Advisors, Who to Follow, Promotional Banners)
+
+---
+
+5. CONTENT SYSTEM
+
+Content Types:
+
+1. Advisor Articles – Long-form content (like Medium).
+2. Micro-Posts – Short updates (tips, insights).
+3. Reviews – User feedback on advisors.
+
+Feed Behavior:
+
+* Feed combines all content types with filter options.
+* Advisors’ content appears in both their profile and global feed.
+* Engagement includes likes, comments, and shares.
+* Feed prioritizes high-rated and verified advisors.
+
+---
+
+6. DIRECTORY SYSTEM
+
+Agent Directory:
+
+* Users can search advisors by category, brand, location, and rating.
+* Each card shows name, company, rating, number of reviews, and CTA buttons (View Profile, WhatsApp, Message).
+
+Advisor Profile Page:
+
+* Header section with profile info and verified badge.
+* Tabs: About, Posts, Reviews, Analytics (for advisor only).
+
+---
+
+7. INTERACTION FEATURES
+
+* Follow/Unfollow advisors.
+* Like and Comment on posts.
+* Private Messaging between users and advisors.
+* Notifications for new reviews, messages, followers, and comments.
+* Report/Flag content.
+* Smart Search and Filter system.
+
+---
+
+8. VALUE FOR ADVISORS
+
+Reputation – Verified profile and trust badges.
+Visibility – Feed exposure and ranking.
+Credibility – Ability to share insights and achievements.
+Growth Tools – Dashboard analytics and review insights.
+Lead Generation – Inbound messages and requests.
+Community – Follower base and discussion building.
+
+---
+
+9. ADMIN DASHBOARD
+
+* User Management (CRUD, suspend, assign roles).
+* Content Moderation (approve, reject, delete).
+* Data Management (categories, brands, companies, etc.).
+* Notifications Center for all events.
+* Analytics Overview (user growth, category insights).
+* API Settings (Supabase, Vercel).
+
+---
+
+10. TECH STACK
+
+Frontend: Next.js / React
+Backend: Supabase (Auth, DB, Realtime)
+Storage: Supabase Storage
+Hosting: Vercel
+Notifications: Realtime or OneSignal
+Editor: TipTap or Editor.js
+Design System: Tailwind + Shadcn UI
+
+---
+
+11. ACCESS FLOW
+
+Visitor – Can view content but cannot interact.
+Registered User – Can review, like, comment, and follow.
+Advisor – Can post, review analytics, and message users.
+Admin – Full control and moderation rights.
+
+---
+
+12. FUTURE FEATURES (PHASE 2)
+
+* Loukii Spaces (group discussions by category).
+* AI-powered Review Insights.
+* Gamification (badges and levels).
+* Video Posts and Short Stories.
+* Monetization (premium verified accounts).
+
+---
+
+13. DESIGN CONCEPT
+
+* Inspired by LinkedIn, Medium, and ProductHunt hybrid.
+* Clean three-column layout, modular and responsive.
+* Brand color: #16A34A (green).
+* Font: Rounded sans-serif (Inter or Poppins).
+* Visual tone: Modern, minimal, authentic.
+
+---
+
+Kalau kau nak aku jadikan ni fail `.txt` sebenar boleh muat turun (bukan salinan teks), aku boleh hasilkan semula sekarang — nak aku buat terus?

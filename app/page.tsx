@@ -1,51 +1,117 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
-import Link from "next/link";
+import { LeftNavigation } from "@/components/left-navigation";
+import { RightSidebar } from "@/components/right-sidebar";
+import { TopHeader } from "@/components/top-header";
+import { LoopCard } from "@/components/loop-card";
 
 export default function Home() {
+  const dummyLoops = [
+    {
+      author: {
+        name: "Shukry Razif",
+        role: "Takaful Agent • Prudential BSN Takaful",
+        avatar: "/docs/profile-1.jpg",
+        verified: true,
+      },
+      content:
+        "Experienced takaful advisor specializing in family protection and retirement planning. Helping families secure their financial future with Shariah-compliant solutions.",
+      images: [
+        "/docs/featured-image-1.jpg",
+        "/docs/featured-image-2.jpg",
+        "/docs/featured-image-3.jpg"
+      ],
+      stats: {
+        rating: 5.0,
+        views: 530,
+        comments: 23,
+      },
+      timestamp: "2 weeks ago",
+      latestComment: {
+        author: "Sarah Ahmad",
+        text: "Excellent service! Very professional and helped me find the perfect takaful plan for my family.",
+      },
+    },
+    {
+      author: {
+        name: "Abo Ghanbari",
+        role: "Insurance Consultant • AIA Malaysia",
+        avatar: "/docs/profile-2.jpg",
+        verified: true,
+      },
+      content:
+        "Certified financial planner with 10+ years experience. Passionate about helping clients achieve financial security through comprehensive insurance and investment planning.",
+      images: [
+        "/docs/featured-image-2.jpg",
+        "/docs/featured-image-1.jpg",
+        "/docs/featured-image-3.jpg",
+      ],
+      stats: {
+        rating: 4.9,
+        views: 420,
+        comments: 15,
+      },
+      timestamp: "3 days ago",
+      latestComment: {
+        author: "Ahmad Razak",
+        text: "Very knowledgeable and patient. Explained everything clearly and helped me make the right decision.",
+      },
+    },
+    {
+      author: {
+        name: "Sarah Ahmad",
+        role: "Financial Advisor • Great Eastern",
+        avatar: "/docs/profile-3.jpg",
+        verified: true,
+      },
+      content:
+        "Dedicated to empowering individuals with smart financial decisions. Specializing in wealth management, retirement planning, and education funding for growing families.",
+      images: [
+        "/docs/featured-image-3.jpg",
+        "/docs/featured-image-2.jpg",
+        "/docs/featured-image-1.jpg"
+      ],
+      stats: {
+        rating: 4.8,
+        views: 380,
+        comments: 18,
+      },
+      timestamp: "1 week ago",
+      latestComment: {
+        author: "Nurul Huda",
+        text: "Thank you for the helpful advice! This really clarifies things.",
+      },
+    },
+  ];
+
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
-            </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
-          </div>
-        </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
+    <div className="min-h-screen bg-white dark:bg-black overflow-x-hidden">
+      {/* Top Header */}
+      <TopHeader />
+
+      {/* Spacer for fixed header */}
+      <div className="h-[65px]"></div>
+
+      <div className="flex w-full h-[calc(100vh-65px)]">
+        {/* Left Navigation - 20% - FIXED */}
+        <div className="w-[20%] flex-shrink-0 overflow-hidden">
+          <LeftNavigation />
         </div>
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
-        </footer>
+        {/* Main Feed - 55% - SCROLLABLE */}
+        <main className="w-[55%] flex-shrink-0 min-w-0 border-r border-gray-200 dark:border-gray-800 overflow-y-auto">
+          <div className="divide-y divide-gray-200 dark:divide-gray-800">
+            {dummyLoops.map((loop, index) => (
+              <div key={index} className="px-6">
+                <LoopCard {...loop} />
+              </div>
+            ))}
+          </div>
+        </main>
+
+        {/* Right Sidebar - 25% - FIXED */}
+        <div className="w-[25%] flex-shrink-0 overflow-hidden">
+          <RightSidebar />
+        </div>
       </div>
-    </main>
+    </div>
   );
 }
