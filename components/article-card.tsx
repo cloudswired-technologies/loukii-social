@@ -76,7 +76,7 @@ export function ArticleCard({
   return (
     <article className="bg-white dark:bg-gray-950 py-6 max-w-3xl mx-auto">
       {/* Author Info */}
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-start gap-3 mb-4">
         <div className="relative w-10 h-10 flex-shrink-0">
           <Image
             src={author.avatar}
@@ -86,7 +86,7 @@ export function ArticleCard({
           />
         </div>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 mb-0.5">
             <h3 className="font-semibold text-sm text-gray-900 dark:text-white">
               {author.name}
             </h3>
@@ -94,13 +94,13 @@ export function ArticleCard({
               <CheckCircle className="w-4 h-4 text-[#16A34A] fill-[#16A34A]" />
             )}
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
             {author.role} · {publishedAt}
           </p>
+          <span className="inline-block px-2 py-0.5 md:px-2.5 md:py-1 bg-[#16A34A]/10 text-[#16A34A] text-[10px] md:text-xs font-medium rounded-full">
+            {category}
+          </span>
         </div>
-        <span className="px-2.5 py-1 bg-[#16A34A]/10 text-[#16A34A] text-xs font-medium rounded-full">
-          {category}
-        </span>
       </div>
 
       {/* Article Content */}
@@ -108,19 +108,19 @@ export function ArticleCard({
         <div className="flex gap-3 md:gap-4">
           {/* Left: Text Content */}
           <div className="flex-1 min-w-0">
-            <h2 className="text-base md:text-lg font-bold text-gray-900 dark:text-white mb-1.5 group-hover:text-[#16A34A] transition-colors line-clamp-2">
+            <h2 className="text-sm md:text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#16A34A] transition-colors line-clamp-2">
               {title}
             </h2>
-            <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed mb-2">
+            <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed mb-2">
               {description}
             </p>
-            <p className="text-xs text-[#16A34A] font-medium group-hover:underline">
+            <p className="text-[10px] md:text-xs text-[#16A34A] font-medium group-hover:underline">
               Read full article →
             </p>
           </div>
 
           {/* Right: Featured Image */}
-          <div className="relative w-28 h-28 md:w-48 md:h-32 flex-shrink-0 rounded-lg overflow-hidden">
+          <div className="relative w-24 h-24 md:w-48 md:h-32 flex-shrink-0 rounded-lg overflow-hidden">
             <Image
               src={image}
               alt={title}
