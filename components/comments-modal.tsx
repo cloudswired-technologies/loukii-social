@@ -43,28 +43,28 @@ export function CommentsModal({ isOpen, onClose, comments, totalComments }: Comm
 
   return (
     <div 
-      className="fixed inset-0 z-[60] flex items-center justify-center p-2 md:p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center lg:p-4 bg-black/50 backdrop-blur-sm"
       onClick={onClose}
     >
       <div 
-        className="bg-white dark:bg-gray-950 rounded-xl md:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
+        className="bg-white dark:bg-gray-950 w-full h-full lg:h-auto lg:max-w-2xl lg:max-h-[90vh] lg:rounded-2xl shadow-2xl overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-4 md:p-5 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-950 z-10">
-          <h2 className="text-lg font-bold text-gray-900 dark:text-white">
+        <div className="flex items-center justify-between p-4 lg:p-5 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-950 z-10">
+          <h2 className="text-lg lg:text-xl font-bold text-gray-900 dark:text-white">
             Reviews ({totalComments})
           </h2>
           <button
             onClick={onClose}
             className="p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-lg transition-colors"
           >
-            <X className="w-5 h-5 text-gray-500" />
+            <X className="w-5 h-5 lg:w-6 lg:h-6 text-gray-500" />
           </button>
         </div>
 
         {/* Comments List */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
+        <div className="flex-1 overflow-y-auto p-4 lg:p-6 space-y-4 lg:space-y-6">
           {comments.map((comment, index) => (
             <div key={index} className="border-b border-gray-200 dark:border-gray-800 pb-5 last:border-0">
               {/* User Info */}
@@ -130,10 +130,10 @@ export function CommentsModal({ isOpen, onClose, comments, totalComments }: Comm
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-800">
+        <div className="p-4 lg:p-5 border-t border-gray-200 dark:border-gray-800 safe-area-bottom">
           <button
             onClick={onClose}
-            className="ripple w-full py-2.5 bg-[#16A34A] text-white text-sm font-medium rounded-xl hover:bg-[#15803d] transition-all hover:shadow-lg active:scale-95"
+            className="ripple w-full py-3 lg:py-2.5 bg-[#16A34A] text-white text-base lg:text-sm font-medium rounded-xl hover:bg-[#15803d] transition-all hover:shadow-lg active:scale-95"
           >
             Close
           </button>
