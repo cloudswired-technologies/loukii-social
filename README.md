@@ -1,207 +1,127 @@
-<h1 align="center">🌟 Loukii</h1>
+# Loukii Social Platform
 
-<p align="center">
-  <strong>The Social Trust Network</strong>
-</p>
+> The Social Trust Network connecting verified advisors with clients across Malaysia.
 
-<p align="center">
-  Discover trusted advisors • Read expert content • Build credibility through engagement
-</p>
+[![Next.js](https://img.shields.io/badge/Next.js-14-black)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.0-38bdf8)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](./LICENSE)
 
-<p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#tech-stack"><strong>Tech Stack</strong></a> ·
-  <a href="#getting-started"><strong>Getting Started</strong></a> ·
-  <a href="#deployment"><strong>Deployment</strong></a> ·
-  <a href="#project-structure"><strong>Project Structure</strong></a>
-</p>
+## 🚀 Quick Start
 
-<br/>
+```bash
+# Install dependencies
+npm install
 
-## ✨ Features
+# Run development server
+npm run dev
 
-### For Users (Reviewers)
-- 🔍 **Discover Advisors** - Browse verified professionals across all industries
-- 📰 **Read Expert Content** - Articles, posts, and insights from advisors
-- ⭐ **Authentic Reviews** - One verified review per advisor
-- 💬 **Engage & Follow** - Comment, react, and follow trusted advisors
-- 📱 **Responsive Design** - Perfect on mobile and desktop
-- 🔔 **Smart Notifications** - Stay updated on reviews, messages, and activity
+# Build for production
+npm run build
 
-### For Advisors
-- 👤 **Professional Profiles** - Showcase expertise, credentials, and services
-- ✍️ **Content Creation** - Publish articles, micro-posts, and announcements
-- 🖼️ **Portfolio Gallery** - Swipeable image slider for work showcase
-- 📈 **Build Credibility** - Collect reviews and grow follower base
-- 📊 **Analytics Dashboard** - Track profile views, article reads, engagement
-- 💼 **Lead Generation** - Receive inbound messages and requests
-- 🎯 **Targeted Visibility** - Filter by category, brand, location, rating
+# Start production server
+npm start
+```
 
-### Platform Features
-- 🌐 **Social Trust Network** - Combines directory + social media (LinkedIn + Medium hybrid)
-- 🎨 **Apple-Style UI** - Clean, modern, intuitive interface
-- 🌓 **Dark Mode** - Automatic theme switching
-- 🚀 **Dynamic Feed** - Latest, Trending, Following filters
-- 📸 **Image Optimization** - Fast loading with AVIF/WebP
-- 🔒 **Secure** - Built with Supabase authentication
-- 📱 **PWA Ready** - Install as mobile app
-- 💬 **Private Messaging** - Direct communication between users and advisors
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📚 Documentation
+
+Comprehensive documentation is available in the `/docs` folder:
+
+- **[Complete Documentation](./docs/README.md)** - Full feature list and guides
+- **[Architecture](./docs/ARCHITECTURE.md)** - System architecture and design
+- **[Mobile Optimization](./docs/MOBILE-OPTIMIZATION.md)** - Responsive design guide
+- **[Deployment Guide](./docs/DEPLOYMENT.md)** - Production deployment
+- **[Contributing](./docs/CONTRIBUTING.md)** - Contribution guidelines
+- **[Changelog](./docs/CHANGELOG.md)** - Version history
+- **[Optimization Summary](./docs/OPTIMIZATION-SUMMARY.md)** - Performance & SEO
+
+## ✨ Key Features
+
+### 🔍 Discovery
+- Browse verified financial advisors and takaful consultants
+- Filter by country, state, category, brand, and rating
+- Search across advisors, articles, and categories
+
+### 📰 Content
+- Expert articles and financial insights
+- Category and tag-based filtering
+- Trending content and advisors
+
+### ⭐ Reviews & Engagement
+- Authentic client reviews with titles
+- Helpful and report functionality
+- Comments modal with full review details
+- Latest review preview on advisor cards
+
+### 📱 Responsive Design
+- **Mobile** (< 768px): Bottom navigation, search sidebar
+- **Tablet** (768-1024px): Optimized touch targets
+- **Desktop** (≥ 1024px): 3-column layout, filter dropdowns
+
+### 🎨 UI/UX
+- Dark mode support
+- Smooth animations and transitions
+- Touch-friendly interactions
+- Accessible navigation
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)
-- **Language**: TypeScript
-- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
-- **Components**: [shadcn/ui](https://ui.shadcn.com/)
-- **Icons**: [Lucide React](https://lucide.dev/)
-- **Database**: [Supabase](https://supabase.com/)
-- **Deployment**: [Vercel](https://vercel.com/)
-- **Font**: Geist Sans
+| Category | Technology |
+|----------|-----------|
+| Framework | Next.js 14 (App Router) |
+| Language | TypeScript |
+| Styling | Tailwind CSS |
+| Icons | Lucide React |
+| State | React Hooks |
+| Images | Next.js Image |
+| Deployment | Vercel |
 
-## 🚀 Getting Started
-
-### Prerequisites
-- Node.js 18+ 
-- npm/yarn/pnpm
-- Supabase account
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/yourusername/loukii-social.git
-   cd loukii-social
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Set up environment variables**
-   
-   Create `.env.local`:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-   ```
-
-4. **Run development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Open browser**
-   
-   Navigate to [http://localhost:3000](http://localhost:3000)
-
-## 📦 Project Structure
+## 📁 Project Structure
 
 ```
 loukii-social/
-├── app/                      # Next.js App Router
-│   ├── layout.tsx           # Root layout with SEO
-│   ├── page.tsx             # Homepage
-│   ├── globals.css          # Global styles
-│   └── sitemap.ts           # Dynamic sitemap
-├── components/              # React components
-│   ├── top-header.tsx       # Main navigation
-│   ├── left-navigation.tsx  # Sidebar navigation
-│   ├── right-sidebar.tsx    # Trending content
-│   ├── loop-card.tsx        # Advisor card
-│   ├── comments-modal.tsx   # Reviews modal
-│   ├── filter-dropdown.tsx  # Search filters
-│   └── user-menu.tsx        # User dropdown
-├── public/                  # Static assets
-│   ├── docs/               # Demo images
-│   ├── manifest.json       # PWA manifest
-│   └── robots.txt          # SEO robots
-├── lib/                    # Utilities
-│   └── supabase/          # Supabase client
-├── DEPLOYMENT.md          # Deployment guide
-└── README.md             # This file
+├── app/
+│   ├── layout.tsx          # Root layout with SEO
+│   ├── page.tsx            # Advisors feed
+│   └── insights/           # Insights page
+├── components/
+│   ├── top-header.tsx      # Navigation & filters
+│   ├── loop-card.tsx       # Advisor cards
+│   ├── article-card.tsx    # Article cards
+│   ├── search-sidebar.tsx  # Mobile search
+│   └── ...                 # Other components
+├── docs/                   # Documentation
+└── public/                 # Static assets
 ```
 
-## 🎨 Key Components
+## 🎯 Responsive Breakpoints
 
-### Loop Card (Feed Item)
-- Advisor profile with rating and verified badge
-- 20-word bio/description
-- Swipeable image gallery (infinite loop)
-- View profile & WhatsApp buttons
-- Latest client review preview
-- Engagement stats (views, comments)
+- **Mobile**: < 768px
+- **Tablet**: 768px - 1024px
+- **Desktop**: ≥ 1024px
 
-### Trending Sidebar
-- 3 trending articles with author profile
-- 20 trending brands/companies
-- "Become an Advisor" CTA banner
-- Top advisors to follow
+## 🔍 Search & Filters
 
-### Filter System
-- Mega menu style dropdowns with search
-- Filters: Country, State, Category, Brand, Rating
-- Smart search across advisors, articles, and content
-- Sort by: Latest, Trending, Following
+### Desktop
+- Functional search bar (type directly)
+- Filter dropdowns with multi-select checkboxes
+- Search within each filter
 
-### Content Types
-- **Articles** - Long-form content (Medium-style)
-- **Micro-Posts** - Short updates and tips
-- **Reviews** - User feedback on advisors
-- All content appears in unified feed
-
-## 📱 Layout
-
-- **20:55:25** responsive column ratio
-- **Left**: Navigation (20%)
-- **Center**: Advisor feed (55%)
-- **Right**: Trending content (25%)
-
-## 🚢 Deployment
-
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
-
-### Quick Deploy to Vercel
-
-```bash
-npm i -g vercel
-vercel login
-vercel --prod
-```
-
-## 🔧 Configuration
-
-### Environment Variables
-
-**Development** (`.env.local`):
-```env
-NEXT_PUBLIC_SUPABASE_URL=your_dev_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_dev_key
-```
-
-**Production** (`.env.production`):
-```env
-NEXT_PUBLIC_SITE_URL=https://loukii.com
-NEXT_PUBLIC_SUPABASE_URL=your_prod_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_prod_key
-```
-
-## 📊 Performance
-
-- ✅ Lighthouse Score: 95+
-- ✅ Image optimization (AVIF/WebP)
-- ✅ Code splitting
-- ✅ Font optimization
-- ✅ Gzip compression
-- ✅ SWC minification
+### Mobile/Tablet
+- Search icon opens slide-out sidebar
+- Accordion-style filters
+- Multi-select with checkboxes
+- Search within filters
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+We welcome contributions! See [CONTRIBUTING.md](./docs/CONTRIBUTING.md) for guidelines.
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+MIT License - See [LICENSE](./LICENSE) for details.
 
 ## 👥 Team
 
@@ -209,8 +129,8 @@ Built with ❤️ by [Cloudswired Technologies](https://cloudswired.com)
 
 ## 📞 Support
 
-For support, email support@loukii.com or join our community.
+For support, email support@loukii.com
 
 ---
 
-<p align="center">Made with ❤️ in Malaysia 🇲🇾</p>
+<p align="center">Made in Malaysia 🇲🇾</p>

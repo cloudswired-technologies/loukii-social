@@ -43,15 +43,15 @@ export function CommentsModal({ isOpen, onClose, comments, totalComments }: Comm
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-[60] flex items-center justify-center p-2 md:p-4 bg-black/50 backdrop-blur-sm"
       onClick={onClose}
     >
       <div 
-        className="bg-white dark:bg-gray-950 rounded-2xl shadow-2xl max-w-2xl w-full max-h-[75vh] overflow-hidden flex flex-col"
+        className="bg-white dark:bg-gray-950 rounded-xl md:rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-5 border-b border-gray-200 dark:border-gray-800">
+        <div className="flex items-center justify-between p-4 md:p-5 border-b border-gray-200 dark:border-gray-800 sticky top-0 bg-white dark:bg-gray-950 z-10">
           <h2 className="text-lg font-bold text-gray-900 dark:text-white">
             Reviews ({totalComments})
           </h2>
@@ -64,7 +64,7 @@ export function CommentsModal({ isOpen, onClose, comments, totalComments }: Comm
         </div>
 
         {/* Comments List */}
-        <div className="flex-1 overflow-y-auto p-5 space-y-5">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 md:space-y-6">
           {comments.map((comment, index) => (
             <div key={index} className="border-b border-gray-200 dark:border-gray-800 pb-5 last:border-0">
               {/* User Info */}

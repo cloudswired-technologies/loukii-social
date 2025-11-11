@@ -22,6 +22,7 @@ interface LoopCardProps {
   timestamp: string;
   latestComment?: {
     author: string;
+    title: string;
     text: string;
   };
 }
@@ -95,8 +96,8 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
   return (
     <article className="bg-white dark:bg-gray-950 py-6 max-w-3xl mx-auto">
       {/* Header */}
-      <div className="flex items-start gap-4 mb-4">
-        <div className="relative w-20 h-20 flex-shrink-0">
+      <div className="flex items-start gap-3 md:gap-4 mb-3 md:mb-4">
+        <div className="relative w-14 h-14 md:w-20 md:h-20 flex-shrink-0">
           <Image
             src={author.avatar}
             alt={author.name}
@@ -113,7 +114,7 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
               <p className="text-sm text-gray-600 dark:text-gray-400">{author.role}</p>
             </div>
             <div className="flex flex-col items-end ml-4">
-              <span className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+              <span className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                 {stats.rating.toFixed(1)}
               </span>
               <div className="flex items-center gap-0.5">
@@ -151,14 +152,14 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
       </div>
 
       {/* Content */}
-      <div className="mb-5">
-        <p className="text-gray-800 dark:text-gray-200 leading-relaxed text-[15px]">{content}</p>
+      <div className="mb-4 md:mb-5">
+        <p className="text-gray-800 dark:text-gray-200 leading-relaxed text-sm md:text-[15px]">{content}</p>
       </div>
 
       {/* Image Slider */}
       {images && images.length > 0 && (
         <div 
-          className="relative mb-5 group rounded-2xl overflow-hidden shadow-sm"
+          className="relative w-full h-64 md:h-96 bg-gray-100 dark:bg-gray-900 rounded-lg overflow-hidden mb-4 shadow-sm"
           onMouseDown={(e) => {
             if (images.length <= 1) return;
             const startX = e.clientX;
@@ -251,15 +252,21 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
 
       {/* Stats & Actions */}
       <div className="flex items-center justify-between mb-3 border-b border-gray-100 dark:border-gray-800">
-        <div className="flex items-center gap-6 text-sm text-gray-600 dark:text-gray-400 mb-2.5">
+        <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2.5">
           <div className="flex items-center gap-2">
             <Eye className="w-4 h-4" />
             <span>{stats.views}</span>
           </div>
-          <div className="flex items-center gap-2">
+          <button
+            onClick={() => setShowCommentsModal(!showCommentsModal)}
+            className="flex items-center gap-1.5 hover:text-[#16A34A] transition-colors group/comment"
+          >
             <MessageCircle className="w-4 h-4" />
             <span>{stats.comments}</span>
-          </div>
+            <span className="hidden md:inline text-xs ml-1 text-gray-500 dark:text-gray-500 group-hover/comment:text-[#16A34A]">
+              • View all comments
+            </span>
+          </button>
         </div>
         <button 
           onClick={handleShare}
@@ -272,41 +279,56 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
 
       {/* Latest Comment */}
       {latestComment && (
-        <div className="bg-gray-50 dark:bg-gray-900 p-4 mb-3 rounded-xl">
-          <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">Latest Review</h4>
-          <p className="text-sm text-gray-800 dark:text-gray-200 mb-2">
-            <span className="font-medium">{latestComment.author}</span>
-            <span className="mx-2 text-gray-400">·</span>
-            <span className="text-gray-500 dark:text-gray-400">2 weeks ago</span>
-          </p>
-          <p className="text-sm text-gray-700 dark:text-gray-300 mb-3">
-            "{latestComment.text}"
-          </p>
-          {/* Actions */}
-          <div className="flex items-center gap-4">
-            <button className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-[#16A34A] transition-colors">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-              </svg>
-              <span>Helpful</span>
-            </button>
-            <button className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors">
-              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-              </svg>
-              <span>Report</span>
-            </button>
+        <div
+          onClick={() => setShowCommentsModal(true)}
+          className="bg-gray-50 dark:bg-gray-900 p-3 md:p-4 mb-3 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+        >
+        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">
+          Latest Review
+        </h4>
+        
+        {/* Reviewer Info with Profile Picture */}
+        <div className="flex items-start gap-3 mb-3">
+          <div className="relative w-10 h-10 flex-shrink-0">
+            <div className="w-full h-full rounded-full bg-gradient-to-br from-[#16A34A] to-[#15803d] flex items-center justify-center text-white font-bold text-sm">
+              {latestComment.author.split(' ').map(n => n[0]).join('')}
+            </div>
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-gray-900 dark:text-white">
+              {latestComment.author}
+            </p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">
+              2 weeks ago
+            </p>
           </div>
         </div>
-      )}
 
-      {/* View All Comments */}
-      <button 
-        onClick={() => setShowCommentsModal(true)}
-        className="text-sm text-[#16A34A] hover:text-[#15803d] font-medium transition-colors"
-      >
-        View all comments ({stats.comments}) →
-      </button>
+        {/* Review Content */}
+        <h5 className="font-semibold text-sm text-gray-900 dark:text-white mb-2">
+          {latestComment.title}
+        </h5>
+        <p className="text-sm text-gray-700 dark:text-gray-300 mb-3 leading-relaxed line-clamp-3">
+          {latestComment.text}
+        </p>
+        
+        {/* Actions */}
+        <div className="flex items-center gap-4">
+          <button className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-[#16A34A] transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
+            </svg>
+            <span>Helpful</span>
+          </button>
+          <button className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors">
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
+            </svg>
+            <span>Report</span>
+          </button>
+        </div>
+      </div>
+      )}
 
       {/* Comments Modal */}
       <CommentsModal

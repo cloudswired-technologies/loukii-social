@@ -9,10 +9,25 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata: Metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Loukii - The Social Trust Network for Advisors",
-  description: "Discover trusted advisors across all industries. Read authentic reviews, explore expert content, and connect with verified professionals. A social platform where trust grows organically.",
-  keywords: ["advisor directory", "trusted advisors", "professional reviews", "advisor network", "expert content", "verified professionals", "advisor discovery", "social trust network", "Malaysia advisors"],
-  authors: [{ name: "Loukii", url: "https://loukii.com" }],
+  title: {
+    default: "Loukii - The Social Trust Network for Advisors",
+    template: "%s | Loukii"
+  },
+  description: "Discover trusted financial advisors, insurance specialists, and takaful consultants in Malaysia. Read authentic reviews, explore expert content, and connect with verified professionals.",
+  keywords: [
+    "financial advisor Malaysia",
+    "takaful consultant",
+    "insurance specialist",
+    "investment advisor",
+    "retirement planning",
+    "financial planning Malaysia",
+    "advisor reviews",
+    "trusted advisors",
+    "Prudential BSN",
+    "AIA Malaysia",
+    "Great Eastern"
+  ],
+  authors: [{ name: "Loukii" }],
   creator: "Cloudswired Technologies",
   publisher: "Loukii",
   robots: {
@@ -21,9 +36,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      'max-video-preview': -1,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
     },
   },
   openGraph: {
@@ -51,8 +66,8 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico", sizes: "any" },
-      { url: "/icon.png", type: "image/png", sizes: "32x32" },
     ],
     apple: [
       { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },

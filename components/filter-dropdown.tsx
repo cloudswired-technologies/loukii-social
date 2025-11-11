@@ -12,6 +12,7 @@ interface FilterDropdownProps {
 export function FilterDropdown({ icon, label, options }: FilterDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,6 +31,14 @@ export function FilterDropdown({ icon, label, options }: FilterDropdownProps) {
     option.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const toggleItem = (item: string) => {
+    setSelectedItems(prev =>
+      prev.includes(item)
+        ? prev.filter(i => i !== item)
+        : [...prev, item]
+    );
+  };
+
   return (
     <div className="relative" ref={dropdownRef}>
       <button
@@ -38,6 +47,11 @@ export function FilterDropdown({ icon, label, options }: FilterDropdownProps) {
       >
         {icon}
         <span className="text-gray-700 dark:text-gray-300 font-medium">{label}</span>
+        {selectedItems.length > 0 && (
+          <span className="ml-1 px-1.5 py-0.5 bg-[#16A34A] text-white text-xs rounded-full">
+            {selectedItems.length}
+          </span>
+        )}
         <span className="text-gray-400 text-[10px]">▼</span>
       </button>
 
@@ -68,18 +82,20 @@ export function FilterDropdown({ icon, label, options }: FilterDropdownProps) {
           {/* Options List */}
           <div className="max-h-64 overflow-y-auto">
             {filteredOptions.length > 0 ? (
-              <div className="py-2">
+              <div className="py-2 space-y-1">
                 {filteredOptions.map((option, index) => (
-                  <button
+                  <label
                     key={index}
-                    onClick={() => {
-                      setIsOpen(false);
-                      setSearchQuery("");
-                    }}
-                    className="w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900 cursor-pointer transition-colors"
                   >
-                    {option}
-                  </button>
+                    <input
+                      type="checkbox"
+                      checked={selectedItems.includes(option)}
+                      onChange={() => toggleItem(option)}
+                      className="w-4 h-4 text-[#16A34A] bg-gray-100 border-gray-300 rounded focus:ring-[#16A34A] focus:ring-2"
+                    />
+                    <span>{option}</span>
+                  </label>
                 ))}
               </div>
             ) : (
