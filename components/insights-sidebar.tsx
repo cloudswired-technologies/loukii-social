@@ -56,10 +56,10 @@ export function InsightsSidebar() {
 
   return (
     <aside className="h-full bg-white dark:bg-gray-950 overflow-y-auto">
-      <div className="p-4 md:p-6">
+      <div className="px-4 py-3 md:px-6 md:py-4">
         {/* Trending Advisors */}
-        <section className="mb-6">
-          <div className="flex items-center justify-between mb-4">
+        <section className="mb-4">
+          <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2">
               <div className="p-1.5 bg-[#16A34A]/10 rounded-lg">
                 <TrendingUp className="w-4 h-4 text-[#16A34A]" />
@@ -72,14 +72,14 @@ export function InsightsSidebar() {
               View all
             </Link>
           </div>
-          <div className="space-y-3">
+          <div className="space-y-2.5">
             {trendingAdvisors.map((advisor, index) => (
               <div
                 key={index}
-                className="group cursor-pointer border-b border-gray-200 dark:border-gray-800 pb-3 last:border-0 last:pb-0 hover:bg-gray-50 dark:hover:bg-gray-900 p-2 -mx-2 rounded-lg transition-all"
+                className="group cursor-pointer border-b border-gray-200 dark:border-gray-800 pb-2.5 last:border-0 last:pb-0 hover:bg-gray-50 dark:hover:bg-gray-900 p-2 -mx-2 rounded-lg transition-all"
               >
                 {/* Header: Profile, Name, Rating */}
-                <div className="flex items-start gap-2 mb-1.5">
+                <div className="flex items-start gap-2 mb-1">
                   <div className="relative w-10 h-10 flex-shrink-0">
                     <Image
                       src={advisor.avatar}
@@ -129,8 +129,8 @@ export function InsightsSidebar() {
         </section>
 
         {/* Top 10 Trending Tags */}
-        <section className="mb-5">
-          <div className="flex items-center gap-2 mb-3">
+        <section className="mb-4 pt-4 border-t border-gray-200 dark:border-gray-800">
+          <div className="flex items-center gap-2 mb-2.5">
             <div className="p-1.5 bg-[#16A34A]/10 rounded-lg">
               <Award className="w-4 h-4 text-[#16A34A]" />
             </div>
@@ -152,7 +152,7 @@ export function InsightsSidebar() {
       </div>
 
       {/* Promotional Banner - Sticky at bottom */}
-      <div className="p-6 pt-3 bg-white dark:bg-gray-950">
+      <div className="p-4 md:p-6 pt-3 bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800">
         <div className="bg-gradient-to-br from-[#16A34A] to-[#15803d] p-5 rounded-xl text-white shadow-lg">
           <h3 className="font-bold text-base mb-1.5">Become an Advisor</h3>
           <p className="text-xs text-white/90 mb-3">
