@@ -94,20 +94,23 @@ export function ArticleCard({
               <CheckCircle className="w-4 h-4 text-[#16A34A] fill-[#16A34A]" />
             )}
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
             {author.role} · {publishedAt}
           </p>
-          <span className="inline-block px-2 py-0.5 md:px-2.5 md:py-1 bg-[#16A34A]/10 text-[#16A34A] text-[10px] md:text-xs font-medium rounded-full">
-            {category}
-          </span>
         </div>
+        <span className="hidden md:inline-block px-2.5 py-1 bg-[#16A34A]/10 text-[#16A34A] text-xs font-medium rounded-full">
+          {category}
+        </span>
       </div>
 
       {/* Article Content */}
       <div className="mb-4 cursor-pointer group">
-        <div className="flex gap-3 md:gap-4">
+        <div className="flex gap-3 md:gap-4 items-end">
           {/* Left: Text Content */}
           <div className="flex-1 min-w-0">
+            <span className="inline-block md:hidden px-2 py-0.5 bg-[#16A34A]/10 text-[#16A34A] text-[10px] font-medium rounded-full mb-2">
+              {category}
+            </span>
             <h2 className="text-sm md:text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#16A34A] transition-colors line-clamp-2">
               {title}
             </h2>

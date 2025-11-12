@@ -48,7 +48,7 @@ export function UserMenu() {
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-16 right-0 w-64 bg-white dark:bg-gray-950 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 py-2 z-50">
+        <div className="absolute top-20 right-4 md:right-6 w-64 bg-white dark:bg-gray-950 rounded-xl shadow-2xl border border-gray-200 dark:border-gray-800 py-2 z-50">
           {/* User Info */}
           <div className="px-4 py-4 border-b border-gray-200 dark:border-gray-800">
             <p className="font-semibold text-sm text-gray-900 dark:text-white mb-1">

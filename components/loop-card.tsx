@@ -20,14 +20,9 @@ interface LoopCardProps {
     comments: number;
   };
   timestamp: string;
-  latestComment?: {
-    author: string;
-    title: string;
-    text: string;
-  };
 }
 
-export function LoopCard({ author, content, images, stats, timestamp, latestComment }: LoopCardProps) {
+export function LoopCard({ author, content, images, stats, timestamp }: LoopCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
 
@@ -249,7 +244,7 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
       )}
 
       {/* Stats & Actions */}
-      <div className="flex items-center justify-between mb-3 border-b border-gray-100 dark:border-gray-800">
+      <div className="flex items-center justify-between">
         <div className="flex items-center gap-4 md:gap-6 text-xs md:text-sm text-gray-600 dark:text-gray-400 mb-2.5">
           <div className="flex items-center gap-1.5">
             <Eye className="w-4 h-4" />
@@ -275,60 +270,6 @@ export function LoopCard({ author, content, images, stats, timestamp, latestComm
         </button>
       </div>
 
-      {/* Latest Comment */}
-      {latestComment && (
-        <div
-          onClick={() => setShowCommentsModal(true)}
-          className="bg-gray-50 dark:bg-gray-900 p-3 md:p-4 mb-3 rounded-xl cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-        >
-        <h4 className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3 uppercase tracking-wide">
-          Latest Review
-        </h4>
-        
-        {/* Reviewer Info with Profile Picture */}
-        <div className="flex items-start gap-3 mb-3">
-          <div className="relative w-10 h-10 flex-shrink-0">
-            <div className="w-full h-full rounded-full bg-gradient-to-br from-[#16A34A] to-[#15803d] flex items-center justify-center text-white font-bold text-sm">
-              {latestComment.author.split(' ').map(n => n[0]).join('')}
-            </div>
-          </div>
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="font-semibold text-sm text-gray-900 dark:text-white">
-                {latestComment.author}
-              </span>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                2 weeks ago
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Review Content */}
-        <h3 className="font-semibold text-sm text-gray-900 dark:text-white mb-1.5">
-          {latestComment.title}
-        </h3>
-        <p className="text-xs text-gray-700 dark:text-gray-300 mb-3 leading-relaxed line-clamp-3">
-          {latestComment.text}
-        </p>
-        
-        {/* Actions */}
-        <div className="flex items-center gap-4">
-          <button className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-[#16A34A] transition-colors">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-            </svg>
-            <span>Helpful</span>
-          </button>
-          <button className="flex items-center gap-1.5 text-xs text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors">
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9" />
-            </svg>
-            <span>Report</span>
-          </button>
-        </div>
-      </div>
-      )}
 
       {/* Comments Modal */}
       <CommentsModal
