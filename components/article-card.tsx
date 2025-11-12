@@ -98,9 +98,14 @@ export function ArticleCard({
             {author.role} · {publishedAt}
           </p>
         </div>
-        <span className="hidden md:inline-block px-2.5 py-1 bg-[#16A34A]/10 text-[#16A34A] text-xs font-medium rounded-full">
-          {category}
-        </span>
+        <div className="hidden md:flex flex-col items-end gap-1">
+          <span className="px-2.5 py-1 bg-[#16A34A]/10 text-[#16A34A] text-xs font-medium rounded-full">
+            {category}
+          </span>
+          <span className="text-xs text-gray-500 dark:text-gray-400">
+            {readTime}
+          </span>
+        </div>
       </div>
 
       {/* Article Content */}
@@ -108,9 +113,14 @@ export function ArticleCard({
         <div className="flex gap-3 md:gap-4 items-end">
           {/* Left: Text Content */}
           <div className="flex-1 min-w-0">
-            <span className="inline-block md:hidden px-2 py-0.5 bg-[#16A34A]/10 text-[#16A34A] text-[10px] font-medium rounded-full mb-2">
-              {category}
-            </span>
+            <div className="md:hidden flex items-center gap-2 mb-2">
+              <span className="inline-block px-2 py-0.5 bg-[#16A34A]/10 text-[#16A34A] text-[10px] font-medium rounded-full">
+                {category}
+              </span>
+              <span className="text-[10px] text-gray-500 dark:text-gray-400">
+                · {readTime}
+              </span>
+            </div>
             <h2 className="text-sm md:text-lg font-bold text-gray-900 dark:text-white mb-2 group-hover:text-[#16A34A] transition-colors line-clamp-2">
               {title}
             </h2>
@@ -148,11 +158,10 @@ export function ArticleCard({
           >
             <MessageCircle className="w-4 h-4" />
             <span>{formatNumber(stats.comments)}</span>
-            <span className="hidden md:inline text-xs ml-1 text-gray-500 dark:text-gray-500 group-hover/comment:text-[#16A34A]">
-              • Join the discussion
+            <span className="text-xs ml-1 text-gray-500 dark:text-gray-500 group-hover/comment:text-[#16A34A]">
+              • View all comments
             </span>
           </button>
-          <span className="text-xs">· {readTime}</span>
         </div>
 
         {/* Right: Actions */}

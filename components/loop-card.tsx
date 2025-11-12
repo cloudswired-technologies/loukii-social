@@ -256,7 +256,7 @@ export function LoopCard({ author, content, images, stats, timestamp }: LoopCard
           >
             <MessageCircle className="w-4 h-4" />
             <span>{stats.comments}</span>
-            <span className="hidden md:inline text-xs ml-1 text-gray-500 dark:text-gray-500 group-hover/comment:text-[#16A34A]">
+            <span className="text-xs ml-1 text-gray-500 dark:text-gray-500 group-hover/comment:text-[#16A34A]">
               • View all comments
             </span>
           </button>

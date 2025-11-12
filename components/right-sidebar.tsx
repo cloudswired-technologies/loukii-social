@@ -49,20 +49,10 @@ export function RightSidebar() {
     "Sun Life",
     "Tokio Marine",
     "MSIG",
-    "Sompo",
-    "Liberty",
-    "FWD Takaful",
-    "Hong Leong",
-    "RHB Insurance",
-    "AmMetLife",
-    "Generali",
-    "Chubb",
-    "Pacific & Orient",
-    "Berjaya Sompo",
   ];
 
   return (
-    <aside className="h-full bg-white dark:bg-gray-950 border-l border-gray-200 dark:border-gray-800 flex flex-col">
+    <aside className="h-full bg-white dark:bg-gray-950 border-l border-gray-200 dark:border-gray-800 flex flex-col overflow-y-auto">
       <div className="p-6 flex-1">
         {/* Trending Articles */}
       <section className="mb-6">
@@ -138,7 +128,7 @@ export function RightSidebar() {
             <Award className="w-4 h-4 text-[#16A34A]" />
           </div>
           <h2 className="font-semibold text-sm text-gray-900 dark:text-white">
-            Trending Brands
+            Top 10 Trending Brands
           </h2>
         </div>
         <div className="flex flex-wrap gap-2">
