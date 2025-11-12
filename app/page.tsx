@@ -16,9 +16,9 @@ export default function Home() {
       content:
         "Experienced takaful advisor specializing in family protection and retirement planning. Helping families secure their financial future with Shariah-compliant solutions.",
       images: [
-        "/docs/featured-image-1.jpg",
-        "/docs/featured-image-2.jpg",
-        "/docs/featured-image-3.jpg"
+        "/docs/featured-img-1.jpg",
+        "/docs/featured-img-2.jpg",
+        "/docs/featured-img-3.jpg"
       ],
       stats: {
         rating: 5.0,
@@ -42,9 +42,9 @@ export default function Home() {
       content:
         "Certified financial planner with 10+ years experience. Passionate about helping clients achieve financial security through comprehensive insurance and investment planning.",
       images: [
-        "/docs/featured-image-2.jpg",
-        "/docs/featured-image-1.jpg",
-        "/docs/featured-image-3.jpg",
+        "/docs/featured-img-2.jpg",
+        "/docs/featured-img-1.jpg",
+        "/docs/featured-img-3.jpg",
       ],
       stats: {
         rating: 4.9,
@@ -68,9 +68,9 @@ export default function Home() {
       content:
         "Dedicated to empowering individuals with smart financial decisions. Specializing in wealth management, retirement planning, and education funding for growing families.",
       images: [
-        "/docs/featured-image-3.jpg",
-        "/docs/featured-image-2.jpg",
-        "/docs/featured-image-1.jpg"
+        "/docs/featured-img-3.jpg",
+        "/docs/featured-img-2.jpg",
+        "/docs/featured-img-1.jpg"
       ],
       stats: {
         rating: 4.8,
@@ -94,9 +94,9 @@ export default function Home() {
       content:
         "Investment advisor specializing in wealth management and retirement planning for high-net-worth individuals seeking long-term financial growth and security.",
       images: [
-        "/docs/featured-image-1.jpg",
-        "/docs/featured-image-3.jpg",
-        "/docs/featured-image-2.jpg"
+        "/docs/featured-img-1.jpg",
+        "/docs/featured-img-3.jpg",
+        "/docs/featured-img-2.jpg"
       ],
       stats: {
         rating: 4.9,
@@ -120,9 +120,9 @@ export default function Home() {
       content:
         "Passionate about helping young families protect their loved ones through affordable and comprehensive takaful solutions tailored to their unique needs.",
       images: [
-        "/docs/featured-image-2.jpg",
-        "/docs/featured-image-3.jpg",
-        "/docs/featured-image-1.jpg"
+        "/docs/featured-img-2.jpg",
+        "/docs/featured-img-3.jpg",
+        "/docs/featured-img-1.jpg"
       ],
       stats: {
         rating: 4.8,
@@ -146,9 +146,9 @@ export default function Home() {
       content:
         "Experienced in medical and health insurance, helping clients navigate complex healthcare coverage options with confidence, clarity, and personalized attention.",
       images: [
-        "/docs/featured-image-3.jpg",
-        "/docs/featured-image-1.jpg",
-        "/docs/featured-image-2.jpg"
+        "/docs/featured-img-3.jpg",
+        "/docs/featured-img-1.jpg",
+        "/docs/featured-img-2.jpg"
       ],
       stats: {
         rating: 4.9,

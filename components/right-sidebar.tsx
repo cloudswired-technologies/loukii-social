@@ -14,7 +14,7 @@ export function RightSidebar() {
       title: "See what you'll be able to do with Tribe",
       date: "12 May",
       category: "Educational",
-      image: "/docs/featured-image-1.jpg",
+      image: "/docs/featured-img-1.jpg",
     },
     {
       author: {
@@ -24,7 +24,7 @@ export function RightSidebar() {
       title: "How to Choose the Right Insurance Plan",
       date: "10 May",
       category: "Insurance",
-      image: "/docs/featured-image-2.jpg",
+      image: "/docs/featured-img-2.jpg",
     },
     {
       author: {
@@ -34,7 +34,7 @@ export function RightSidebar() {
       title: "Investment Tips for Beginners",
       date: "8 May",
       category: "Investment",
-      image: "/docs/featured-image-3.jpg",
+      image: "/docs/featured-img-3.jpg",
     },
   ];
 

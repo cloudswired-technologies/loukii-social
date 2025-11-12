@@ -21,7 +21,7 @@ export default function InsightsPage() {
       title: "5 Essential Tips for First-Time Home Buyers in Malaysia",
       description: "Buying your first home is exciting but can be overwhelming. Here are the key things you need to know about financing, insurance, and making the right choice for your future.",
       category: "Property & Finance",
-      image: "/docs/featured-image-1.jpg",
+      image: "/docs/featured-img-1.jpg",
       publishedAt: "2 days ago",
       readTime: "5 min read",
       stats: {
@@ -41,7 +41,7 @@ export default function InsightsPage() {
       title: "Understanding Medical Card vs Health Insurance: Which One Do You Need?",
       description: "Many Malaysians are confused about the difference between medical cards and health insurance. Let me break down the key differences and help you make an informed decision.",
       category: "Health & Insurance",
-      image: "/docs/featured-image-2.jpg",
+      image: "/docs/featured-img-2.jpg",
       publishedAt: "3 days ago",
       readTime: "7 min read",
       stats: {
@@ -61,7 +61,7 @@ export default function InsightsPage() {
       title: "Retirement Planning in Your 30s: Why Starting Early Matters",
       description: "It's never too early to plan for retirement. Discover how compound interest and smart investment strategies can help you build a comfortable retirement fund.",
       category: "Investment & Retirement",
-      image: "/docs/featured-image-3.jpg",
+      image: "/docs/featured-img-3.jpg",
       publishedAt: "5 days ago",
       readTime: "6 min read",
       stats: {
@@ -81,7 +81,7 @@ export default function InsightsPage() {
       title: "Takaful vs Conventional Insurance: Making the Right Choice",
       description: "Understanding the key differences between takaful and conventional insurance to help you make an informed decision that aligns with your values and needs.",
       category: "Takaful & Islamic Finance",
-      image: "/docs/featured-image-1.jpg",
+      image: "/docs/featured-img-1.jpg",
       publishedAt: "1 week ago",
       readTime: "8 min read",
       stats: {
@@ -101,7 +101,7 @@ export default function InsightsPage() {
       title: "Critical Illness Coverage: What You Need to Know",
       description: "Learn about critical illness insurance, what conditions are covered, and why it's an essential part of your financial protection strategy.",
       category: "Health & Insurance",
-      image: "/docs/featured-image-2.jpg",
+      image: "/docs/featured-img-2.jpg",
       publishedAt: "1 week ago",
       readTime: "7 min read",
       stats: {
@@ -121,7 +121,7 @@ export default function InsightsPage() {
       title: "Building an Emergency Fund: A Step-by-Step Guide",
       description: "Financial emergencies can happen anytime. Here's how to build a solid emergency fund that gives you peace of mind and financial security.",
       category: "Financial Planning",
-      image: "/docs/featured-image-3.jpg",
+      image: "/docs/featured-img-3.jpg",
       publishedAt: "2 weeks ago",
       readTime: "5 min read",
       stats: {
