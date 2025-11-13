@@ -3,14 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Mail, Lock, Eye, EyeOff, CheckCircle, Shield, Zap } from "lucide-react";
+import { ArrowLeft, User, Briefcase, Mail, Lock, Eye, EyeOff, CheckCircle, Shield, Zap } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const [userType, setUserType] = useState<"user" | "advisor">("user");
+  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -31,17 +36,35 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    if (!agreedToTerms) {
+      setError("Please agree to the Terms of Service and Privacy Policy");
+      return;
+    }
+
     setIsLoading(true);
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: {
+            full_name: fullName,
+            user_type: userType,
+          },
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
       });
 
       if (error) throw error;
-      router.push("/");
+      router.push("/auth/sign-up-success");
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {
@@ -77,10 +100,10 @@ export default function LoginPage() {
           <div>
             <p className="text-xs font-semibold mb-2 opacity-90">★ Join 5,000+ Advisors</p>
             <h1 className="text-4xl font-bold mb-3 leading-tight">
-              Welcome Back to Loukii
+              Build Your Reputation
             </h1>
             <p className="text-lg opacity-90">
-              Continue building your reputation and connecting with clients
+              Connect with clients and showcase your expertise on a trusted advisor platform
             </p>
           </div>
 
@@ -138,10 +161,40 @@ export default function LoginPage() {
 
           {/* Header */}
           <div className="mb-5">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Sign In to Your Account</h2>
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Create Your Account</h2>
             <p className="text-sm text-gray-600">
-              Welcome back! Please enter your details to continue.
+              {userType === "advisor" 
+                ? "Join Loukii as an advisor and build your reputation"
+                : "Join Loukii to discover trusted advisors"}
             </p>
+          </div>
+
+          {/* Role Toggle */}
+          <div className="flex gap-2 mb-4 p-1 bg-gray-100 rounded-lg">
+            <button
+              type="button"
+              onClick={() => setUserType("user")}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-md text-sm font-semibold transition-all ${
+                userType === "user"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <User className="w-3.5 h-3.5" />
+              User
+            </button>
+            <button
+              type="button"
+              onClick={() => setUserType("advisor")}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-2 px-3 rounded-md text-sm font-semibold transition-all ${
+                userType === "advisor"
+                  ? "bg-[#16A34A] text-white shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+            >
+              <Briefcase className="w-3.5 h-3.5" />
+              Advisor
+            </button>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-3.5">
@@ -177,7 +230,26 @@ export default function LoginPage() {
                 <div className="w-full border-t border-gray-300"></div>
               </div>
               <div className="relative flex justify-center text-xs">
-                <span className="px-3 bg-white text-gray-500">OR SIGN IN WITH EMAIL</span>
+                <span className="px-3 bg-white text-gray-500">OR SIGN UP WITH EMAIL</span>
+              </div>
+            </div>
+
+            {/* Full Name */}
+            <div>
+              <label htmlFor="fullName" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Full Name
+              </label>
+              <div className="relative">
+                <User className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  id="fullName"
+                  type="text"
+                  placeholder="John Doe"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  className="w-full pl-9 pr-3 py-2 text-sm border-2 border-gray-300 rounded-lg focus:border-[#16A34A] focus:outline-none transition-colors"
+                />
               </div>
             </div>
 
@@ -202,26 +274,19 @@ export default function LoginPage() {
 
             {/* Password */}
             <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label htmlFor="password" className="block text-xs font-semibold text-gray-700">
-                  Password
-                </label>
-                <Link
-                  href="/auth/forgot-password"
-                  className="text-xs text-[#16A34A] hover:underline font-semibold"
-                >
-                  Forgot password?
-                </Link>
-              </div>
+              <label htmlFor="password" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Password
+              </label>
               <div className="relative">
                 <Lock className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="At least 6 characters"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
+                  minLength={6}
                   className="w-full pl-9 pr-10 py-2 text-sm border-2 border-gray-300 rounded-lg focus:border-[#16A34A] focus:outline-none transition-colors"
                 />
                 <button
@@ -232,6 +297,53 @@ export default function LoginPage() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+            </div>
+
+            {/* Confirm Password */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-xs font-semibold text-gray-700 mb-1.5">
+                Confirm Password
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                <input
+                  id="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  placeholder="Re-enter your password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="w-full pl-9 pr-10 py-2 text-sm border-2 border-gray-300 rounded-lg focus:border-[#16A34A] focus:outline-none transition-colors"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
+            </div>
+
+            {/* Terms Checkbox */}
+            <div className="flex items-start gap-2">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={agreedToTerms}
+                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                className="mt-0.5 w-3.5 h-3.5 text-[#16A34A] border-gray-300 rounded focus:ring-[#16A34A]"
+              />
+              <label htmlFor="terms" className="text-xs text-gray-600 leading-tight">
+                I agree to Loukii's{" "}
+                <Link href="/terms" target="_blank" className="text-[#16A34A] hover:underline font-semibold">
+                  Terms
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy" target="_blank" className="text-[#16A34A] hover:underline font-semibold">
+                  Privacy Policy
+                </Link>
+              </label>
             </div>
 
             {/* Error Message */}
@@ -247,14 +359,14 @@ export default function LoginPage() {
               disabled={isLoading}
               className="w-full py-2.5 px-4 bg-[#16A34A] hover:bg-[#15803d] text-white text-sm font-bold rounded-lg transition-all hover:shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Signing In..." : "Sign In"}
+              {isLoading ? "Creating Account..." : "Create Account"}
             </button>
 
-            {/* Sign Up Link */}
+            {/* Sign In Link */}
             <p className="text-center text-xs text-gray-600">
-              Don't have an account?{" "}
-              <Link href="/auth/register" className="text-[#16A34A] hover:underline font-semibold">
-                Create account
+              Already have an account?{" "}
+              <Link href="/auth/login" className="text-[#16A34A] hover:underline font-semibold">
+                Sign in
               </Link>
             </p>
           </form>
