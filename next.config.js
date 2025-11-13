@@ -12,9 +12,6 @@ const nextConfig = {
   // Enable React strict mode for better development
   reactStrictMode: true,
   
-  // Optimize production builds
-  swcMinify: true,
-  
   // Compress responses
   compress: true,
   
