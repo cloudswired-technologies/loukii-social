@@ -2,9 +2,85 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Users, Shield, TrendingUp, Search, Star, MessageCircle, CheckCircle, Sparkles, ChevronDown, BookOpen, MessageSquare, Lightbulb, UserCircle } from "lucide-react";
+import { ArrowRight, Users, Shield, TrendingUp, Search, Star, MessageCircle, CheckCircle, Sparkles, ChevronDown, ChevronUp, BookOpen, MessageSquare, Lightbulb, UserCircle } from "lucide-react";
 import { LandingHeader } from "@/components/landing-header";
 import { useState } from "react";
+
+// FAQ Section Component
+function FAQSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const faqs = [
+    {
+      question: "What is Loukii?",
+      answer: "Loukii is a platform that connects users with trusted advisors and agents across various industries. We provide a transparent review system where users can discover, evaluate, and connect with professionals based on authentic feedback from real clients."
+    },
+    {
+      question: "How does Loukii work?",
+      answer: "Users can browse through our directory of advisors, read reviews and ratings from other clients, view detailed profiles, and connect directly with advisors that match their needs. Advisors can create profiles, showcase their expertise, and build their reputation through client reviews."
+    },
+    {
+      question: "Is Loukii free to use?",
+      answer: "Yes! Browsing advisor profiles, reading reviews, and connecting with advisors is completely free for users. Advisors may have different subscription tiers for enhanced profile features and visibility."
+    },
+    {
+      question: "How do I find the right advisor?",
+      answer: "You can search and filter advisors by industry, location, ratings, and specialization. Read through their profiles, check their credentials, and review feedback from other clients to make an informed decision."
+    },
+    {
+      question: "Can I trust the reviews on Loukii?",
+      answer: "We implement verification measures to ensure reviews come from genuine clients. However, reviews represent individual opinions and experiences. We encourage users to read multiple reviews and conduct their own due diligence before engaging with any advisor."
+    },
+    {
+      question: "How do I leave a review?",
+      answer: "After engaging with an advisor, you can leave a review by visiting their profile and clicking the 'Write a Review' button. Share your honest experience to help other users make informed decisions."
+    },
+    {
+      question: "How can I contact an advisor on Loukii?",
+      answer: "You can connect with advisors directly through Loukii's messaging system. Simply visit their profile and start a conversation. No middlemen, no complicated forms — just straightforward communication."
+    }
+  ];
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
+
+  return (
+    <div className="space-y-4 mb-12">
+      {faqs.map((faq, index) => (
+        <div
+          key={index}
+          className={`bg-white rounded-2xl border-2 transition-all ${
+            openIndex === index
+              ? "border-[#16A34A] shadow-lg"
+              : "border-gray-200"
+          }`}
+        >
+          <button
+            onClick={() => toggleFAQ(index)}
+            className="w-full flex items-center justify-between p-6 text-left"
+          >
+            <h3 className="text-lg font-bold text-gray-900 pr-4">
+              {faq.question}
+            </h3>
+            {openIndex === index ? (
+              <ChevronUp className="w-5 h-5 text-[#16A34A] flex-shrink-0" />
+            ) : (
+              <ChevronDown className="w-5 h-5 text-gray-400 flex-shrink-0" />
+            )}
+          </button>
+          {openIndex === index && (
+            <div className="px-6 pb-6">
+              <p className="text-gray-600 leading-relaxed">
+                {faq.answer}
+              </p>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 // How to Use Loukii Section Component
 function HowToUseSection() {
@@ -1144,111 +1220,17 @@ export default function WhatIsLoukii() {
             </p>
           </div>
 
-          <div className="space-y-4">
-            {/* FAQ 1 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  What is Loukii?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  Loukii is a social trust network that connects service advisors with clients. We provide a platform for advisors to showcase their skills and for clients to find trusted people across various industries — from insurance agents to property consultants, car salesmen to student recruiters.
-                </p>
-              </div>
-            </details>
+          <FAQSection />
 
-            {/* FAQ 2 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  How is Loukii different from other review platforms?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  Loukii focuses on individuals, not companies. We believe the person behind the service matters more than the brand. Every review comes from real interactions, and advisors can share helpful content to educate users before they make decisions.
-                </p>
-              </div>
-            </details>
-
-            {/* FAQ 3 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Is Loukii free to use?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  Yes! Loukii is completely free for users to browse advisors, read reviews, and access content. Advisors can create profiles and start building their presence at no cost.
-                </p>
-              </div>
-            </details>
-
-            {/* FAQ 4 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Who can become an advisor on Loukii?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  Anyone providing services can join Loukii — from insurance agents and property consultants to car salesmen, student recruiters, and more. We welcome all service advisors who want to build their reputation and connect with clients.
-                </p>
-              </div>
-            </details>
-
-            {/* FAQ 5 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  How do reviews work on Loukii?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  Reviews on Loukii come from real client interactions. Users can leave honest feedback about their experience working with an advisor. These reviews help others make informed decisions and help advisors build credibility.
-                </p>
-              </div>
-            </details>
-
-            {/* FAQ 6 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Can advisors share content on Loukii?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  Yes! Advisors can publish helpful content and insights to educate their audience. This helps users understand their options better and helps advisors demonstrate their knowledge and build trust with potential clients.
-                </p>
-              </div>
-            </details>
-
-            {/* FAQ 7 */}
-            <details className="group bg-white border-2 border-gray-200 rounded-2xl overflow-hidden open:border-l-[6px] open:border-l-[#16A34A]">
-              <summary className="flex items-center justify-between p-6 cursor-pointer hover:bg-gray-50 transition-colors">
-                <h3 className="text-lg font-semibold text-gray-900">
-                  How can I contact an advisor on Loukii?
-                </h3>
-                <ChevronDown className="w-5 h-5 text-[#16A34A] group-open:rotate-180 transition-transform flex-shrink-0 ml-4" />
-              </summary>
-              <div className="px-6 pb-6 text-gray-600 border-t border-gray-100 pt-4">
-                <p className="leading-relaxed">
-                  You can connect with advisors directly through Loukii's messaging system. Simply visit their profile and start a conversation. No middlemen, no complicated forms — just straightforward communication.
-                </p>
-              </div>
-            </details>
+          {/* View All FAQ Button */}
+          <div className="text-center mt-10">
+            <Link
+              href="/faq"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-[#16A34A] hover:bg-[#15803d] text-white font-bold rounded-lg transition-all hover:shadow-lg active:scale-95"
+            >
+              View All FAQ
+              <ArrowRight className="w-5 h-5" />
+            </Link>
           </div>
         </div>
       </section>
@@ -1318,8 +1300,7 @@ export default function WhatIsLoukii() {
               <ul className="space-y-3 text-gray-400 text-sm">
                 <li><Link href="/faq" className="hover:text-[#16A34A] transition-colors">FAQ</Link></li>
                 <li><Link href="/contact" className="hover:text-[#16A34A] transition-colors">Contact Us</Link></li>
-                <li><Link href="/privacy" className="hover:text-[#16A34A] transition-colors">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="hover:text-[#16A34A] transition-colors">Terms of Service</Link></li>
+                <li><Link href="/legal" className="hover:text-[#16A34A] transition-colors">Legal</Link></li>
               </ul>
             </div>
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { TopHeader } from "@/components/top-header";
 import { LeftNavigation } from "@/components/left-navigation";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, MapPin, Send } from "lucide-react";
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -151,7 +151,7 @@ export default function ContactPage() {
             </div>
 
             {/* Contact Information Cards */}
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 gap-6">
               <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-6">
                 <div className="w-12 h-12 bg-[#16A34A]/10 rounded-lg flex items-center justify-center mb-4">
                   <Mail className="w-6 h-6 text-[#16A34A]" />
@@ -170,29 +170,14 @@ export default function ContactPage() {
 
               <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-6">
                 <div className="w-12 h-12 bg-[#16A34A]/10 rounded-lg flex items-center justify-center mb-4">
-                  <Phone className="w-6 h-6 text-[#16A34A]" />
-                </div>
-                <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">Call Us</h3>
-                <p className="text-gray-600 dark:text-gray-400 text-sm mb-2">
-                  Mon-Fri from 9am to 6pm
-                </p>
-                <a
-                  href="tel:+60123456789"
-                  className="text-[#16A34A] hover:underline font-semibold"
-                >
-                  +60 12-345 6789
-                </a>
-              </div>
-
-              <div className="bg-white dark:bg-gray-800 rounded-2xl border-2 border-gray-200 dark:border-gray-700 p-6">
-                <div className="w-12 h-12 bg-[#16A34A]/10 rounded-lg flex items-center justify-center mb-4">
                   <MapPin className="w-6 h-6 text-[#16A34A]" />
                 </div>
                 <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-2">Visit Us</h3>
                 <p className="text-gray-600 dark:text-gray-400 text-sm">
                   Cloudswired Technologies<br />
                   202003293747 (003180326-U)<br />
-                  Kuala Lumpur, Malaysia
+                  0213A, Sunway Citrine Hub, Sunway Iskandar,<br />
+                  Iskandar Puteri, 79250, Johor, Malaysia
                 </p>
               </div>
             </div>

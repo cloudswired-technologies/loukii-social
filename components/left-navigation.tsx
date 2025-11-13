@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { Users, Compass, User, BookOpen, HelpCircle, Lightbulb, Shield, FileText, Mail } from "lucide-react";
+import { Users, Compass, User, BookOpen, HelpCircle, Lightbulb, FileText, Mail } from "lucide-react";
 import { useState } from "react";
 
 export function LeftNavigation() {
@@ -21,10 +21,9 @@ export function LeftNavigation() {
 
   const secondaryNavItems = [
     { id: "about", label: "What is Loukii", icon: BookOpen, href: "/what-is-loukii" },
-    { id: "learn", label: "Learn more", icon: Lightbulb, href: "/learn" },
+    { id: "learn", label: "Learn More", icon: Lightbulb, href: "/learn" },
     { id: "faq", label: "FAQ", icon: HelpCircle, href: "/faq" },
-    { id: "privacy", label: "Privacy Policy", icon: Shield, href: "/privacy" },
-    { id: "terms", label: "Terms of Service", icon: FileText, href: "/terms" },
+    { id: "legal", label: "Legal", icon: FileText, href: "/legal" },
     { id: "contact", label: "Contact", icon: Mail, href: "/contact" },
   ];
 

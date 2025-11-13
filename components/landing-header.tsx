@@ -34,10 +34,13 @@ export function LandingHeader() {
               What is Loukii
             </Link>
             <Link href="/learn" className="text-sm font-medium text-gray-700 hover:text-[#16A34A] transition-colors">
-              Learn more
+              Learn More
             </Link>
             <Link href="/faq" className="text-sm font-medium text-gray-700 hover:text-[#16A34A] transition-colors">
               FAQ
+            </Link>
+            <Link href="/legal" className="text-sm font-medium text-gray-700 hover:text-[#16A34A] transition-colors">
+              Legal
             </Link>
           </nav>
 
