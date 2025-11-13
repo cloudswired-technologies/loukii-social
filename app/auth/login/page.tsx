@@ -35,13 +35,24 @@ export default function LoginPage() {
 
     try {
       const supabase = createClient();
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
 
       if (error) throw error;
-      router.push("/");
+
+      // Get user metadata to determine role
+      const userType = data.user?.user_metadata?.user_type;
+      
+      // Check if admin email
+      if (email === "admin@loukii.com") {
+        router.push("/dashboard/admin");
+      } else if (userType === "advisor") {
+        router.push("/dashboard/advisor");
+      } else {
+        router.push("/dashboard/reviewer");
+      }
     } catch (error: unknown) {
       setError(error instanceof Error ? error.message : "An error occurred");
     } finally {

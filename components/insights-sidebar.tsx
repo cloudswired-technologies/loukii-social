@@ -2,9 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { TrendingUp, Award, Star, CheckCircle, MapPin, Building2 } from "lucide-react";
 
 export function InsightsSidebar() {
+  const router = useRouter();
   const trendingAdvisors = [
     {
       name: "Dr. Amirul Hassan",
@@ -158,7 +160,10 @@ export function InsightsSidebar() {
           <p className="text-xs text-white/90 mb-3">
             Build your credibility and grow your business with Loukii
           </p>
-          <button className="ripple w-full bg-white text-[#16A34A] py-2 px-4 text-sm rounded-lg font-medium hover:bg-gray-50 transition-all hover:scale-105 active:scale-95 shadow-md hover:shadow-xl">
+          <button 
+            onClick={() => router.push("/auth/register?type=advisor")}
+            className="ripple w-full bg-white text-[#16A34A] py-2 px-4 text-sm rounded-lg font-medium hover:bg-gray-50 transition-all hover:scale-105 active:scale-95 shadow-md hover:shadow-xl"
+          >
             Get Started
           </button>
         </div>

@@ -15,6 +15,10 @@ export function TopHeader() {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const pathname = usePathname();
   const isInsightsPage = pathname === "/insights";
+  const isAdvisorsPage = pathname === "/";
+  
+  // Hide filters on legal, contact, faq, what-is-loukii, learn pages
+  const showFilters = isInsightsPage || isAdvisorsPage;
 
   // Filters for Advisors page
   const countries = ["Malaysia", "Singapore", "Indonesia", "Thailand"];
@@ -63,9 +67,11 @@ export function TopHeader() {
             </div>
           </div>
 
-          {/* Filters - Hidden on mobile/tablet, visible on desktop */}
+          {/* Filters - Hidden on mobile/tablet, visible on desktop, and only on Advisors/Insights pages */}
           <div className="hidden lg:flex items-center gap-2">
-            {isInsightsPage ? (
+            {showFilters && (
+              <>
+                {isInsightsPage ? (
               // Insights Page Filters
               <>
                 <div className="flex items-center gap-2 mr-2">
@@ -122,6 +128,8 @@ export function TopHeader() {
                   label="Rating"
                   options={ratings}
                 />
+                </>
+                )}
               </>
             )}
           </div>

@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, User, Briefcase, Mail, Lock, Eye, EyeOff, CheckCircle, Shield, Zap } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function RegisterPage() {
-  const [userType, setUserType] = useState<"user" | "advisor">("user");
+  const searchParams = useSearchParams();
+  const defaultType = searchParams.get("type") === "advisor" ? "advisor" : "user";
+  const [userType, setUserType] = useState<"user" | "advisor">(defaultType);
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

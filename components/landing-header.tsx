@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { UserMenu } from "./user-menu";
 
 export function LandingHeader() {
   return (
@@ -44,13 +45,8 @@ export function LandingHeader() {
             </Link>
           </nav>
 
-          {/* CTA Button */}
-          <Link
-            href="/signup"
-            className="px-6 py-2.5 bg-[#16A34A] hover:bg-[#15803d] text-white font-semibold rounded-lg transition-all shadow-sm hover:shadow-md"
-          >
-            Create An Account
-          </Link>
+          {/* User Menu - Dynamic based on auth state */}
+          <UserMenu />
         </div>
       </div>
     </header>
