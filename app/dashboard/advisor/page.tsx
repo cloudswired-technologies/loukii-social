@@ -354,11 +354,9 @@ export default function AdvisorOverviewPage() {
   return (
     <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
       {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-          Overview
-        </h1>
-      </div>
+      <h1 className="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-4 px-4 pt-3">
+        Overview
+      </h1>
 
       {/* Main Content - Scrollable */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
