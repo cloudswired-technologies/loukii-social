@@ -83,8 +83,9 @@ export default function AdvisorMessagesPage() {
   const selectedConversation = conversations.find(c => c.id === selectedChat);
 
   return (
-    <div className="h-[calc(100vh-2rem)] m-4">
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 h-full flex overflow-hidden">
+    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
+      <div className="flex-1 flex overflow-hidden">
+        <div className="flex-1 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex overflow-hidden">
         {/* Conversations List */}
         <div className="w-80 border-r border-gray-200 dark:border-gray-800 flex flex-col">
           {/* Header */}
@@ -217,6 +218,7 @@ export default function AdvisorMessagesPage() {
               </button>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

@@ -75,39 +75,38 @@ export default function AdvisorReviewsPage() {
   });
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Reviews Management
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          View and respond to client reviews
-        </p>
-      </div>
+    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
+        {/* Page Header */}
+        <div className="bg-white dark:bg-gray-950 px-8 pt-6 pb-4">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Reviews</h1>
+        </div>
+
+        {/* Content Container */}
+        <div className="px-8 pb-8 space-y-6">
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Total Reviews</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">127</p>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Average Rating</p>
           <p className="text-2xl font-bold text-gray-900 dark:text-white">4.8</p>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">Pending Replies</p>
           <p className="text-2xl font-bold text-yellow-600">2</p>
         </div>
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">This Month</p>
           <p className="text-2xl font-bold text-green-600">+8</p>
         </div>
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-4 mb-6">
+      <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -139,7 +138,7 @@ export default function AdvisorReviewsPage() {
         {filteredReviews.map((review) => (
           <div
             key={review.id}
-            className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6"
+            className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5"
           >
             {/* Review Header */}
             <div className="flex items-start justify-between mb-4">
@@ -241,6 +240,8 @@ export default function AdvisorReviewsPage() {
             )}
           </div>
         ))}
+      </div>
+        </div>
       </div>
     </div>
   );

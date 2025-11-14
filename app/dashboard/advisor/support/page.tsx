@@ -86,16 +86,12 @@ export default function AdvisorSupportPage() {
   };
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Support Center
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Get help from our support team
-        </p>
-      </div>
+    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
+        <div className="bg-white dark:bg-gray-950 px-8 pt-6 pb-4">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Support</h1>
+        </div>
+        <div className="px-8 pb-8 space-y-6">
 
       {/* Success Message */}
       {submitSuccess && (
@@ -266,6 +262,8 @@ export default function AdvisorSupportPage() {
               </div>
             </div>
           </div>
+        </div>
+      </div>
         </div>
       </div>
     </div>

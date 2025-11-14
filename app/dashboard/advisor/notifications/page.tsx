@@ -77,13 +77,16 @@ export default function AdvisorNotificationsPage() {
   const unreadCount = notifications.filter(n => !n.read).length;
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-2">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Notifications
-          </h1>
+    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
+        <div className="bg-white dark:bg-gray-950 px-8 pt-6 pb-4">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Notifications</h1>
+        </div>
+        <div className="px-8 pb-8 space-y-6">
+      {/* Actions */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <div></div>
           {unreadCount > 0 && (
             <button
               onClick={markAllAsRead}
@@ -192,6 +195,8 @@ export default function AdvisorNotificationsPage() {
             );
           })
         )}
+      </div>
+        </div>
       </div>
     </div>
   );

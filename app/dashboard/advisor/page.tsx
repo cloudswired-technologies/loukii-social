@@ -166,32 +166,32 @@ export default function AdvisorOverviewPage() {
           { x: 297, y: 15, value: '2,010', label: 'Dec', lastYear: 12 }
         ],
         whatsapp: [
-          { x: 0, y: 75, value: '15', label: 'Jan' },
-          { x: 27, y: 72, value: '18', label: 'Feb' },
-          { x: 54, y: 68, value: '20', label: 'Mar' },
-          { x: 81, y: 65, value: '22', label: 'Apr' },
-          { x: 108, y: 60, value: '25', label: 'May' },
-          { x: 135, y: 55, value: '28', label: 'Jun' },
-          { x: 162, y: 50, value: '30', label: 'Jul' },
-          { x: 189, y: 42, value: '35', label: 'Aug' },
-          { x: 216, y: 35, value: '38', label: 'Sep' },
-          { x: 243, y: 28, value: '42', label: 'Oct' },
-          { x: 270, y: 20, value: '45', label: 'Nov' },
-          { x: 297, y: 12, value: '50', label: 'Dec' }
+          { x: 0, y: 75, value: '15', label: 'Jan', lastYear: 70 },
+          { x: 27, y: 72, value: '18', label: 'Feb', lastYear: 68 },
+          { x: 54, y: 68, value: '20', label: 'Mar', lastYear: 65 },
+          { x: 81, y: 65, value: '22', label: 'Apr', lastYear: 62 },
+          { x: 108, y: 60, value: '25', label: 'May', lastYear: 58 },
+          { x: 135, y: 55, value: '28', label: 'Jun', lastYear: 53 },
+          { x: 162, y: 50, value: '30', label: 'Jul', lastYear: 48 },
+          { x: 189, y: 42, value: '35', label: 'Aug', lastYear: 40 },
+          { x: 216, y: 35, value: '38', label: 'Sep', lastYear: 33 },
+          { x: 243, y: 28, value: '42', label: 'Oct', lastYear: 26 },
+          { x: 270, y: 20, value: '45', label: 'Nov', lastYear: 18 },
+          { x: 297, y: 12, value: '50', label: 'Dec', lastYear: 10 }
         ],
         messages: [
-          { x: 0, y: 72, value: '5', label: 'Jan' },
-          { x: 27, y: 70, value: '5', label: 'Feb' },
-          { x: 54, y: 68, value: '6', label: 'Mar' },
-          { x: 81, y: 65, value: '6', label: 'Apr' },
-          { x: 108, y: 62, value: '7', label: 'May' },
-          { x: 135, y: 58, value: '8', label: 'Jun' },
-          { x: 162, y: 52, value: '9', label: 'Jul' },
-          { x: 189, y: 45, value: '10', label: 'Aug' },
-          { x: 216, y: 38, value: '11', label: 'Sep' },
-          { x: 243, y: 30, value: '12', label: 'Oct' },
-          { x: 270, y: 22, value: '13', label: 'Nov' },
-          { x: 297, y: 15, value: '15', label: 'Dec' }
+          { x: 0, y: 72, value: '5', label: 'Jan', lastYear: 68 },
+          { x: 27, y: 70, value: '5', label: 'Feb', lastYear: 66 },
+          { x: 54, y: 68, value: '6', label: 'Mar', lastYear: 64 },
+          { x: 81, y: 65, value: '6', label: 'Apr', lastYear: 62 },
+          { x: 108, y: 62, value: '7', label: 'May', lastYear: 60 },
+          { x: 135, y: 58, value: '8', label: 'Jun', lastYear: 56 },
+          { x: 162, y: 52, value: '9', label: 'Jul', lastYear: 50 },
+          { x: 189, y: 45, value: '10', label: 'Aug', lastYear: 43 },
+          { x: 216, y: 38, value: '11', label: 'Sep', lastYear: 36 },
+          { x: 243, y: 30, value: '12', label: 'Oct', lastYear: 28 },
+          { x: 270, y: 22, value: '13', label: 'Nov', lastYear: 20 },
+          { x: 297, y: 15, value: '15', label: 'Dec', lastYear: 13 }
         ]
       }
     };
@@ -382,12 +382,15 @@ export default function AdvisorOverviewPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
+    <div className="flex flex-col h-screen bg-[#F7F8FA] dark:bg-gray-950 overflow-hidden">
       {/* Main Content - Scrollable */}
       <div className="flex-1 overflow-y-auto">
-        {/* Page Header */}
-        <div className="bg-white dark:bg-gray-950 px-8 pt-6 pb-4">
-          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Overview</h1>
+        {/* Page Header - Same style as Profile */}
+        <div className="bg-white px-8 py-6 mb-10">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">Dashboard Overview</h1>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Track your performance and manage your advisor profile
+          </p>
         </div>
 
         {/* Content Container */}
@@ -588,10 +591,14 @@ export default function AdvisorOverviewPage() {
                 Total Reviews
               </h3>
             </div>
-            <select className="text-xs text-gray-600 dark:text-gray-400 bg-transparent border-none focus:outline-none cursor-pointer">
-              <option>Week</option>
-              <option>Month</option>
-              <option>Last Year</option>
+            <select 
+              value={reviewsPeriod}
+              onChange={(e) => setReviewsPeriod(e.target.value)}
+              className="text-xs text-gray-600 dark:text-gray-400 bg-transparent border-none focus:outline-none cursor-pointer"
+            >
+              <option value="week">Week</option>
+              <option value="month">Month</option>
+              <option value="year">Last Year</option>
             </select>
           </div>
           
@@ -606,23 +613,90 @@ export default function AdvisorOverviewPage() {
             </div>
           </div>
 
+          {/* Legend for year comparison */}
+          {reviewsPeriod === 'year' && (
+            <div className="flex items-center gap-3 mb-2">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-blue-500 rounded"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">This Year</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-3 bg-gray-400 rounded"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">Last Year</span>
+              </div>
+            </div>
+          )}
+
           {/* Bar Chart - 12 months */}
           <div className="h-24 flex items-end justify-between gap-1.5">
-            {[8, 10, 7, 12, 15, 11, 18, 20, 16, 22, 19, 24].map((count, i) => {
-              const height = (count / 24) * 100;
-              return (
-                <div key={i} className="flex-1 group relative">
-                  <div 
-                    className={`w-full rounded-t transition-all ${i >= 6 ? 'bg-green-500 hover:bg-green-600' : 'bg-gray-300 dark:bg-gray-700 hover:bg-gray-400'}`}
-                    style={{ height: `${height}%`, minHeight: '20px' }}
-                  >
-                    <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      {count} reviews
+            {reviewsPeriod === 'year' ? (
+              // Year comparison - 2 bars per month
+              <>
+                {[
+                  { thisYear: 24, lastYear: 18 },
+                  { thisYear: 22, lastYear: 16 },
+                  { thisYear: 19, lastYear: 14 },
+                  { thisYear: 20, lastYear: 15 },
+                  { thisYear: 18, lastYear: 13 },
+                  { thisYear: 16, lastYear: 12 },
+                  { thisYear: 15, lastYear: 11 },
+                  { thisYear: 12, lastYear: 9 },
+                  { thisYear: 11, lastYear: 8 },
+                  { thisYear: 10, lastYear: 7 },
+                  { thisYear: 8, lastYear: 6 },
+                  { thisYear: 7, lastYear: 5 }
+                ].map((data, i) => {
+                  const maxHeight = 24;
+                  const thisYearHeight = (data.thisYear / maxHeight) * 100;
+                  const lastYearHeight = (data.lastYear / maxHeight) * 100;
+                  return (
+                    <div key={i} className="flex-1 flex gap-0.5 items-end">
+                      {/* This Year Bar */}
+                      <div className="flex-1 group relative">
+                        <div 
+                          className="w-full bg-blue-500 hover:bg-blue-600 rounded-t transition-all"
+                          style={{ height: `${thisYearHeight}%`, minHeight: '16px' }}
+                        >
+                          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                            {data.thisYear}
+                          </div>
+                        </div>
+                      </div>
+                      {/* Last Year Bar */}
+                      <div className="flex-1 group relative">
+                        <div 
+                          className="w-full bg-gray-400 hover:bg-gray-500 rounded-t transition-all"
+                          style={{ height: `${lastYearHeight}%`, minHeight: '16px' }}
+                        >
+                          <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10">
+                            {data.lastYear}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-              );
-            })}
+                  );
+                })}
+              </>
+            ) : (
+              // Single bar per month
+              <>
+                {[8, 10, 7, 12, 15, 11, 18, 20, 16, 22, 19, 24].map((count, i) => {
+                  const height = (count / 24) * 100;
+                  return (
+                    <div key={i} className="flex-1 group relative">
+                      <div 
+                        className="w-full bg-blue-500 hover:bg-blue-600 rounded-t transition-all"
+                        style={{ height: `${height}%`, minHeight: '20px' }}
+                      >
+                        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                          {count} reviews
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
           <div className="grid grid-cols-12 mt-2 text-xs text-gray-500">
             {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((month, i) => (
@@ -877,6 +951,20 @@ export default function AdvisorOverviewPage() {
           </div>
           <p className="text-xs text-green-600 dark:text-green-400 mb-3">+45 this month</p>
           
+          {/* Legend for year comparison */}
+          {whatsappPeriod === 'year' && (
+            <div className="flex items-center gap-3 mb-1">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-green-600"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">This Year</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-red-500"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">Last Year</span>
+              </div>
+            </div>
+          )}
+          
           {/* Line Chart - Dynamic */}
           <div className="h-20 relative mt-2">
             <svg className="w-full h-full" viewBox="0 0 300 80" preserveAspectRatio="none">
@@ -885,7 +973,41 @@ export default function AdvisorOverviewPage() {
               <line x1="0" y1="40" x2="300" y2="40" stroke="currentColor" strokeWidth="0.5" className="text-gray-200 dark:text-gray-700" />
               <line x1="0" y1="60" x2="300" y2="60" stroke="currentColor" strokeWidth="0.5" className="text-gray-200 dark:text-gray-700" />
               
-              {/* Line path */}
+              {/* Last Year Line (only for year period) - RED */}
+              {whatsappPeriod === 'year' && (
+                <>
+                  <polyline
+                    points={getChartData('whatsapp', whatsappPeriod).data.map((p: any) => `${p.x},${p.lastYear || p.y}`).join(' ')}
+                    fill="none"
+                    stroke="#EF4444"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* Last Year Data Points */}
+                  {getChartData('whatsapp', whatsappPeriod).data.map((point: any, i: number) => (
+                    <g key={`last-${i}`} className="group cursor-pointer">
+                      <circle 
+                        cx={point.x} 
+                        cy={point.lastYear || point.y} 
+                        r="4" 
+                        fill="#EF4444"
+                        className="group-hover:r-6 transition-all"
+                      />
+                      <circle 
+                        cx={point.x} 
+                        cy={point.lastYear || point.y} 
+                        r="8" 
+                        fill="#EF4444"
+                        fillOpacity="0"
+                        className="group-hover:fill-opacity-20 transition-all"
+                      />
+                    </g>
+                  ))}
+                </>
+              )}
+              
+              {/* This Year Line */}
               <polyline
                 points={getChartData('whatsapp', whatsappPeriod).data.map((p: any) => `${p.x},${p.y}`).join(' ')}
                 fill="none"
@@ -979,6 +1101,20 @@ export default function AdvisorOverviewPage() {
           </div>
           <p className="text-xs text-green-600 dark:text-green-400 mb-3">+12 this month</p>
           
+          {/* Legend for year comparison */}
+          {messagesPeriod === 'year' && (
+            <div className="flex items-center gap-3 mb-1">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-purple-500"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">This Year</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-red-500"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">Last Year</span>
+              </div>
+            </div>
+          )}
+          
           {/* Line Chart - Dynamic */}
           <div className="h-20 relative mt-2">
             <svg className="w-full h-full" viewBox="0 0 300 80" preserveAspectRatio="none">
@@ -987,7 +1123,41 @@ export default function AdvisorOverviewPage() {
               <line x1="0" y1="40" x2="300" y2="40" stroke="currentColor" strokeWidth="0.5" className="text-gray-200 dark:text-gray-700" />
               <line x1="0" y1="60" x2="300" y2="60" stroke="currentColor" strokeWidth="0.5" className="text-gray-200 dark:text-gray-700" />
               
-              {/* Line path */}
+              {/* Last Year Line (only for year period) - RED */}
+              {messagesPeriod === 'year' && (
+                <>
+                  <polyline
+                    points={getChartData('messages', messagesPeriod).data.map((p: any) => `${p.x},${p.lastYear || p.y}`).join(' ')}
+                    fill="none"
+                    stroke="#EF4444"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* Last Year Data Points */}
+                  {getChartData('messages', messagesPeriod).data.map((point: any, i: number) => (
+                    <g key={`last-${i}`} className="group cursor-pointer">
+                      <circle 
+                        cx={point.x} 
+                        cy={point.lastYear || point.y} 
+                        r="4" 
+                        fill="#EF4444"
+                        className="group-hover:r-6 transition-all"
+                      />
+                      <circle 
+                        cx={point.x} 
+                        cy={point.lastYear || point.y} 
+                        r="8" 
+                        fill="#EF4444"
+                        fillOpacity="0"
+                        className="group-hover:fill-opacity-20 transition-all"
+                      />
+                    </g>
+                  ))}
+                </>
+              )}
+              
+              {/* This Year Line */}
               <polyline
                 points={getChartData('messages', messagesPeriod).data.map((p: any) => `${p.x},${p.y}`).join(' ')}
                 fill="none"

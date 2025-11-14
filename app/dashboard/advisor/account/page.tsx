@@ -80,26 +80,22 @@ export default function AdvisorAccountPage() {
   };
 
   return (
-    <div className="p-8">
-      {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          Account Settings
-        </h1>
-        <p className="text-gray-600 dark:text-gray-400">
-          Manage your account security and preferences
-        </p>
-      </div>
+    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
+      <div className="flex-1 overflow-y-auto">
+        <div className="bg-white dark:bg-gray-950 px-8 pt-6 pb-4">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Account</h1>
+        </div>
+        <div className="px-8 pb-8 space-y-6">
 
       <div className="max-w-2xl space-y-6">
         {/* Change Password */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 p-6">
-          <div className="flex items-center gap-3 mb-6">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
+          <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
               <Lock className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                 Change Password
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -205,13 +201,13 @@ export default function AdvisorAccountPage() {
         </div>
 
         {/* Delete Account */}
-        <div className="bg-white dark:bg-gray-900 rounded-xl border-2 border-red-200 dark:border-red-800 p-6">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-red-200 dark:border-red-800 p-5">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 bg-red-100 dark:bg-red-900/20 rounded-lg flex items-center justify-center">
-              <Trash2 className="w-5 h-5 text-red-600" />
+              <AlertTriangle className="w-5 h-5 text-red-600" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-lg font-bold text-gray-900 dark:text-white">
                 Delete Account
               </h2>
               <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -277,6 +273,8 @@ export default function AdvisorAccountPage() {
           </div>
         </div>
       )}
+        </div>
+      </div>
     </div>
   );
 }
