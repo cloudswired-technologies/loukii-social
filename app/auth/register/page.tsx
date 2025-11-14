@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, User, Briefcase, Mail, Lock, Eye, EyeOff, CheckCircle, Shield, Zap } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function RegisterPage() {
+function RegisterContent() {
   const searchParams = useSearchParams();
   const defaultType = searchParams.get("type") === "advisor" ? "advisor" : "user";
   const [userType, setUserType] = useState<"user" | "advisor">(defaultType);
@@ -375,5 +375,15 @@ export default function RegisterPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RegisterPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#16A34A]"></div>
+    </div>}>
+      <RegisterContent />
+    </Suspense>
   );
 }
