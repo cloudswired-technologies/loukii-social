@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
+  Home,
   LayoutDashboard, 
   User, 
   Star, 
@@ -20,6 +21,12 @@ export function AdvisorDashboardSidebar() {
   const router = useRouter();
 
   const menuItems = [
+    {
+      id: "home",
+      label: "Back to Home",
+      icon: Home,
+      href: "/",
+    },
     {
       id: "overview",
       label: "Overview",
@@ -71,39 +78,47 @@ export function AdvisorDashboardSidebar() {
   };
 
   return (
-    <aside className="w-64 bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 flex flex-col h-full">
-      {/* Navigation */}
-      <nav className="flex-1 p-4 pt-6 space-y-1">
-        {menuItems.map((item) => {
-          const Icon = item.icon;
-          const isActive = pathname === item.href;
+    <aside className="w-[20%] bg-white dark:bg-gray-950 border-r border-gray-200 dark:border-gray-800 flex flex-col h-full flex-shrink-0">
+      <div className="p-4 md:p-6 flex-1">
+        {/* Navigation */}
+        <nav className="space-y-1">
+          {menuItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = pathname === item.href;
 
-          return (
-            <Link
-              key={item.id}
-              href={item.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-all ${
-                isActive
-                  ? "bg-[#16A34A] text-white shadow-md"
-                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
-              }`}
-            >
-              <Icon className="w-5 h-5" />
-              <span className="font-medium text-sm">{item.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+            return (
+              <Link
+                key={item.id}
+                href={item.href}
+                className={`flex items-center gap-3 px-3 py-2 text-sm transition-colors ${
+                  isActive
+                    ? "text-[#16A34A] font-medium"
+                    : "text-gray-700 dark:text-gray-300 hover:text-[#16A34A]"
+                }`}
+              >
+                <Icon className="w-5 h-5" />
+                <span>{item.label}</span>
+              </Link>
+            );
+          })}
+          
+          {/* Logout Button */}
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-3 py-2 text-sm text-red-600 hover:text-red-700 transition-colors"
+          >
+            <LogOut className="w-5 h-5" />
+            <span>Logout</span>
+          </button>
+        </nav>
+      </div>
 
-      {/* Logout */}
-      <div className="p-4 border-t border-gray-200 dark:border-gray-800">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 transition-all"
-        >
-          <LogOut className="w-5 h-5" />
-          <span className="font-medium text-sm">Logout</span>
-        </button>
+      {/* Footer - Copyright */}
+      <div className="p-6 pt-4 border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+        <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+          © Copyright 2025 Loukii<br />
+          Powered by Cloudswired Technologies
+        </p>
       </div>
     </aside>
   );

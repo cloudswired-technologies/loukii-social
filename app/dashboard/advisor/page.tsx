@@ -18,7 +18,8 @@ import {
   Clock,
   CheckCircle,
   AlertCircle,
-  ChevronDown
+  ChevronDown,
+  HelpCircle
 } from "lucide-react";
 
 export default function AdvisorOverviewPage() {
@@ -151,18 +152,18 @@ export default function AdvisorOverviewPage() {
           { x: 297, y: 18, value: '4.6★', label: 'Dec', lastYear: 15 }
         ],
         views: [
-          { x: 0, y: 78, value: '850', label: 'Jan' },
-          { x: 27, y: 75, value: '920', label: 'Feb' },
-          { x: 54, y: 72, value: '980', label: 'Mar' },
-          { x: 81, y: 68, value: '1,050', label: 'Apr' },
-          { x: 108, y: 62, value: '1,150', label: 'May' },
-          { x: 135, y: 58, value: '1,280', label: 'Jun' },
-          { x: 162, y: 52, value: '1,350', label: 'Jul' },
-          { x: 189, y: 45, value: '1,480', label: 'Aug' },
-          { x: 216, y: 38, value: '1,620', label: 'Sep' },
-          { x: 243, y: 30, value: '1,750', label: 'Oct' },
-          { x: 270, y: 22, value: '1,880', label: 'Nov' },
-          { x: 297, y: 15, value: '2,010', label: 'Dec' }
+          { x: 0, y: 78, value: '850', label: 'Jan', lastYear: 72 },
+          { x: 27, y: 75, value: '920', label: 'Feb', lastYear: 70 },
+          { x: 54, y: 72, value: '980', label: 'Mar', lastYear: 68 },
+          { x: 81, y: 68, value: '1,050', label: 'Apr', lastYear: 65 },
+          { x: 108, y: 62, value: '1,150', label: 'May', lastYear: 60 },
+          { x: 135, y: 58, value: '1,280', label: 'Jun', lastYear: 55 },
+          { x: 162, y: 52, value: '1,350', label: 'Jul', lastYear: 50 },
+          { x: 189, y: 45, value: '1,480', label: 'Aug', lastYear: 42 },
+          { x: 216, y: 38, value: '1,620', label: 'Sep', lastYear: 35 },
+          { x: 243, y: 30, value: '1,750', label: 'Oct', lastYear: 28 },
+          { x: 270, y: 22, value: '1,880', label: 'Nov', lastYear: 20 },
+          { x: 297, y: 15, value: '2,010', label: 'Dec', lastYear: 12 }
         ],
         whatsapp: [
           { x: 0, y: 75, value: '15', label: 'Jan' },
@@ -289,7 +290,6 @@ export default function AdvisorOverviewPage() {
       rating: 5,
       comment: "Excellent service! Very professional and helpful. The consultation was thorough and all my questions were answered clearly.",
       date: "5 hours ago",
-      platform: "Yelp",
       verified: true,
     },
     {
@@ -299,7 +299,6 @@ export default function AdvisorOverviewPage() {
       rating: 4,
       comment: "Good experience overall. Would recommend to anyone looking for insurance advice.",
       date: "2 days ago",
-      platform: "Google",
       verified: true,
     },
     {
@@ -309,8 +308,25 @@ export default function AdvisorOverviewPage() {
       rating: 5,
       comment: "Amazing advisor! Helped me make the right decision for my family's future.",
       date: "5 days ago",
-      platform: "Facebook",
       verified: false,
+    },
+    {
+      id: 4,
+      author: "Tan Wei Ming",
+      avatar: "/docs/profile-2.jpg",
+      rating: 5,
+      comment: "Very knowledgeable and patient. Took the time to explain everything in detail.",
+      date: "1 week ago",
+      verified: true,
+    },
+    {
+      id: 5,
+      author: "Siti Aminah",
+      avatar: "/docs/profile-3.jpg",
+      rating: 4,
+      comment: "Professional service and quick response. Highly recommended for financial planning.",
+      date: "2 weeks ago",
+      verified: true,
     },
   ];
 
@@ -336,6 +352,20 @@ export default function AdvisorOverviewPage() {
       time: "2 days ago",
       unread: false,
     },
+    {
+      id: 4,
+      type: "support",
+      message: "Support ticket resolved",
+      time: "3 days ago",
+      unread: false,
+    },
+    {
+      id: 5,
+      type: "account",
+      message: "Profile update successful",
+      time: "1 week ago",
+      unread: false,
+    },
   ];
 
   const ticketStats = [
@@ -352,24 +382,27 @@ export default function AdvisorOverviewPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 dark:bg-gray-950 overflow-hidden">
-      {/* Header */}
-      <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-800">
-        <h1 className="text-xl font-bold text-gray-900 dark:text-white">
-          Overview
-        </h1>
-      </div>
-
+    <div className="flex flex-col h-screen bg-white dark:bg-gray-950 overflow-hidden">
       {/* Main Content - Scrollable */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {/* Row 1 - Core Metrics (25% + 50% + 25%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <div className="flex-1 overflow-y-auto">
+        {/* Page Header */}
+        <div className="bg-white dark:bg-gray-950 px-8 pt-6 pb-4">
+          <h1 className="text-xl font-bold text-gray-900 dark:text-white">Overview</h1>
+        </div>
+
+        {/* Content Container */}
+        <div className="px-8 pb-8 space-y-6">
+          {/* Row 1 - Core Metrics (25% + 50% + 25%) */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* Average Rating Card - 25% */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Average Rating
-            </h3>
+            <div className="flex items-center gap-2">
+              <Star className="w-4 h-4 text-yellow-500" />
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Average Rating
+              </h3>
+            </div>
             <select 
               value={ratingPeriod}
               onChange={(e) => setRatingPeriod(e.target.value)}
@@ -547,11 +580,14 @@ export default function AdvisorOverviewPage() {
         </div>
 
         {/* Total Reviews Card - 50% (2 columns) */}
-        <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="lg:col-span-2 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Total Reviews
-            </h3>
+            <div className="flex items-center gap-2">
+              <MessageSquare className="w-4 h-4 text-blue-500" />
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Total Reviews
+              </h3>
+            </div>
             <select className="text-xs text-gray-600 dark:text-gray-400 bg-transparent border-none focus:outline-none cursor-pointer">
               <option>Week</option>
               <option>Month</option>
@@ -596,11 +632,14 @@ export default function AdvisorOverviewPage() {
         </div>
 
         {/* Profile Views Card - 25% */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
-              Profile Views
-            </h3>
+            <div className="flex items-center gap-2">
+              <Eye className="w-4 h-4 text-green-500" />
+              <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
+                Profile Views
+              </h3>
+            </div>
             <select 
               value={viewsPeriod}
               onChange={(e) => setViewsPeriod(e.target.value)}
@@ -617,6 +656,20 @@ export default function AdvisorOverviewPage() {
           </div>
           <p className="text-xs text-green-600 dark:text-green-400 mb-3">+342 from last {viewsPeriod === 'week' ? 'week' : viewsPeriod === 'month' ? 'month' : 'year'}</p>
           
+          {/* Legend for year comparison */}
+          {viewsPeriod === 'year' && (
+            <div className="flex items-center gap-3 mb-1">
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-green-500"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">This Year</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <div className="w-3 h-0.5 bg-red-500"></div>
+                <span className="text-xs text-gray-600 dark:text-gray-400">Last Year</span>
+              </div>
+            </div>
+          )}
+          
           {/* Line Chart - Dynamic */}
           <div className="h-20 relative mt-2">
             <svg className="w-full h-full" viewBox="0 0 300 80" preserveAspectRatio="none">
@@ -625,7 +678,41 @@ export default function AdvisorOverviewPage() {
               <line x1="0" y1="40" x2="300" y2="40" stroke="currentColor" strokeWidth="0.5" className="text-gray-200 dark:text-gray-700" />
               <line x1="0" y1="60" x2="300" y2="60" stroke="currentColor" strokeWidth="0.5" className="text-gray-200 dark:text-gray-700" />
               
-              {/* Line path */}
+              {/* Last Year Line (only for year period) - RED */}
+              {viewsPeriod === 'year' && (
+                <>
+                  <polyline
+                    points={getChartData('views', viewsPeriod).data.map((p: any) => `${p.x},${p.lastYear || p.y}`).join(' ')}
+                    fill="none"
+                    stroke="#EF4444"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* Last Year Data Points */}
+                  {getChartData('views', viewsPeriod).data.map((point: any, i: number) => (
+                    <g key={`last-${i}`} className="group cursor-pointer">
+                      <circle 
+                        cx={point.x} 
+                        cy={point.lastYear || point.y} 
+                        r="4" 
+                        fill="#EF4444"
+                        className="group-hover:r-6 transition-all"
+                      />
+                      <circle 
+                        cx={point.x} 
+                        cy={point.lastYear || point.y} 
+                        r="8" 
+                        fill="#EF4444"
+                        fillOpacity="0"
+                        className="group-hover:fill-opacity-20 transition-all"
+                      />
+                    </g>
+                  ))}
+                </>
+              )}
+              
+              {/* This Year Line */}
               <polyline
                 points={getChartData('views', viewsPeriod).data.map((p: any) => `${p.x},${p.y}`).join(' ')}
                 fill="none"
@@ -695,65 +782,81 @@ export default function AdvisorOverviewPage() {
         </div>
       </div>
 
-      {/* Row 2 & 3 Combined - Latest Reviews (50%) + WhatsApp (25%) + Messages (25%) + Notifications + Tickets */}
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
-        {/* Latest Reviews - 50% (2 columns) - All reviews */}
-        <div className="lg:col-span-2 lg:row-span-2 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4 max-h-96 overflow-y-auto">
-          <div className="flex items-center gap-2 mb-3">
-            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+          {/* Row 2 & 3 Combined - Latest Reviews (50%) + WhatsApp (25%) + Messages (25%) + Notifications + Tickets */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Latest Reviews - 50% (2 columns) - First 5 reviews only */}
+        <div className="lg:col-span-2 lg:row-span-2 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5 flex flex-col">
+          <div className="flex items-center gap-2 mb-4">
+            <Star className="w-4 h-4 text-yellow-500" />
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               Latest Reviews
             </h3>
           </div>
           
-          <div className="space-y-4">
-            {recentReviews.slice(0, 5).map((review) => (
-              <div key={review.id} className="flex gap-3 pb-4 border-b border-gray-100 dark:border-gray-800 last:border-0 last:pb-0">
-                {/* Avatar */}
-                <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-                  <Image
-                    src={review.avatar}
-                    alt={review.author}
-                    width={40}
-                    height={40}
-                    className="object-cover"
-                  />
-                </div>
-
-                {/* Review Content */}
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-start justify-between mb-1">
-                    <h4 className="font-semibold text-sm text-gray-900 dark:text-white">
-                      {review.author}
-                    </h4>
-                    <div className="flex items-center gap-0.5">
-                      {[...Array(5)].map((_, i) => (
-                        <Star 
-                          key={i} 
-                          className={`w-3 h-3 ${
-                            i < review.rating 
-                              ? 'fill-yellow-400 text-yellow-400' 
-                              : 'text-gray-300 dark:text-gray-600'
-                          }`} 
-                        />
-                      ))}
+          <div className="space-y-6 overflow-y-auto max-h-[600px] pr-2">
+            {recentReviews.slice(0, 5).map((review, index) => (
+              <div key={review.id}>
+                <div className="flex gap-4">
+                  {/* Avatar */}
+                  <div className="relative flex-shrink-0">
+                    <div className="w-12 h-12 rounded-full overflow-hidden bg-gray-200">
+                      <Image
+                        src={review.avatar}
+                        alt={review.author}
+                        width={48}
+                        height={48}
+                        className="object-cover w-full h-full"
+                      />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 mb-2">{review.date}</p>
-                  <p className="text-sm text-gray-700 dark:text-gray-300 line-clamp-2">
-                    {review.comment}
-                  </p>
+
+                  {/* Review Content */}
+                  <div className="flex-1 min-w-0">
+                    {/* Name */}
+                    <h4 className="font-semibold text-base text-gray-900 dark:text-white mb-1">
+                      {review.author}
+                    </h4>
+                    
+                    {/* Stars and Time */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="flex items-center gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star 
+                            key={i} 
+                            className={`w-4 h-4 ${
+                              i < review.rating 
+                                ? 'fill-yellow-400 text-yellow-400' 
+                                : 'text-gray-300 dark:text-gray-600'
+                            }`} 
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-500">
+                        {review.date}
+                      </span>
+                    </div>
+                    
+                    {/* Review Text */}
+                    <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {review.comment}
+                    </p>
+                  </div>
                 </div>
+                
+                {/* Separator - tidak show untuk review terakhir */}
+                {index < recentReviews.slice(0, 5).length - 1 && (
+                  <div className="mt-6 border-b border-gray-200 dark:border-gray-700"></div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
         {/* WhatsApp Clicks - 25% */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-[#16A34A]" />
+              <MessageSquare className="w-4 h-4 text-green-600" />
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 WhatsApp Clicks
               </h3>
@@ -852,10 +955,10 @@ export default function AdvisorOverviewPage() {
         </div>
 
         {/* Messages Received - 25% */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <MessageSquare className="w-4 h-4 text-[#8B5CF6]" />
+              <MessageSquare className="w-4 h-4 text-purple-500" />
               <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                 Messages Received
               </h3>
@@ -954,16 +1057,16 @@ export default function AdvisorOverviewPage() {
         </div>
 
         {/* Latest Notifications - 25% */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5 flex flex-col">
           <div className="flex items-center gap-2 mb-3">
-            <Bell className="w-4 h-4 text-[#16A34A]" />
+            <Bell className="w-4 h-4 text-blue-500" />
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               Latest Notifications
             </h3>
           </div>
           
-          <div className="space-y-2">
-            {recentNotifications.map((notif) => (
+          <div className="space-y-2 overflow-y-auto max-h-[300px] pr-2">
+            {recentNotifications.slice(0, 5).map((notif) => (
               <div
                 key={notif.id}
                 className={`p-3 rounded ${
@@ -982,15 +1085,15 @@ export default function AdvisorOverviewPage() {
         </div>
 
         {/* Support Tickets - 25% */}
-        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-4">
+        <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-5 flex flex-col">
           <div className="flex items-center gap-2 mb-3">
-            <MessageSquare className="w-4 h-4 text-[#3B82F6]" />
+            <HelpCircle className="w-4 h-4 text-orange-500" />
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300">
               Support Tickets
             </h3>
           </div>
           
-          <div className="space-y-3">
+          <div className="space-y-3 overflow-y-auto max-h-[300px] pr-2">
             <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-800">
               <span className="text-sm font-medium text-gray-900 dark:text-white truncate">Profile Update Issue</span>
               <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400 text-xs font-semibold rounded ml-2">
@@ -1020,7 +1123,8 @@ export default function AdvisorOverviewPage() {
             </div>
           </div>
         </div>
-      </div>
+          </div>
+        </div>
       </div>
     </div>
   );

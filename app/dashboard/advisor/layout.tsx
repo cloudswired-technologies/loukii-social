@@ -7,7 +7,7 @@ export default function AdvisorDashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="h-screen bg-gray-50 dark:bg-black overflow-hidden">
+    <div className="h-screen bg-white dark:bg-black overflow-hidden">
       <DashboardHeader />
       <div className="h-[65px]"></div>
       <div className="flex h-[calc(100vh-65px)]">
