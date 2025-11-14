@@ -75,7 +75,7 @@ export default function AdvisorMessagesPage() {
 
   const handleSendMessage = () => {
     if (messageText.trim()) {
-      console.log("Sending message:", messageText);
+      // TODO: Implement actual message sending logic
       setMessageText("");
     }
   };

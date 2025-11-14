@@ -61,8 +61,7 @@ export default function AdvisorReviewsPage() {
   const [replyText, setReplyText] = useState("");
 
   const handleReply = (reviewId: number) => {
-    // Handle reply submission
-    console.log(`Reply to review ${reviewId}:`, replyText);
+    // TODO: Implement actual reply submission to backend
     setReplyingTo(null);
     setReplyText("");
   };

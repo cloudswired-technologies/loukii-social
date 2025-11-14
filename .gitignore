@@ -60,3 +60,6 @@ Thumbs.db
 *.tmp
 *.temp
 .cache/
+*backup*
+*_backup*
+*.bak
