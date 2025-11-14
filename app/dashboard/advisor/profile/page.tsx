@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { TiptapEditorPro } from "@/components/tiptap-editor-pro";
 
 export default function AdvisorProfilePage() {
   const [user, setUser] = useState<any>(null);
@@ -23,15 +24,47 @@ export default function AdvisorProfilePage() {
   });
   
   const [professionalDetails, setProfessionalDetails] = useState({
-    shortSummary: "", serviceCategory: "", selectedBrands: [] as string[],
+    shortSummary: "",
+    profilePosters: [] as File[],
+    serviceCategory: "",
+    selectedBrands: [] as string[],
+    customBrand: "",
+    yearsOfExperience: "",
+    licenseNumber: "",
   });
+
+  const [posterPreviews, setPosterPreviews] = useState<string[]>([]);
+  const [wordCount, setWordCount] = useState(0);
+  const [brandSearchQuery, setBrandSearchQuery] = useState("");
+
+  // Service categories and brands data
+  const serviceCategories = [
+    "Financial Planning",
+    "Insurance",
+    "Takaful",
+    "Investment Advisory",
+    "Retirement Planning",
+    "Estate Planning"
+  ];
+
+  const brandsByCategory: { [key: string]: string[] } = {
+    "Financial Planning": ["Prudential BSN", "AIA Malaysia", "Great Eastern", "Manulife"],
+    "Insurance": ["Prudential BSN", "AIA Malaysia", "Great Eastern", "Allianz", "Zurich"],
+    "Takaful": ["Prudential BSN Takaful", "Takaful Malaysia", "Etiqa Takaful", "Great Eastern Takaful"],
+    "Investment Advisory": ["Public Mutual", "Kenanga", "CIMB Principal", "Manulife"],
+    "Retirement Planning": ["EPF", "PRS Providers", "Private Pension"],
+    "Estate Planning": ["Amanah Raya", "Rockwills", "Wasiyyah Shoppe"]
+  };
 
   const [termsAccepted, setTermsAccepted] = useState(false);
 
+  // Bio content
+  const [bioContent, setBioContent] = useState<string>('');
+
   const steps = [
     "Personal Information",
-    "Professional Details", 
-    "Personal Bio",
+    "Professional Details",
+    "Personal Bio", 
     "Review & Save"
   ];
 
@@ -48,6 +81,81 @@ export default function AdvisorProfilePage() {
     };
     getUser();
   }, []);
+
+  // Handle poster image upload
+  const handlePosterUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    
+    // Validate image dimensions (1000px width x 500px height)
+    files.forEach(file => {
+      const img = new Image();
+      img.onload = () => {
+        // Accept exact size or allow any size (will be resized on backend)
+        // For now, we'll be flexible and just warn if not optimal
+        const isOptimalSize = img.width === 1000 && img.height === 500;
+        
+        setProfessionalDetails(prev => ({
+          ...prev,
+          profilePosters: [...prev.profilePosters, file]
+        }));
+        
+        // Create preview
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setPosterPreviews(prev => [...prev, reader.result as string]);
+        };
+        reader.readAsDataURL(file);
+        
+        if (!isOptimalSize) {
+          console.warn(`Optimal size is 1000x500px. Your image is ${img.width}x${img.height}px and will be resized.`);
+        }
+      };
+      img.src = URL.createObjectURL(file);
+    });
+  };
+
+  // Remove poster
+  const removePoster = (index: number) => {
+    setProfessionalDetails(prev => ({
+      ...prev,
+      profilePosters: prev.profilePosters.filter((_, i) => i !== index)
+    }));
+    setPosterPreviews(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Handle short summary word count
+  const handleSummaryChange = (text: string) => {
+    const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+    if (words.length <= 20) {
+      setProfessionalDetails(prev => ({ ...prev, shortSummary: text }));
+      setWordCount(words.length);
+    }
+  };
+
+  // Handle brand selection
+  const toggleBrand = (brand: string) => {
+    setProfessionalDetails(prev => ({
+      ...prev,
+      selectedBrands: prev.selectedBrands.includes(brand)
+        ? prev.selectedBrands.filter(b => b !== brand)
+        : [...prev.selectedBrands, brand]
+    }));
+  };
+
+  // Get available brands based on selected category
+  const availableBrands = professionalDetails.serviceCategory 
+    ? brandsByCategory[professionalDetails.serviceCategory] || []
+    : [];
+
+  // Filter brands based on search query
+  const filteredBrands = availableBrands.filter(brand => 
+    brand.toLowerCase().includes(brandSearchQuery.toLowerCase())
+  );
+
+  // Get custom brands (pending approval) from selected brands
+  const customBrands = professionalDetails.selectedBrands.filter(brand => 
+    brand.includes("(Pending Approval)")
+  );
 
   if (loading) {
     return (
@@ -70,10 +178,10 @@ export default function AdvisorProfilePage() {
           </p>
         </div>
         
-        <div className="px-8">
+        <div className="px-8 pb-0">
 
         {/* Layout: Step Menu Left + Content Box Right */}
-        <div className="flex gap-8 items-start">
+        <div className="flex gap-8 items-start pb-0">
           
           {/* Step Menu - With Active Indicator */}
           <div className="w-56 flex-shrink-0">
@@ -111,7 +219,7 @@ export default function AdvisorProfilePage() {
           </div>
 
           {/* Content Box (Apple Style) */}
-          <div className="flex-1 bg-white rounded-t-2xl shadow-sm border border-gray-100 px-16 pt-12 pb-8 hover:shadow-md transition-shadow duration-300">
+          <div className="flex-1 bg-white rounded-t-2xl shadow-sm border border-gray-100 border-b-0 px-16 pt-12 pb-12 hover:shadow-md transition-shadow duration-300">
             
             {/* Step 1: Personal Information */}
             {currentStep === 1 && (
@@ -374,14 +482,311 @@ export default function AdvisorProfilePage() {
                 <div className="mb-8">
                   <h2 className="text-xl font-semibold text-gray-900 mb-1">Professional Details</h2>
                   <p className="text-sm text-gray-600">
-                    Fill in your information step by step to create your professional advisor profile
+                    Your professional information and credentials
                   </p>
                 </div>
-                <div className="text-center py-12 text-gray-500">Step 2 content here...</div>
-                <div className="flex justify-between pt-4">
+
+                {/* Short Summary */}
+                <div className="mb-5 flex gap-8">
+                  <div className="w-48 flex-shrink-0">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-1">Short Summary (20 words max)</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Brief summary about yourself (max 20 words)
+                    </p>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <textarea
+                      value={professionalDetails.shortSummary}
+                      onChange={(e) => handleSummaryChange(e.target.value)}
+                      placeholder="e.g., 5 years experience in financial planning, specializing in retirement and investment strategies"
+                      rows={3}
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 transition-all duration-200 hover:border-gray-300"
+                    />
+                    <div className="mt-1 text-xs text-blue-600">
+                      {wordCount}/20 words
+                    </div>
+                  </div>
+                </div>
+
+                {/* Profile Posters / Slides */}
+                <div className="mb-5 flex gap-8">
+                  <div className="w-48 flex-shrink-0">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-1">Profile Posters / Slides</h3>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Upload multiple poster images to showcase your services. These will be displayed as slides on your profile. Required size: 1000x500px
+                    </p>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="mb-3">
+                      <label className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer">
+                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                        Add Poster Images
+                        <input
+                          type="file"
+                          accept="image/*"
+                          multiple
+                          onChange={handlePosterUpload}
+                          className="hidden"
+                        />
+                      </label>
+                      <p className="mt-2 text-xs text-gray-500">
+                        <svg className="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                        Upload multiple poster images to showcase on your profile. These will be displayed as slides on your profile page. Required size: 1000px width × 500px height
+                      </p>
+                    </div>
+
+                    {/* Poster Previews */}
+                    {posterPreviews.length > 0 && (
+                      <div className="grid grid-cols-3 gap-3">
+                        {posterPreviews.map((preview, index) => (
+                          <div key={index} className="relative group">
+                            <img 
+                              src={preview} 
+                              alt={`Poster ${index + 1}`}
+                              className="w-full h-32 object-cover rounded-lg border border-gray-200"
+                            />
+                            <button
+                              onClick={() => removePoster(index)}
+                              className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                              </svg>
+                            </button>
+                            <div className="absolute bottom-2 left-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
+                              {index + 1} image(s) uploaded
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                {/* Service Category */}
+                <div className="mb-5 flex gap-8">
+                  <div className="w-48 flex-shrink-0">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-1">Service Category <span className="text-red-500">*</span></h3>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Required: Select your primary service category
+                    </p>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <div className="relative">
+                      <select 
+                        value={professionalDetails.serviceCategory}
+                        onChange={(e) => setProfessionalDetails({
+                          ...professionalDetails, 
+                          serviceCategory: e.target.value,
+                          selectedBrands: [] // Reset brands when category changes
+                        })}
+                        className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-600 appearance-none transition-all duration-200 hover:border-gray-300"
+                      >
+                        <option value="">Select category</option>
+                        {serviceCategories.map(cat => (
+                          <option key={cat} value={cat}>{cat}</option>
+                        ))}
+                      </select>
+                      <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div>
+                    <p className="mt-1 text-xs text-gray-500">
+                      Required: Select your primary service category
+                    </p>
+                  </div>
+                </div>
+
+                {/* Brands/Companies You Represent */}
+                {professionalDetails.serviceCategory && (
+                  <div className="mb-5 flex gap-8">
+                    <div className="w-48 flex-shrink-0">
+                      <h3 className="text-sm font-semibold text-gray-900 mb-1">Brands/Companies You Represent <span className="text-red-500">*</span></h3>
+                      <p className="text-xs text-gray-400 leading-relaxed">
+                        Required: Select at least one brand to continue
+                      </p>
+                    </div>
+                    
+                    <div className="flex-1">
+                      {availableBrands.length === 0 ? (
+                        <p className="text-sm text-gray-500 italic">Select a service category first</p>
+                      ) : (
+                        <div className="space-y-4">
+                          {/* Selected Brands Display */}
+                          {professionalDetails.selectedBrands.length > 0 && (
+                            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                              <p className="text-xs font-semibold text-green-800 mb-2">Selected Brands ({professionalDetails.selectedBrands.length})</p>
+                              <div className="flex flex-wrap gap-2">
+                                {professionalDetails.selectedBrands.map(brand => (
+                                  <div 
+                                    key={brand}
+                                    className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm ${
+                                      brand.includes("(Pending Approval)")
+                                        ? "bg-orange-100 text-orange-800 border border-orange-300"
+                                        : "bg-white text-gray-800 border border-green-300"
+                                    }`}
+                                  >
+                                    <span>{brand.replace(" (Pending Approval)", "")}</span>
+                                    {brand.includes("(Pending Approval)") && (
+                                      <span className="text-xs text-orange-600">(Pending)</span>
+                                    )}
+                                    <button
+                                      onClick={() => toggleBrand(brand)}
+                                      className="ml-1 hover:bg-red-100 rounded-full p-0.5 transition-colors"
+                                      title="Remove"
+                                    >
+                                      <svg className="w-3.5 h-3.5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                      </svg>
+                                    </button>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Search Box */}
+                          <div className="relative">
+                            <input
+                              type="text"
+                              value={brandSearchQuery}
+                              onChange={(e) => setBrandSearchQuery(e.target.value)}
+                              placeholder="Search brands..."
+                              className="w-full px-3 py-2 pl-9 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400"
+                            />
+                            <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                          </div>
+
+                          {/* Brands List */}
+                          <div className="max-h-64 overflow-y-auto space-y-2">
+                            {/* Approved Brands */}
+                            {filteredBrands.length > 0 ? (
+                              filteredBrands.map(brand => (
+                                <button
+                                  key={brand}
+                                  onClick={() => toggleBrand(brand)}
+                                  className={`w-full flex items-center gap-3 p-3 border rounded-lg transition-colors text-left ${
+                                    professionalDetails.selectedBrands.includes(brand)
+                                      ? "border-green-500 bg-green-50 hover:bg-green-100"
+                                      : "border-gray-200 bg-white hover:bg-gray-50"
+                                  }`}
+                                >
+                                  <div className={`flex items-center justify-center w-5 h-5 rounded border-2 flex-shrink-0 ${
+                                    professionalDetails.selectedBrands.includes(brand)
+                                      ? "border-green-600 bg-green-600"
+                                      : "border-gray-300"
+                                  }`}>
+                                    {professionalDetails.selectedBrands.includes(brand) && (
+                                      <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                      </svg>
+                                    )}
+                                  </div>
+                                  <span className="text-sm text-gray-700 font-medium">{brand}</span>
+                                </button>
+                              ))
+                            ) : null}
+
+                            {/* Add Custom Brand Button (when search has no results) */}
+                            {brandSearchQuery.trim() && 
+                             filteredBrands.length === 0 && 
+                             !customBrands.some(b => b.toLowerCase().includes(brandSearchQuery.toLowerCase())) && (
+                              <button
+                                onClick={() => {
+                                  const customBrandName = `${brandSearchQuery.trim()} (Pending Approval)`;
+                                  setProfessionalDetails(prev => ({
+                                    ...prev,
+                                    selectedBrands: [...prev.selectedBrands, customBrandName]
+                                  }));
+                                  setBrandSearchQuery("");
+                                }}
+                                className="w-full flex items-center gap-2 p-3 border-2 border-dashed border-green-300 bg-green-50 rounded-lg hover:bg-green-100 hover:border-green-400 transition-colors text-left"
+                              >
+                                <div className="flex items-center justify-center w-8 h-8 bg-green-600 rounded-lg flex-shrink-0">
+                                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                  </svg>
+                                </div>
+                                <div className="flex-1">
+                                  <p className="text-sm font-medium text-gray-900">Add "{brandSearchQuery}"</p>
+                                  <p className="text-xs text-gray-600 mt-0.5">
+                                    Will show on your profile & loops. Available in filters after admin approval.
+                                  </p>
+                                </div>
+                              </button>
+                            )}
+
+                            {/* No results message */}
+                            {!brandSearchQuery.trim() && filteredBrands.length === 0 && customBrands.length === 0 && (
+                              <p className="text-sm text-gray-500 italic py-2 text-center">Start typing to search brands...</p>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Years of Experience */}
+                <div className="mb-5 flex gap-8">
+                  <div className="w-48 flex-shrink-0">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-1">Years of Experience <span className="text-red-500">*</span></h3>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Required: Specify your years of experience
+                    </p>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={professionalDetails.yearsOfExperience}
+                      onChange={(e) => setProfessionalDetails({...professionalDetails, yearsOfExperience: e.target.value})}
+                      placeholder="e.g., 5 years, 10+ years"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 transition-all duration-200 hover:border-gray-300"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Required: Specify your years of experience
+                    </p>
+                  </div>
+                </div>
+
+                {/* License Number */}
+                <div className="mb-5 flex gap-8">
+                  <div className="w-48 flex-shrink-0">
+                    <h3 className="text-sm font-semibold text-gray-900 mb-1">License Number <span className="text-red-500">*</span></h3>
+                    <p className="text-xs text-gray-400 leading-relaxed">
+                      Required: Your professional license number
+                    </p>
+                  </div>
+                  
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={professionalDetails.licenseNumber}
+                      onChange={(e) => setProfessionalDetails({...professionalDetails, licenseNumber: e.target.value})}
+                      placeholder="e.g., REN12345, BNM/A12345"
+                      className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder:text-gray-400 transition-all duration-200 hover:border-gray-300"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      Required: Your professional license number
+                    </p>
+                  </div>
+                </div>
+
+                {/* Navigation */}
+                <div className="flex justify-between pt-8 mt-8 border-t border-gray-200">
                   <button
                     onClick={() => setCurrentStep(1)}
-                    className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-900 text-sm font-medium rounded-lg"
+                    className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-900 text-sm font-medium rounded-lg transition-all duration-200"
                   >
                     Back
                   </button>
@@ -398,14 +803,23 @@ export default function AdvisorProfilePage() {
             {/* Step 3: Personal Bio */}
             {currentStep === 3 && (
               <div>
-                <div className="mb-8">
+                <div className="mb-6">
                   <h2 className="text-xl font-semibold text-gray-900 mb-1">Personal Bio</h2>
                   <p className="text-sm text-gray-600">
-                    Fill in your information step by step to create your professional advisor profile
+                    Write your professional bio using our Notion-style editor. Type "/" for commands.
                   </p>
                 </div>
-                <div className="text-center py-12 text-gray-500">Step 3 content here...</div>
-                <div className="flex justify-between pt-4">
+
+                {/* Professional Tiptap Editor */}
+                <div className="mb-6">
+                  <TiptapEditorPro
+                    content={bioContent}
+                    onChange={setBioContent}
+                  />
+                </div>
+
+                {/* Navigation */}
+                <div className="flex justify-between pt-4 border-t border-gray-200">
                   <button
                     onClick={() => setCurrentStep(2)}
                     className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-900 text-sm font-medium rounded-lg"
@@ -431,7 +845,7 @@ export default function AdvisorProfilePage() {
                     Fill in your information step by step to create your professional advisor profile
                   </p>
                 </div>
-                <div className="text-center py-12 text-gray-500">Step 4 content here...</div>
+                <div className="text-center py-12 text-gray-500">Review & Save content here...</div>
                 <div className="flex justify-between pt-4">
                   <button
                     onClick={() => setCurrentStep(3)}
