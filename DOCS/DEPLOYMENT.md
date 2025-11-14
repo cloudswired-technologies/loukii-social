@@ -3,7 +3,7 @@
 ## Pre-Deployment Checklist
 
 ### 1. Environment Variables
-Create `.env.production` with:
+Create `.env.production` with::
 ```env
 NEXT_PUBLIC_SITE_URL=https://loukii.com
 NEXT_PUBLIC_SUPABASE_URL=your_production_supabase_url
