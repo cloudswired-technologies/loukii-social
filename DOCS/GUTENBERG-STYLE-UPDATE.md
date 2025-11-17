@@ -3,7 +3,7 @@
 ## 🎯 Changes Made
 
 ### 1. **Removed "Add Row" Button** ✅
-**Before:** Big "Add Row" button at bottom
+**Before:** Big "Add Row" button at bottom.
 
 **After:**
 - ✅ **No Add Row button**
