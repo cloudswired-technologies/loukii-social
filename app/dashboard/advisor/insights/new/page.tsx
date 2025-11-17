@@ -4,7 +4,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Save } from "lucide-react";
 import Link from "next/link";
-import { TiptapEditorPro } from "@/components/tiptap-editor-pro";
+import dynamic from "next/dynamic";
+
+const TiptapEditorPro = dynamic(
+  () => import("@/components/tiptap-editor-pro").then((mod) => mod.TiptapEditorPro),
+  { ssr: false }
+);
 
 export default function NewInsightPage() {
   const router = useRouter();
