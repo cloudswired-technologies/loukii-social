@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { TiptapEditorPro } from "@/components/tiptap-editor-pro";
+import { BlockEditor } from "@/components/block-editor/block-editor";
+import { BlockEditorData } from "@/components/block-editor/types";
 
 export default function AdvisorProfilePage() {
   const [user, setUser] = useState<any>(null);
@@ -58,8 +59,8 @@ export default function AdvisorProfilePage() {
 
   const [termsAccepted, setTermsAccepted] = useState(false);
 
-  // Bio content
-  const [bioContent, setBioContent] = useState<string>('');
+  // Bio content - Block Editor Data
+  const [bioContent, setBioContent] = useState<BlockEditorData>({ rows: [] });
 
   const steps = [
     "Personal Information",
@@ -171,39 +172,44 @@ export default function AdvisorProfilePage() {
       <div className="flex-1 overflow-y-auto">
         
         {/* Top Header */}
-        <div className="bg-white px-8 py-6 mb-10">
-          <h1 className="text-2xl font-bold text-gray-900 mb-1">Update Profile</h1>
+        <div className="bg-white px-4 md:px-8 py-6 mb-6 md:mb-10">
+          <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">Update Profile</h1>
           <p className="text-sm text-gray-600">
             Complete your professional advisor profile to start connecting with clients
           </p>
         </div>
         
-        <div className="px-8 pb-0">
+        <div className="px-4 md:px-8 pb-0">
 
         {/* Layout: Step Menu Left + Content Box Right */}
-        <div className="flex gap-8 items-start pb-0">
+        <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-start pb-0">
           
           {/* Step Menu - With Active Indicator */}
-          <div className="w-56 flex-shrink-0">
+          <div className="w-full md:w-56 flex-shrink-0">
             <div className="relative">
-              {/* Continuous vertical line - gray background */}
-              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-300"></div>
+              {/* Continuous vertical line - gray background - hidden on mobile */}
+              <div className="hidden md:block absolute left-0 top-0 bottom-0 w-0.5 bg-gray-200"></div>
               
-              {/* Active step indicator - green line */}
+              {/* Active step indicator - green line - hidden on mobile */}
               <div 
-                className="absolute left-0 w-0.5 bg-green-600 transition-all duration-300"
+                className="hidden md:block absolute left-0 w-1 bg-green-600 transition-all duration-500 ease-in-out rounded-full"
                 style={{
                   top: `${(currentStep - 1) * 48}px`,
                   height: '48px'
                 }}
               ></div>
               
-              <div className="space-y-3">
+              {/* Mobile: Horizontal scroll, Desktop: Vertical list */}
+              <div className="flex md:flex-col gap-2 md:space-y-0 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
                 {steps.map((step, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentStep(index + 1)}
-                    className="relative w-full text-left pl-4 py-3 group"
+                    className={`relative whitespace-nowrap md:whitespace-normal w-auto md:w-full text-left px-4 md:pl-4 py-3 rounded-lg md:rounded-none transition-all duration-200 ${
+                      currentStep === index + 1
+                        ? "bg-green-50 md:bg-transparent"
+                        : "bg-gray-50 md:bg-transparent"
+                    }`}
                   >
                     <span className={`text-sm ${
                       currentStep === index + 1
@@ -219,7 +225,7 @@ export default function AdvisorProfilePage() {
           </div>
 
           {/* Content Box (Apple Style) */}
-          <div className="flex-1 bg-white rounded-t-2xl shadow-sm border border-gray-100 border-b-0 px-16 pt-12 pb-12 hover:shadow-md transition-shadow duration-300">
+          <div className="flex-1 bg-white rounded-2xl md:rounded-t-2xl shadow-sm border border-gray-100 md:border-b-0 px-4 md:px-8 lg:px-16 pt-6 md:pt-12 pb-6 md:pb-12 hover:shadow-md transition-shadow duration-300">
             
             {/* Step 1: Personal Information */}
             {currentStep === 1 && (
@@ -803,32 +809,32 @@ export default function AdvisorProfilePage() {
             {/* Step 3: Personal Bio */}
             {currentStep === 3 && (
               <div>
-                <div className="mb-6">
-                  <h2 className="text-xl font-semibold text-gray-900 mb-1">Personal Bio</h2>
-                  <p className="text-sm text-gray-600">
-                    Write your professional bio using our Notion-style editor. Type "/" for commands.
+                <div className="mb-4 md:mb-6">
+                  <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-1">Personal Bio</h2>
+                  <p className="text-xs md:text-sm text-gray-600">
+                    Build your professional bio using drag-and-drop widgets. Select columns, then add widgets to create your layout.
                   </p>
                 </div>
 
-                {/* Professional Tiptap Editor */}
-                <div className="mb-6">
-                  <TiptapEditorPro
-                    content={bioContent}
+                {/* Block Editor */}
+                <div className="mb-4 md:mb-6 border border-gray-200 rounded-xl overflow-hidden">
+                  <BlockEditor
+                    data={bioContent}
                     onChange={setBioContent}
                   />
                 </div>
 
                 {/* Navigation */}
-                <div className="flex justify-between pt-4 border-t border-gray-200">
+                <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-4 border-t border-gray-100">
                   <button
                     onClick={() => setCurrentStep(2)}
-                    className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-900 text-sm font-medium rounded-lg"
+                    className="w-full sm:w-auto px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-900 text-sm font-medium rounded-xl transition-all duration-200"
                   >
                     Back
                   </button>
                   <button
                     onClick={() => setCurrentStep(4)}
-                    className="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg"
+                    className="w-full sm:w-auto px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
                   >
                     Next
                   </button>

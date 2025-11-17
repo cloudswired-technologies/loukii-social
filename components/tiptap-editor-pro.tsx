@@ -42,6 +42,9 @@ const extensions = [
     placeholder: {
       showOnlyCurrent: true,
     },
+    characterCount: {
+      limit: null, // Remove character limit
+    },
   }),
   History,
   Clear,
@@ -91,7 +94,7 @@ const extensions = [
 
 export function TiptapEditorPro({ content, onChange }: TiptapEditorProProps) {
   return (
-    <div className="w-full min-h-[500px]">
+    <div className="w-full min-h-[400px] md:min-h-[500px] rounded-xl overflow-hidden border border-gray-200">
       <RichTextEditor
         output="html"
         content={content}
