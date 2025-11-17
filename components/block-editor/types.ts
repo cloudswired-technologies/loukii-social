@@ -14,6 +14,8 @@ export type WidgetType =
 export interface BaseWidget {
   id: string;
   type: WidgetType;
+  padding?: string; // e.g., "12px"
+  margin?: string; // e.g., "8px"
 }
 
 export interface HeadingWidget extends BaseWidget {
