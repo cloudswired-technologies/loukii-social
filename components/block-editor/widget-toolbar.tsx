@@ -34,11 +34,11 @@ const widgets = [
 
 export function WidgetToolbar({ onAddWidget, onDragStart }: WidgetToolbarProps) {
   return (
-    <div className="flex items-center gap-2 overflow-x-auto">
+    <div className="flex items-center gap-1 overflow-x-auto pb-1">
       {widgets.map((widget) => {
           const Icon = widget.icon;
           return (
-            <div
+            <button
               key={widget.type}
               draggable
               onDragStart={(e) => {
@@ -46,14 +46,14 @@ export function WidgetToolbar({ onAddWidget, onDragStart }: WidgetToolbarProps) 
                 onDragStart(widget.type);
               }}
               onClick={() => onAddWidget(widget.type)}
-              className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg hover:bg-gray-100 transition-colors group min-w-[60px] cursor-grab active:cursor-grabbing"
+              className="flex flex-col items-center gap-1 px-2.5 py-2 rounded-md hover:bg-gray-50 hover:border-green-500 border border-transparent transition-all group cursor-grab active:cursor-grabbing"
               title={`${widget.label} - Click or drag to add`}
             >
-              <Icon className="w-5 h-5 text-gray-600 group-hover:text-green-600" />
-              <span className="text-xs text-gray-600 group-hover:text-green-600 whitespace-nowrap">
+              <Icon className="w-4 h-4 text-gray-500 group-hover:text-green-600 transition-colors" />
+              <span className="text-[10px] text-gray-500 group-hover:text-green-600 whitespace-nowrap font-medium transition-colors">
                 {widget.label}
               </span>
-            </div>
+            </button>
           );
         })}
     </div>

@@ -16,20 +16,20 @@ export function DeviceSwitcher({ currentDevice, onDeviceChange }: DeviceSwitcher
   ];
 
   return (
-    <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-lg p-1">
+    <div className="flex items-center gap-0.5 bg-gray-50 border border-gray-200 rounded-lg p-0.5">
       {devices.map(({ mode, icon: Icon, label }) => (
         <button
           key={mode}
           onClick={() => onDeviceChange(mode)}
-          className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-all ${
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
             currentDevice === mode
-              ? 'bg-green-600 text-white'
-              : 'text-gray-600 hover:bg-gray-100'
+              ? 'bg-green-600 text-white shadow-sm'
+              : 'text-gray-600 hover:bg-white hover:text-gray-900'
           }`}
           title={label}
         >
-          <Icon className="w-4 h-4" />
-          <span className="hidden sm:inline">{label}</span>
+          <Icon className="w-3.5 h-3.5" />
+          <span className="hidden md:inline">{label}</span>
         </button>
       ))}
     </div>
