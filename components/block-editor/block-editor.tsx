@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Trash2, GripVertical, Columns3, SlidersHorizontal } from "lucide-react";
-import { Row, Widget, WidgetType, BlockEditorData } from "./types";
+import { Row, Widget, WidgetType, BlockEditorData, DeviceMode, ResponsiveLayout } from "./types";
 import { WidgetToolbar } from "./widget-toolbar";
 import { ColumnSelector } from "./column-selector";
 import { HeadingWidgetRenderer } from "./widgets/heading-widget";
@@ -15,6 +15,8 @@ import { HRWidgetRenderer } from "./widgets/hr-widget";
 import { ColumnWidgetRenderer } from "./widgets/column-widget";
 import { ColumnSettingsDropdown } from "./column-settings-dropdown";
 import { WidgetSettingsDropdown } from "./widget-settings-dropdown";
+import { DeviceSwitcher } from "./device-switcher";
+import { ResponsiveColumnSettings } from "./responsive-column-settings";
 import type { ColumnSettings } from "./types";
 
 interface BlockEditorProps {
@@ -31,6 +33,7 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
   const [dragOverTarget, setDragOverTarget] = useState<{ rowId: string; columnIndex: number } | null>(null);
   const [dropIndicator, setDropIndicator] = useState<{ rowId: string; columnIndex: number; position: number | 'empty' } | null>(null);
   const [draggedNestedWidget, setDraggedNestedWidget] = useState<{ widget: Widget; columnWidgetId: string; nestedColumnIndex: number } | null>(null);
+  const [deviceMode, setDeviceMode] = useState<DeviceMode>('desktop');
 
   // Helper: Check if widget already exists in target to prevent duplicates
   const widgetExistsInColumn = (column: Widget[], widgetId: string): boolean => {
@@ -189,6 +192,16 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
         const columnSettings = row.columnSettings || row.columns.map(() => ({}));
         columnSettings[columnIndex] = settings;
         return { ...row, columnSettings };
+      }
+      return row;
+    });
+    onChange({ ...data, rows: updatedRows });
+  };
+
+  const updateResponsiveLayout = (rowId: string, responsiveLayout: ResponsiveLayout) => {
+    const updatedRows = data.rows.map((row) => {
+      if (row.id === rowId) {
+        return { ...row, responsiveLayout };
       }
       return row;
     });
@@ -660,13 +673,54 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
     );
   };
 
+  // Get viewport width based on device mode
+  const getViewportWidth = () => {
+    switch (deviceMode) {
+      case 'mobile':
+        return '375px'; // iPhone size
+      case 'tablet':
+        return '768px'; // iPad size
+      case 'desktop':
+      default:
+        return '100%';
+    }
+  };
+
+  // Get responsive column count for current device
+  const getResponsiveColumnCount = (row: Row): number => {
+    const layout = row.responsiveLayout;
+    if (deviceMode === 'desktop') {
+      return layout?.desktop || row.columnCount;
+    } else if (deviceMode === 'tablet') {
+      return layout?.tablet || row.columnCount;
+    } else {
+      // Mobile: default stack all columns
+      return layout?.mobile || row.columnCount;
+    }
+  };
+
   return (
     <div className="flex flex-col">
+      {/* Top Bar with Device Switcher */}
+      <div className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
+        <div className="flex items-center gap-3">
+          <h3 className="text-sm font-semibold text-gray-700">Personal Bio Builder</h3>
+        </div>
+        <DeviceSwitcher currentDevice={deviceMode} onDeviceChange={setDeviceMode} />
+      </div>
+
       {/* Widget Toolbar */}
       <WidgetToolbar onAddWidget={addWidget} onDragStart={handleToolbarDragStart} />
 
-      {/* Editor Canvas - Auto expand based on content */}
-      <div className="p-4 bg-gray-50 block-editor-canvas min-h-[400px]">
+      {/* Editor Canvas - Responsive viewport wrapper */}
+      <div className="p-4 bg-gray-50 block-editor-canvas min-h-[400px] flex justify-center">
+        <div 
+          className="transition-all duration-300"
+          style={{ 
+            width: getViewportWidth(),
+            maxWidth: '100%'
+          }}
+        >
         {data.rows.length === 0 ? (
           <div className="text-center py-12 text-gray-500">
             <p className="text-lg font-medium mb-2">No rows yet</p>
@@ -674,12 +728,34 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
           </div>
         ) : (
           <div className="space-y-4 max-w-6xl mx-auto">
-            {data.rows.map((row) => (
+            {data.rows.map((row) => {
+              const responsiveColCount = getResponsiveColumnCount(row);
+              return (
               <div key={row.id} className="bg-white border border-gray-200 rounded-lg p-4 relative">
+                {/* Row Controls */}
+                <div className="absolute -top-3 right-2 flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity">
+                  <ResponsiveColumnSettings
+                    rowId={row.id}
+                    currentDevice={deviceMode}
+                    columnCount={row.columnCount}
+                    responsiveLayout={row.responsiveLayout}
+                    onUpdate={(layout) => updateResponsiveLayout(row.id, layout)}
+                  />
+                  <button
+                    onClick={() => deleteRow(row.id)}
+                    className="p-2 bg-white hover:bg-red-50 rounded-lg shadow-md transition-colors"
+                    title="Delete Row"
+                  >
+                    <Trash2 className="w-4 h-4 text-red-600" />
+                  </button>
+                </div>
                 {/* Columns */}
                 <div 
-                  className={`grid grid-cols-${row.columnCount}`}
-                  style={{ gap: row.columnSettings?.[0]?.gap || '12px' }}
+                  className={`grid`}
+                  style={{ 
+                    gridTemplateColumns: `repeat(${responsiveColCount}, 1fr)`,
+                    gap: row.columnSettings?.[0]?.gap || '12px' 
+                  }}
                 >
                   {row.columns.map((column, columnIndex) => {
                     const colSettings = row.columnSettings?.[columnIndex] || {};
@@ -760,13 +836,13 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
                         )}
                       </div>
                     </div>
-                    );
-                  })}
+                  )})}
                 </div>
               </div>
-            ))}
+            )})}
           </div>
         )}
+        </div>
       </div>
 
       {/* Column Selector */}

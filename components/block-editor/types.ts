@@ -103,6 +103,8 @@ export type Widget =
   | IconWidget
   | ListWidget;
 
+export type DeviceMode = 'desktop' | 'tablet' | 'mobile';
+
 export interface ColumnSettings {
   width?: number; // percentage
   padding?: string; // e.g., "16px"
@@ -110,11 +112,25 @@ export interface ColumnSettings {
   gap?: string; // spacing between columns e.g., "12px"
 }
 
+export interface ResponsiveColumnSettings {
+  desktop?: ColumnSettings[];
+  tablet?: ColumnSettings[];
+  mobile?: ColumnSettings[];
+}
+
+export interface ResponsiveLayout {
+  desktop?: 1 | 2 | 3 | 4; // Column count for desktop
+  tablet?: 1 | 2 | 3 | 4; // Column count for tablet
+  mobile?: 1 | 2 | 3 | 4; // Column count for mobile (default: stack all = columnCount)
+}
+
 export interface Row {
   id: string;
   columns: Widget[][];
   columnCount: 1 | 2 | 3 | 4;
-  columnSettings?: ColumnSettings[]; // Settings for each column
+  columnSettings?: ColumnSettings[]; // Desktop settings (backward compatible)
+  responsiveLayout?: ResponsiveLayout; // Responsive column counts
+  responsiveColumnSettings?: ResponsiveColumnSettings; // Settings per device
 }
 
 export interface BlockEditorData {
