@@ -34,12 +34,8 @@ const widgets = [
 
 export function WidgetToolbar({ onAddWidget, onDragStart }: WidgetToolbarProps) {
   return (
-    <div className="bg-white border-b border-gray-200 px-4 py-3">
-      <div className="flex items-center gap-2 overflow-x-auto">
-        <span className="text-sm font-medium text-gray-700 mr-2 whitespace-nowrap">
-          Add Widget:
-        </span>
-        {widgets.map((widget) => {
+    <div className="flex items-center gap-2 overflow-x-auto">
+      {widgets.map((widget) => {
           const Icon = widget.icon;
           return (
             <div
@@ -60,7 +56,6 @@ export function WidgetToolbar({ onAddWidget, onDragStart }: WidgetToolbarProps) 
             </div>
           );
         })}
-      </div>
     </div>
   );
 }
