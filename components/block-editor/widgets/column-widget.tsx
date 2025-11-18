@@ -1,8 +1,9 @@
 "use client";
 
-import { ColumnWidget, Widget, ColumnSettings, WidgetType } from "../types";
+import { ColumnWidget, Widget, ColumnSettings, WidgetType, DeviceMode } from "../types";
 import { Trash2, GripVertical, Settings, Columns3, SlidersHorizontal } from "lucide-react";
-import { ColumnSettingsDropdown } from "../column-settings-dropdown";
+import { ColumnSettingsDropdown } from "../column-settings-dropdown-new";
+import { getWidthForDevice } from "../responsive-utils";
 import { WidgetSettingsDropdown } from "../widget-settings-dropdown";
 import { HeadingWidgetRenderer } from "./heading-widget";
 import { ParagraphWidgetRenderer } from "./paragraph-widget";
@@ -11,6 +12,8 @@ import { YouTubeWidgetRenderer } from "./youtube-widget";
 import { ButtonWidgetRenderer } from "./button-widget";
 import { ListWidgetRenderer } from "./list-widget";
 import { HRWidgetRenderer } from "./hr-widget";
+import { TableWidgetRenderer } from "./table-widget";
+import { IconWidgetRenderer } from "./icon-widget";
 import { useState } from "react";
 
 interface ColumnWidgetRendererProps {
@@ -24,9 +27,14 @@ interface ColumnWidgetRendererProps {
   onNestedWidgetDragStart?: (widget: Widget, nestedColumnIndex: number) => void;
   onNestedWidgetDragEnd?: () => void;
   onMainWidgetDroppedInNested?: (payload: { widgetId: string; targetNestedColumnIndex: number; dropPos: number }) => void;
+  deviceMode?: DeviceMode;
+  onOpenInspector?: (type: 'widget' | 'column' | 'row', data: any, callbacks: {
+    onUpdate: (updates: any) => void;
+    onDelete?: () => void;
+  }, currentDevice?: DeviceMode) => void;
 }
 
-export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget, draggedWidgetType, draggedWidget, createWidget, onNestedWidgetDragStart, onNestedWidgetDragEnd, onMainWidgetDroppedInNested }: ColumnWidgetRendererProps) {
+export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget, draggedWidgetType, draggedWidget, createWidget, onNestedWidgetDragStart, onNestedWidgetDragEnd, onMainWidgetDroppedInNested, deviceMode = 'desktop', onOpenInspector }: ColumnWidgetRendererProps) {
   const [dragOverColumn, setDragOverColumn] = useState<number | null>(null);
   const [dropIndicator, setDropIndicator] = useState<{ columnIndex: number; position: number | 'empty' } | null>(null);
   const [draggedNestedColumn, setDraggedNestedColumn] = useState<number | null>(null);
@@ -52,15 +60,12 @@ export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget,
       const newColumns = widget.columns.filter((_: Widget[], i: number) => i !== index);
       const newSettings = widget.columnSettings?.filter((_: ColumnSettings, i: number) => i !== index);
       
-      // Redistribute widths equally
-      const equalWidth = 100 / newColumns.length;
-      const redistributedSettings = newSettings?.map(s => ({ ...s, width: equalWidth }));
-      
+      // Don't redistribute widths - let flex-1 auto-balance
       onUpdate({
         ...widget,
         columns: newColumns,
         columnCount: newColumns.length as 1 | 2 | 3 | 4,
-        columnSettings: redistributedSettings,
+        columnSettings: newSettings,
       });
     }
   };
@@ -117,17 +122,15 @@ export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget,
       if (widget.columns.length < 4) {
         const newNestedColumns = [...widget.columns, []];
         const newCount = newNestedColumns.length;
-        const equalWidth = 100 / newCount;
         
+        // Don't set explicit widths - let flex-1 auto-balance
         onUpdate({
           ...widget,
           columns: newNestedColumns,
           columnCount: newCount as 2 | 3 | 4,
           columnSettings: newNestedColumns.map(() => ({
-            width: equalWidth,
-            padding: '12px',
-            margin: '0px',
-            gap: '12px'
+            padding: '8px',
+            margin: '0px'
           }))
         });
       }
@@ -338,6 +341,22 @@ export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget,
               onDelete={() => deleteNestedWidget(columnIndex, w.id)}
             />
           );
+        case 'table':
+          return (
+            <TableWidgetRenderer
+              widget={w}
+              onUpdate={(updated) => updateNestedWidget(columnIndex, w.id, updated)}
+              onDelete={() => deleteNestedWidget(columnIndex, w.id)}
+            />
+          );
+        case 'icon':
+          return (
+            <IconWidgetRenderer
+              widget={w}
+              onUpdate={(updated) => updateNestedWidget(columnIndex, w.id, updated)}
+              onDelete={() => deleteNestedWidget(columnIndex, w.id)}
+            />
+          );
         default:
           return (
             <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
@@ -374,14 +393,22 @@ export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget,
   return (
     <div className="border border-gray-200 rounded-lg hover:border-green-500 transition-colors bg-white">
       {/* Nested Columns */}
-      <div className="flex gap-3">
+      <div className="flex flex-wrap" style={{ gap: widget.gap || '8px' }}>
         {widget.columns.map((column, columnIndex) => {
           const colSettings = widget.columnSettings?.[columnIndex] || {};
           const colStyle = {
-            width: colSettings.width ? `${colSettings.width}%` : undefined,
-            padding: colSettings.padding || '12px',
+            padding: colSettings.padding || '8px',
             margin: colSettings.margin || '0px',
           };
+          
+          // Get responsive width based on current device
+          const defaultWidth = 100 / widget.columns.length;
+          const columnWidth = getWidthForDevice(colSettings, deviceMode, defaultWidth);
+          const gap = widget.gap || '8px';
+          
+          // Calculate flex-basis accounting for gap
+          const gapAdjustment = widget.columns.length > 1 ? `(${gap} * ${widget.columns.length - 1} / ${widget.columns.length})` : '0px';
+          const flexBasis = `calc(${columnWidth}% - ${gapAdjustment})`;
           
           return (
             <div 
@@ -391,23 +418,45 @@ export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget,
               onDragEnd={handleNestedColumnDragEnd}
               onDragOver={(e) => handleNestedColumnDragOver(e, columnIndex)}
               className={`relative group/nested cursor-move ${draggedNestedColumn === columnIndex ? 'opacity-50' : ''}`}
-              style={{ width: colStyle.width }}
+              style={{ 
+                flex: `0 0 ${flexBasis}`,
+                maxWidth: flexBasis
+              }}
             >
             {/* Column Settings - LEFT (Elementor style) */}
             <div className="absolute -top-2 -left-2 z-10 opacity-0 group-hover/nested:opacity-100 transition-opacity">
               <div className="bg-white rounded-full shadow-md">
-                <ColumnSettingsDropdown
-                  settings={colSettings}
-                  onUpdate={(settings) => updateColumnSettings(columnIndex, settings)}
-                  onDelete={() => removeColumn(columnIndex)}
-                  deleteLabel={widget.columns.length === 1 ? "Delete Column Widget" : "Delete Column"}
-                  icon={<Columns3 className="w-4 h-4 text-gray-600" />}
-                />
+                {onOpenInspector ? (
+                  <button
+                    onClick={() => {
+                      onOpenInspector('column', colSettings, {
+                        onUpdate: (settings) => updateColumnSettings(columnIndex, settings),
+                        onDelete: () => removeColumn(columnIndex)
+                      }, deviceMode);
+                    }}
+                    className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+                    title="Column Settings"
+                  >
+                    <Columns3 className="w-4 h-4 text-gray-600" />
+                  </button>
+                ) : (
+                  <ColumnSettingsDropdown
+                    settings={colSettings}
+                    onUpdate={(settings) => updateColumnSettings(columnIndex, settings)}
+                    onDelete={() => removeColumn(columnIndex)}
+                    deleteLabel={widget.columns.length === 1 ? "Delete Column Widget" : "Delete Column"}
+                    icon={<Columns3 className="w-4 h-4 text-gray-600" />}
+                    columnWidget={widget}
+                    onUpdateColumnWidget={onUpdate}
+                    useFixed={true}
+                    currentDevice={deviceMode}
+                  />
+                )}
               </div>
             </div>
 
             <div 
-              className="min-h-[100px] border-2 border-dashed border-gray-300 rounded-lg transition-colors"
+              className="min-h-[100px] border border-dashed border-gray-300 rounded-lg transition-colors"
               onDragOver={(e) => handleDragOver(e, columnIndex)}
               onDragLeave={handleDragLeave}
               onDrop={(e) => handleDrop(e, columnIndex)}
@@ -419,9 +468,9 @@ export function ColumnWidgetRenderer({ widget, onUpdate, onDelete, renderWidget,
               }}
             >
               {column.length === 0 ? (
-                <p className="text-xs text-gray-400 text-center py-4">
-                  Drag widgets here
-                </p>
+                <div className="flex items-center justify-center h-full min-h-[100px]">
+                  <div className="text-4xl text-gray-300">+</div>
+                </div>
               ) : (
                 <div className="space-y-2">
                   {column.map((w, widgetIndex) => (

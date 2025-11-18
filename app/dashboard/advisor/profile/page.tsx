@@ -4,11 +4,22 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { BlockEditor } from "@/components/block-editor/block-editor";
 import { BlockEditorData } from "@/components/block-editor/types";
+import { InspectorPanel } from "@/components/block-editor/inspector-panel";
 
 export default function AdvisorProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
+  
+  // Inspector Panel state
+  const [inspectorOpen, setInspectorOpen] = useState(false);
+  const [inspectorType, setInspectorType] = useState<'widget' | 'column' | 'row' | null>(null);
+  const [inspectorData, setInspectorData] = useState<any>(null);
+  const [inspectorCallbacks, setInspectorCallbacks] = useState<{
+    onUpdate: (updates: any) => void;
+    onDelete?: () => void;
+  } | null>(null);
+  const [inspectorDevice, setInspectorDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "", 
@@ -59,8 +70,36 @@ export default function AdvisorProfilePage() {
 
   const [termsAccepted, setTermsAccepted] = useState(false);
 
-  // Bio content - Block Editor Data
-  const [bioContent, setBioContent] = useState<BlockEditorData>({ rows: [] });
+  // Bio content - Block Editor Data with default paragraph widget
+  const [bioContent, setBioContent] = useState<BlockEditorData>({
+    rows: [
+      {
+        id: `row-${Date.now()}`,
+        columnCount: 1,
+        columns: [[
+          {
+            id: `widget-${Date.now()}`,
+            type: 'paragraph',
+            text: '',
+            alignment: 'left',
+            padding: '0px',
+            margin: '0px'
+          }
+        ]],
+        columnSettings: [
+          {
+            widthDesktop: 100,
+            widthTablet: 100,
+            widthMobile: 100,
+            padding: '8px',
+            margin: '0px'
+          }
+        ],
+        gap: '8px',
+        padding: '0px'
+      }
+    ]
+  });
 
   const steps = [
     "Personal Information",
@@ -184,9 +223,10 @@ export default function AdvisorProfilePage() {
         {/* Layout: Step Menu Left + Content Box Right */}
         <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-start pb-0">
           
-          {/* Step Menu - With Active Indicator */}
-          <div className="w-full md:w-56 flex-shrink-0">
-            <div className="relative">
+          {/* Step Menu - With Active Indicator + Inspector Panel */}
+          <div className="w-full md:w-64 flex-shrink-0 md:sticky md:top-4 md:self-start md:max-h-[calc(100vh-2rem)] md:overflow-y-auto">
+            {/* Steps */}
+            <div className="relative mb-6">
               {/* Continuous vertical line - gray background - hidden on mobile */}
               <div className="hidden md:block absolute left-0 top-0 bottom-0 w-0.5 bg-gray-200"></div>
               
@@ -222,6 +262,26 @@ export default function AdvisorProfilePage() {
                 ))}
               </div>
             </div>
+
+            {/* Inspector Panel - Only show on Step 3 (Personal Bio) */}
+            {currentStep === 3 && (
+              <div className="hidden md:block">
+                <InspectorPanel
+                  isOpen={inspectorOpen}
+                  onClose={() => setInspectorOpen(false)}
+                  type={inspectorType}
+                  data={inspectorData}
+                  onUpdate={(updates) => {
+                    if (inspectorCallbacks?.onUpdate) {
+                      inspectorCallbacks.onUpdate(updates);
+                    }
+                  }}
+                  onDelete={inspectorCallbacks?.onDelete}
+                  inline={true}
+                  currentDevice={inspectorDevice}
+                />
+              </div>
+            )}
           </div>
 
           {/* Content Box (Apple Style) */}
@@ -821,6 +881,13 @@ export default function AdvisorProfilePage() {
                   <BlockEditor
                     data={bioContent}
                     onChange={setBioContent}
+                    onOpenInspector={(type, data, callbacks, currentDevice) => {
+                      setInspectorType(type);
+                      setInspectorData(data);
+                      setInspectorCallbacks(callbacks);
+                      setInspectorDevice(currentDevice || 'desktop');
+                      setInspectorOpen(true);
+                    }}
                   />
                 </div>
 

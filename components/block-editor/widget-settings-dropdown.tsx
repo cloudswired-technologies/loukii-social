@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { X, Trash2 } from "lucide-react";
 import { Widget } from "./types";
+import { FastColorPicker } from "./fast-color-picker";
 
 interface WidgetSettingsDropdownProps {
   widget: Widget;
@@ -60,9 +61,14 @@ export function WidgetSettingsDropdown({ widget, onUpdate, onDelete, icon }: Wid
     };
   }, [isOpen]);
 
-  // Check if widget has alignment property
+  // Check widget type and properties
   const hasAlignment = 'alignment' in widget;
   const hasWidth = 'width' in widget;
+  const isHeading = widget.type === 'heading';
+  const isParagraph = widget.type === 'paragraph';
+  const isButton = widget.type === 'button';
+  const hasColor = 'color' in widget;
+  const hasBackgroundColor = 'backgroundColor' in widget;
 
   return (
     <div className="relative">
@@ -97,8 +103,57 @@ export function WidgetSettingsDropdown({ widget, onUpdate, onDelete, icon }: Wid
             </div>
 
             <div className="space-y-3">
-              {/* Alignment */}
-              {hasAlignment && (
+              {/* Heading Level */}
+              {isHeading && (
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Heading Level
+                  </label>
+                  <select
+                    value={(widget as any).level || 2}
+                    onChange={(e) => onUpdate({ level: Number(e.target.value) as any })}
+                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+                  >
+                    <option value="1">H1</option>
+                    <option value="2">H2</option>
+                    <option value="3">H3</option>
+                    <option value="4">H4</option>
+                    <option value="5">H5</option>
+                    <option value="6">H6</option>
+                  </select>
+                </div>
+              )}
+
+              {/* Text Color (Heading and Button only - Paragraph has toolbar) */}
+              {(isHeading || isButton) && (
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Text Color
+                  </label>
+                  <FastColorPicker
+                    value={(widget as any).color || '#000000'}
+                    onChange={(color) => onUpdate({ color })}
+                    className="w-full"
+                  />
+                </div>
+              )}
+
+              {/* Background Color (Button) */}
+              {isButton && (
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Background Color
+                  </label>
+                  <FastColorPicker
+                    value={(widget as any).backgroundColor || '#16A34A'}
+                    onChange={(backgroundColor) => onUpdate({ backgroundColor })}
+                    className="w-full"
+                  />
+                </div>
+              )}
+
+              {/* Alignment (Not for Paragraph - has toolbar) */}
+              {hasAlignment && !isParagraph && (
                 <div>
                   <label className="block text-xs font-medium text-gray-700 mb-1">
                     Alignment
@@ -115,38 +170,22 @@ export function WidgetSettingsDropdown({ widget, onUpdate, onDelete, icon }: Wid
                 </div>
               )}
 
-              {/* Width */}
-              {hasWidth && (
-                <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1">
-                    Width
-                  </label>
-                  <input
-                    type="text"
-                    value={(widget as any).width || '100%'}
-                    onChange={(e) => onUpdate({ width: e.target.value })}
-                    placeholder="e.g., 100%, 500px"
-                    className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-                  />
-                </div>
-              )}
-
               {/* Padding */}
               <div>
                 <label className="block text-xs font-medium text-gray-700 mb-1">
                   Padding
                 </label>
                 <select
-                  value={(widget as any).padding || '12px'}
+                  value={(widget as any).padding || '0px'}
                   onChange={(e) => onUpdate({ padding: e.target.value })}
                   className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
                 >
-                  <option value="0px">None</option>
-                  <option value="4px">Small (4px)</option>
-                  <option value="8px">Medium (8px)</option>
-                  <option value="12px">Default (12px)</option>
-                  <option value="16px">Large (16px)</option>
-                  <option value="24px">XLarge (24px)</option>
+                  <option value="0px">0px</option>
+                  <option value="4px">4px</option>
+                  <option value="8px">8px</option>
+                  <option value="12px">12px</option>
+                  <option value="16px">16px</option>
+                  <option value="24px">24px</option>
                 </select>
               </div>
 
@@ -160,11 +199,11 @@ export function WidgetSettingsDropdown({ widget, onUpdate, onDelete, icon }: Wid
                   onChange={(e) => onUpdate({ margin: e.target.value })}
                   className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
                 >
-                  <option value="0px">None</option>
-                  <option value="4px">Small (4px)</option>
-                  <option value="8px">Medium (8px)</option>
-                  <option value="12px">Large (12px)</option>
-                  <option value="16px">XLarge (16px)</option>
+                  <option value="0px">0px</option>
+                  <option value="4px">4px</option>
+                  <option value="8px">8px</option>
+                  <option value="12px">12px</option>
+                  <option value="16px">16px</option>
                 </select>
               </div>
 

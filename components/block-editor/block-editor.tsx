@@ -12,19 +12,28 @@ import { YouTubeWidgetRenderer } from "./widgets/youtube-widget";
 import { ButtonWidgetRenderer } from "./widgets/button-widget";
 import { ListWidgetRenderer } from "./widgets/list-widget";
 import { HRWidgetRenderer } from "./widgets/hr-widget";
+import { TableWidgetRenderer } from "./widgets/table-widget";
+import { IconWidgetRenderer } from "./widgets/icon-widget";
 import { ColumnWidgetRenderer } from "./widgets/column-widget";
-import { ColumnSettingsDropdown } from "./column-settings-dropdown";
+import { ColumnSettingsDropdown } from "./column-settings-dropdown-new";
 import { WidgetSettingsDropdown } from "./widget-settings-dropdown";
 import { DeviceSwitcher } from "./device-switcher";
-import { ResponsiveColumnSettings } from "./responsive-column-settings";
+import { RowSettingsDropdown } from "./row-settings-dropdown";
+import { InspectorPanel } from "./inspector-panel";
 import type { ColumnSettings } from "./types";
+import { getWidthForDevice, initializeColumnSettings } from "./responsive-utils";
+import { createWidget as createWidgetFromFactory } from "./widget-factory";
 
 interface BlockEditorProps {
   data: BlockEditorData;
   onChange: (data: BlockEditorData) => void;
+  onOpenInspector?: (type: 'widget' | 'column' | 'row', data: any, callbacks: {
+    onUpdate: (updates: any) => void;
+    onDelete?: () => void;
+  }, currentDevice?: DeviceMode) => void;
 }
 
-export function BlockEditor({ data, onChange }: BlockEditorProps) {
+export function BlockEditor({ data, onChange, onOpenInspector }: BlockEditorProps) {
   const [selectedRowId, setSelectedRowId] = useState<string | null>(null);
   const [selectedColumnIndex, setSelectedColumnIndex] = useState<number | null>(null);
   const [draggedWidget, setDraggedWidget] = useState<{ widget: Widget; rowId: string; columnIndex: number } | null>(null);
@@ -34,6 +43,15 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
   const [dropIndicator, setDropIndicator] = useState<{ rowId: string; columnIndex: number; position: number | 'empty' } | null>(null);
   const [draggedNestedWidget, setDraggedNestedWidget] = useState<{ widget: Widget; columnWidgetId: string; nestedColumnIndex: number } | null>(null);
   const [deviceMode, setDeviceMode] = useState<DeviceMode>('desktop');
+  
+  // Inspector Panel state
+  const [inspectorOpen, setInspectorOpen] = useState(false);
+  const [inspectorType, setInspectorType] = useState<'widget' | 'column' | 'row' | null>(null);
+  const [inspectorData, setInspectorData] = useState<any>(null);
+  const [inspectorCallbacks, setInspectorCallbacks] = useState<{
+    onUpdate: (updates: any) => void;
+    onDelete?: () => void;
+  } | null>(null);
 
   // Helper: Check if widget already exists in target to prevent duplicates
   const widgetExistsInColumn = (column: Widget[], widgetId: string): boolean => {
@@ -61,12 +79,35 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
   }, []);
 
   const addRow = (columnCount: 1 | 2 | 3 | 4) => {
-    const newRow: Row = {
-      id: `row-${Date.now()}`,
-      columnCount,
-      columns: Array(columnCount).fill([]).map(() => []),
-    };
-    onChange({ ...data, rows: [...data.rows, newRow] });
+    if (columnCount === 1) {
+      // 1 column = Standalone row (no Column widget, no nested)
+      const newRow: Row = {
+        id: `row-${Date.now()}`,
+        columnCount: 1,
+        columns: [[]], // Single empty column
+        columnSettings: initializeColumnSettings(1) // Initialize with 100% desktop width
+      };
+      onChange({ ...data, rows: [...data.rows, newRow] });
+    } else {
+      // 2/3/4 columns = Row with Column widget containing nested columns (Elementor style)
+      const columnWidget: Widget = {
+        id: `widget-${Date.now()}`,
+        type: 'column',
+        columns: Array(columnCount).fill([]).map(() => []), // Nested columns inside Column widget
+        columnCount: columnCount,
+        gap: '8px',
+        columnSettings: initializeColumnSettings(columnCount) // Initialize with proper desktop widths
+      };
+
+      // Create 1 row with 1 column, containing the Column widget
+      const newRow: Row = {
+        id: `row-${Date.now()}`,
+        columnCount: 1,
+        columns: [[columnWidget]], // Column widget inside the single column
+        columnSettings: initializeColumnSettings(1) // Row itself has 1 column at 100%
+      };
+      onChange({ ...data, rows: [...data.rows, newRow] });
+    }
   };
 
   const addWidget = (type: WidgetType) => {
@@ -88,43 +129,7 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
     onChange({ ...data, rows: updatedRows });
   };
 
-  const createWidget = (type: WidgetType): Widget => {
-    const baseWidget = { id: `widget-${Date.now()}`, type };
-    
-    switch (type) {
-      case 'heading':
-        return { ...baseWidget, type: 'heading', level: 2, text: '', alignment: 'left' };
-      case 'paragraph':
-        return { ...baseWidget, type: 'paragraph', text: '', alignment: 'left' };
-      case 'image':
-        return { ...baseWidget, type: 'image', url: '', alt: '', width: '100%', alignment: 'center' };
-      case 'youtube':
-        return { ...baseWidget, type: 'youtube', videoId: '', width: '100%', height: '400px' };
-      case 'column':
-        return { 
-          ...baseWidget, 
-          type: 'column', 
-          columns: [[]], // Start with 1 nested column
-          columnCount: 1,
-          gap: '12px',
-          columnSettings: [
-            { width: 100, padding: '12px', margin: '0px', gap: '12px' }
-          ]
-        };
-      case 'table':
-        return { ...baseWidget, type: 'table', headers: ['Column 1', 'Column 2'], rows: [['', '']] };
-      case 'horizontal-line':
-        return { ...baseWidget, type: 'horizontal-line', style: 'solid', color: '#e5e7eb' };
-      case 'button':
-        return { ...baseWidget, type: 'button', text: 'Click me', url: '#', variant: 'primary', size: 'md', alignment: 'left' };
-      case 'icon':
-        return { ...baseWidget, type: 'icon', iconName: 'star', size: 24, color: '#000000', alignment: 'left' };
-      case 'list':
-        return { ...baseWidget, type: 'list', items: ['Item 1', 'Item 2'], ordered: false };
-      default:
-        return { ...baseWidget, type: 'paragraph', text: '', alignment: 'left' };
-    }
-  };
+  const createWidget = createWidgetFromFactory;
 
   const updateWidget = (rowId: string, columnIndex: number, widgetId: string, updates: Partial<Widget> | Widget) => {
     const updatedRows = data.rows.map((row) => {
@@ -183,6 +188,16 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
       return row;
     }).filter(Boolean) as Row[];
 
+    onChange({ ...data, rows: updatedRows });
+  };
+
+  const updateRowPadding = (rowId: string, padding: string) => {
+    const updatedRows = data.rows.map((row) => {
+      if (row.id === rowId) {
+        return { ...row, padding };
+      }
+      return row;
+    });
     onChange({ ...data, rows: updatedRows });
   };
 
@@ -614,14 +629,25 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
               onNestedWidgetDragStart={(w, nestedColIdx) => handleNestedWidgetDragStart(widget.id, w, nestedColIdx)}
               onNestedWidgetDragEnd={handleNestedWidgetDragEnd}
               onMainWidgetDroppedInNested={(payload) => handleMainWidgetDroppedInNested(payload, widget.id, rowId, columnIndex)}
+              deviceMode={deviceMode}
+              onOpenInspector={onOpenInspector}
             />
           );
         case 'table':
+          return (
+            <TableWidgetRenderer
+              widget={widget}
+              onUpdate={(w) => updateWidget(rowId, columnIndex, widget.id, w)}
+              onDelete={() => deleteWidget(rowId, columnIndex, widget.id)}
+            />
+          );
         case 'icon':
           return (
-            <div className="p-4 border border-gray-200 rounded-lg bg-gray-50">
-              <p className="text-sm text-gray-500">Widget type: {widget.type} (Coming soon)</p>
-            </div>
+            <IconWidgetRenderer
+              widget={widget}
+              onUpdate={(w) => updateWidget(rowId, columnIndex, widget.id, w)}
+              onDelete={() => deleteWidget(rowId, columnIndex, widget.id)}
+            />
           );
         default:
           return (
@@ -632,8 +658,8 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
       }
     })();
 
-    const widgetPadding = (widget as any).padding || '0px';
-    const widgetMargin = (widget as any).margin || '0px';
+    const widgetPadding = (widget as any).padding ?? '0px';
+    const widgetMargin = (widget as any).margin ?? '0px';
 
     // Column widget is special - no widget settings, no drag, just the nested columns
     if (widget.type === 'column') {
@@ -660,12 +686,30 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
         {/* Widget Controls - RIGHT (Elementor style) */}
         <div className="absolute -top-2 -right-2 z-10 opacity-0 group-hover/widget:opacity-100 transition-opacity">
           <div className="bg-white rounded-full shadow-md">
-            <WidgetSettingsDropdown
-              widget={widget}
-              onUpdate={(updates) => updateWidget(rowId, columnIndex, widget.id, updates)}
-              onDelete={() => deleteWidget(rowId, columnIndex, widget.id)}
-              icon={<SlidersHorizontal className="w-4 h-4 text-gray-600" />}
-            />
+            <button
+              onClick={() => {
+                if (onOpenInspector) {
+                  // Use parent's inspector (left sidebar)
+                  onOpenInspector('widget', widget, {
+                    onUpdate: (updates) => updateWidget(rowId, columnIndex, widget.id, updates),
+                    onDelete: () => deleteWidget(rowId, columnIndex, widget.id)
+                  });
+                } else {
+                  // Fallback to local inspector (overlay)
+                  setInspectorType('widget');
+                  setInspectorData(widget);
+                  setInspectorCallbacks({
+                    onUpdate: (updates) => updateWidget(rowId, columnIndex, widget.id, updates),
+                    onDelete: () => deleteWidget(rowId, columnIndex, widget.id)
+                  });
+                  setInspectorOpen(true);
+                }
+              }}
+              className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+              title="Widget Settings"
+            >
+              <SlidersHorizontal className="w-4 h-4 text-gray-600" />
+            </button>
           </div>
         </div>
         {widgetElement}
@@ -706,7 +750,7 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
         <div className="flex items-center justify-between gap-4">
           {/* Left: Widgets */}
           <div className="flex items-center gap-3 flex-1 min-w-0">
-            <span className="text-xs font-medium text-gray-500 whitespace-nowrap">Add Widget:</span>
+            <span className="text-xs font-medium text-gray-500 whitespace-nowrap">Drag widgets to columns:</span>
             <div className="overflow-x-auto">
               <WidgetToolbar onAddWidget={addWidget} onDragStart={handleToolbarDragStart} />
             </div>
@@ -717,7 +761,7 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
       </div>
 
       {/* Editor Canvas - Responsive viewport wrapper */}
-      <div className="p-4 bg-gray-50 block-editor-canvas min-h-[400px] flex justify-center">
+      <div className="p-4 bg-white block-editor-canvas min-h-[400px] flex justify-center">
         <div 
           className="transition-all duration-300"
           style={{ 
@@ -735,40 +779,32 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
             {data.rows.map((row) => {
               const responsiveColCount = getResponsiveColumnCount(row);
               return (
-              <div key={row.id} className="bg-white border border-gray-200 rounded-lg p-4 relative">
-                {/* Row Controls */}
-                <div className="absolute -top-3 right-2 flex items-center gap-2 opacity-0 hover:opacity-100 transition-opacity">
-                  <ResponsiveColumnSettings
-                    rowId={row.id}
-                    currentDevice={deviceMode}
-                    columnCount={row.columnCount}
-                    responsiveLayout={row.responsiveLayout}
-                    onUpdate={(layout) => updateResponsiveLayout(row.id, layout)}
-                  />
-                  <button
-                    onClick={() => deleteRow(row.id)}
-                    className="p-2 bg-white hover:bg-red-50 rounded-lg shadow-md transition-colors"
-                    title="Delete Row"
-                  >
-                    <Trash2 className="w-4 h-4 text-red-600" />
-                  </button>
-                </div>
+              <div key={row.id} className="bg-white border border-gray-200 rounded-lg relative" style={{ padding: row.padding || '0px' }}>
                 {/* Columns */}
                 <div 
-                  className={`grid`}
+                  className="flex flex-wrap"
                   style={{ 
-                    gridTemplateColumns: `repeat(${responsiveColCount}, 1fr)`,
-                    gap: row.columnSettings?.[0]?.gap || '12px' 
+                    gap: row.gap || '8px' // Gap between columns (default 8px)
                   }}
                 >
                   {row.columns.map((column, columnIndex) => {
                     const colSettings = row.columnSettings?.[columnIndex] || {};
                     const colStyle = {
-                      width: colSettings.width ? `${colSettings.width}%` : undefined,
-                      padding: colSettings.padding || '12px',
+                      padding: colSettings.padding || '8px', // Default 8px padding for columns (Elementor style)
                       margin: colSettings.margin || '0px',
                     };
                     
+                    // Get responsive width based on current device
+                    const defaultWidth = 100 / row.columns.length;
+                    const columnWidth = getWidthForDevice(colSettings, deviceMode, defaultWidth);
+                    const gap = row.gap || '8px';
+                    
+                    // Calculate flex-basis accounting for gap
+                    // For N columns with gap, each column needs: width% - (gap * (N-1) / N)
+                    const gapAdjustment = row.columns.length > 1 ? `(${gap} * ${row.columns.length - 1} / ${row.columns.length})` : '0px';
+                    const flexBasis = `calc(${columnWidth}% - ${gapAdjustment})`;
+                    
+                    // Use flex-basis for responsive layout (supports wrapping)
                     return (
                     <div
                       key={columnIndex}
@@ -778,23 +814,48 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
                       className={`relative group/column transition-opacity ${
                         draggedColumn?.rowId === row.id && draggedColumn?.columnIndex === columnIndex ? 'opacity-50' : ''
                       }`}
-                      style={{ width: colStyle.width }}
+                      style={{ 
+                        flex: `0 0 ${flexBasis}`,
+                        maxWidth: flexBasis,
+                        margin: colStyle.margin // Margin on outer div (space outside green border)
+                      }}
                     >
-                      {/* Column Settings - LEFT (Elementor style) */}
-                      <div className="absolute -top-2 -left-2 z-10 opacity-0 group-hover/column:opacity-100 transition-opacity">
+                      {/* Column Settings - Top Center (Outside, above row) */}
+                      <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-50 opacity-0 group-hover/column:opacity-100 transition-opacity">
                         <div className="bg-white rounded-full shadow-md">
-                          <ColumnSettingsDropdown
-                            settings={colSettings}
-                            onUpdate={(settings) => updateColumnSettings(row.id, columnIndex, settings)}
-                            onDelete={() => deleteColumn(row.id, columnIndex)}
-                            deleteLabel={row.columns.length === 1 ? "Delete Row" : "Delete Column"}
-                            icon={<Columns3 className="w-4 h-4 text-gray-600" />}
-                          />
+                          <button
+                            onClick={() => {
+                              if (onOpenInspector) {
+                                // Use parent's inspector (left sidebar)
+                                onOpenInspector('column', colSettings, {
+                                  onUpdate: (settings) => updateColumnSettings(row.id, columnIndex, settings),
+                                  onDelete: () => deleteColumn(row.id, columnIndex)
+                                }, deviceMode);
+                              } else {
+                                // Fallback to local inspector (overlay)
+                                setInspectorType('column');
+                                setInspectorData(colSettings);
+                                setInspectorCallbacks({
+                                  onUpdate: (settings) => updateColumnSettings(row.id, columnIndex, settings),
+                                  onDelete: () => deleteColumn(row.id, columnIndex)
+                                });
+                                setInspectorOpen(true);
+                              }
+                            }}
+                            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                            title="Column Settings"
+                          >
+                            <SlidersHorizontal className="w-4 h-4 text-gray-600" />
+                          </button>
                         </div>
                       </div>
 
                       <div
-                        style={{ padding: colStyle.padding, margin: colStyle.margin }}
+                        style={{ 
+                          padding: colStyle.padding,
+                          border: column.length > 0 ? 'none' : undefined,
+                          outline: column.length > 0 ? 'none' : undefined
+                        }}
                         onClick={() => {
                           setSelectedRowId(row.id);
                           setSelectedColumnIndex(columnIndex);
@@ -802,18 +863,23 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
                         onDragOver={(e) => handleDragOver(e, row.id, columnIndex)}
                         onDragLeave={handleDragLeave}
                         onDrop={(e) => handleDrop(e, row.id, columnIndex)}
-                        className={`min-h-[100px] border-2 border-dashed rounded-lg p-3 transition-colors ${
-                          selectedRowId === row.id && selectedColumnIndex === columnIndex
-                            ? 'border-green-500 bg-green-50'
-                            : dragOverTarget?.rowId === row.id && dragOverTarget?.columnIndex === columnIndex
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-300 hover:border-green-400'
+                        className={`relative min-h-[100px] rounded-lg transition-colors ${
+                          column.length === 0 
+                            ? `border border-dashed ${
+                                selectedRowId === row.id && selectedColumnIndex === columnIndex
+                                  ? 'border-green-500'
+                                  : dragOverTarget?.rowId === row.id && dragOverTarget?.columnIndex === columnIndex
+                                  ? 'border-blue-500 bg-blue-50'
+                                  : 'border-gray-300 hover:border-green-400'
+                              }`
+                            : ''
                         }`}
                       >
+
                         {column.length === 0 ? (
-                          <p className="text-sm text-gray-400 text-center py-8">
-                            Click to select, then add widgets from toolbar above. Or drag widgets here.
-                          </p>
+                          <div className="flex items-center justify-center py-12">
+                            <div className="text-4xl text-gray-300">+</div>
+                          </div>
                         ) : (
                           <div className="space-y-3">
                             {column.map((widget, widgetIndex) => (
@@ -851,6 +917,20 @@ export function BlockEditor({ data, onChange }: BlockEditorProps) {
 
       {/* Column Selector */}
       <ColumnSelector onSelectColumns={addRow} />
+
+      {/* Inspector Panel */}
+      <InspectorPanel
+        isOpen={inspectorOpen}
+        onClose={() => setInspectorOpen(false)}
+        type={inspectorType}
+        data={inspectorData}
+        onUpdate={(updates) => {
+          if (inspectorCallbacks?.onUpdate) {
+            inspectorCallbacks.onUpdate(updates);
+          }
+        }}
+        onDelete={inspectorCallbacks?.onDelete}
+      />
     </div>
   );
 }

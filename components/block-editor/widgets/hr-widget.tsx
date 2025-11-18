@@ -2,6 +2,7 @@
 
 import { HorizontalLineWidget } from "../types";
 import { Trash2, GripVertical } from "lucide-react";
+import { FastColorPicker } from "../fast-color-picker";
 
 interface HRWidgetRendererProps {
   widget: HorizontalLineWidget;
@@ -21,7 +22,7 @@ export function HRWidgetRenderer({ widget, onUpdate, onDelete }: HRWidgetRendere
         </button>
       </div>
 
-      <div className="flex gap-2 mb-3">
+      <div className="flex gap-2 mb-3 items-center">
         <select
           value={widget.style}
           onChange={(e) => onUpdate({ ...widget, style: e.target.value as any })}
@@ -31,11 +32,9 @@ export function HRWidgetRenderer({ widget, onUpdate, onDelete }: HRWidgetRendere
           <option value="dashed">Dashed</option>
           <option value="dotted">Dotted</option>
         </select>
-        <input
-          type="color"
+        <FastColorPicker
           value={widget.color}
-          onChange={(e) => onUpdate({ ...widget, color: e.target.value })}
-          className="w-16 h-8 border border-gray-300 rounded cursor-pointer"
+          onChange={(color) => onUpdate({ ...widget, color })}
         />
       </div>
 

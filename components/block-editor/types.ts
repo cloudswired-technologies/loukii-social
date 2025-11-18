@@ -14,8 +14,10 @@ export type WidgetType =
 export interface BaseWidget {
   id: string;
   type: WidgetType;
-  padding?: string; // e.g., "12px"
+  alignment?: 'left' | 'center' | 'right' | 'justify';
+  padding?: string; // e.g., "16px"
   margin?: string; // e.g., "8px"
+  color?: string; // Text color e.g., "#000000"
 }
 
 export interface HeadingWidget extends BaseWidget {
@@ -29,6 +31,7 @@ export interface ParagraphWidget extends BaseWidget {
   type: 'paragraph';
   text: string;
   alignment: 'left' | 'center' | 'right' | 'justify';
+  fontSize?: string; // e.g., "16px", "1rem"
 }
 
 export interface ImageWidget extends BaseWidget {
@@ -75,6 +78,7 @@ export interface ButtonWidget extends BaseWidget {
   variant: 'primary' | 'secondary' | 'outline';
   size: 'sm' | 'md' | 'lg';
   alignment: 'left' | 'center' | 'right';
+  backgroundColor?: string; // Button background color
 }
 
 export interface IconWidget extends BaseWidget {
@@ -106,10 +110,12 @@ export type Widget =
 export type DeviceMode = 'desktop' | 'tablet' | 'mobile';
 
 export interface ColumnSettings {
-  width?: number; // percentage
+  width?: number; // percentage (deprecated - use widthDesktop)
+  widthDesktop?: number; // Desktop width percentage (0-100)
+  widthTablet?: number; // Tablet width percentage (0-100), optional
+  widthMobile?: number; // Mobile width percentage (0-100), optional
   padding?: string; // e.g., "16px"
   margin?: string; // e.g., "8px"
-  gap?: string; // spacing between columns e.g., "12px"
 }
 
 export interface ResponsiveColumnSettings {
@@ -128,6 +134,8 @@ export interface Row {
   id: string;
   columns: Widget[][];
   columnCount: 1 | 2 | 3 | 4;
+  padding?: string; // Row spacing (default 8px)
+  gap?: string; // Gap between columns (default 8px)
   columnSettings?: ColumnSettings[]; // Desktop settings (backward compatible)
   responsiveLayout?: ResponsiveLayout; // Responsive column counts
   responsiveColumnSettings?: ResponsiveColumnSettings; // Settings per device
