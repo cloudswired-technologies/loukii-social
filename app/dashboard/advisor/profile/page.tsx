@@ -1,25 +1,12 @@
-"use client";
+﻿"use client";
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
-import { BlockEditor } from "@/components/block-editor/block-editor";
-import { BlockEditorData } from "@/components/block-editor/types";
-import { InspectorPanel } from "@/components/block-editor/inspector-panel";
 
 export default function AdvisorProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
-  
-  // Inspector Panel state
-  const [inspectorOpen, setInspectorOpen] = useState(false);
-  const [inspectorType, setInspectorType] = useState<'widget' | 'column' | 'row' | null>(null);
-  const [inspectorData, setInspectorData] = useState<any>(null);
-  const [inspectorCallbacks, setInspectorCallbacks] = useState<{
-    onUpdate: (updates: any) => void;
-    onDelete?: () => void;
-  } | null>(null);
-  const [inspectorDevice, setInspectorDevice] = useState<'desktop' | 'tablet' | 'mobile'>('desktop');
   
   const [personalInfo, setPersonalInfo] = useState({
     fullName: "", 
@@ -69,42 +56,13 @@ export default function AdvisorProfilePage() {
   };
 
   const [termsAccepted, setTermsAccepted] = useState(false);
-
-  // Bio content - Block Editor Data with default paragraph widget
-  const [bioContent, setBioContent] = useState<BlockEditorData>({
-    rows: [
-      {
-        id: `row-${Date.now()}`,
-        columnCount: 1,
-        columns: [[
-          {
-            id: `widget-${Date.now()}`,
-            type: 'paragraph',
-            text: '',
-            alignment: 'left',
-            padding: '0px',
-            margin: '0px'
-          }
-        ]],
-        columnSettings: [
-          {
-            widthDesktop: 100,
-            widthTablet: 100,
-            widthMobile: 100,
-            padding: '8px',
-            margin: '0px'
-          }
-        ],
-        gap: '8px',
-        padding: '0px'
-      }
-    ]
-  });
+  const [personalBio, setPersonalBio] = useState("");
+  const [bioCharCount, setBioCharCount] = useState(0);
 
   const steps = [
     "Personal Information",
     "Professional Details",
-    "Personal Bio", 
+    "Personal Bio",
     "Review & Save"
   ];
 
@@ -211,45 +169,39 @@ export default function AdvisorProfilePage() {
       <div className="flex-1 overflow-y-auto">
         
         {/* Top Header */}
-        <div className="bg-white px-4 md:px-8 py-6 mb-6 md:mb-10">
-          <h1 className="text-xl md:text-2xl font-bold text-gray-900 mb-1">Update Profile</h1>
+        <div className="bg-white px-8 py-6 mb-10">
+          <h1 className="text-2xl font-bold text-gray-900 mb-1">Update Profile</h1>
           <p className="text-sm text-gray-600">
             Complete your professional advisor profile to start connecting with clients
           </p>
         </div>
         
-        <div className="px-4 md:px-8 pb-0">
+        <div className="px-8 pb-0">
 
         {/* Layout: Step Menu Left + Content Box Right */}
-        <div className="flex flex-col md:flex-row gap-4 md:gap-8 items-start pb-0">
+        <div className="flex gap-8 items-start pb-0">
           
-          {/* Step Menu - With Active Indicator + Inspector Panel */}
-          <div className="w-full md:w-64 flex-shrink-0 md:sticky md:top-4 md:self-start md:max-h-[calc(100vh-2rem)] md:overflow-y-auto">
-            {/* Steps */}
-            <div className="relative mb-6">
-              {/* Continuous vertical line - gray background - hidden on mobile */}
-              <div className="hidden md:block absolute left-0 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+          {/* Step Menu - With Active Indicator */}
+          <div className="w-56 flex-shrink-0">
+            <div className="relative">
+              {/* Continuous vertical line - gray background */}
+              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-gray-300"></div>
               
-              {/* Active step indicator - green line - hidden on mobile */}
+              {/* Active step indicator - green line */}
               <div 
-                className="hidden md:block absolute left-0 w-1 bg-green-600 transition-all duration-500 ease-in-out rounded-full"
+                className="absolute left-0 w-0.5 bg-green-600 transition-all duration-300"
                 style={{
                   top: `${(currentStep - 1) * 48}px`,
                   height: '48px'
                 }}
               ></div>
               
-              {/* Mobile: Horizontal scroll, Desktop: Vertical list */}
-              <div className="flex md:flex-col gap-2 md:space-y-0 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0">
+              <div className="space-y-3">
                 {steps.map((step, index) => (
                   <button
                     key={index}
                     onClick={() => setCurrentStep(index + 1)}
-                    className={`relative whitespace-nowrap md:whitespace-normal w-auto md:w-full text-left px-4 md:pl-4 py-3 rounded-lg md:rounded-none transition-all duration-200 ${
-                      currentStep === index + 1
-                        ? "bg-green-50 md:bg-transparent"
-                        : "bg-gray-50 md:bg-transparent"
-                    }`}
+                    className="relative w-full text-left pl-4 py-3 group"
                   >
                     <span className={`text-sm ${
                       currentStep === index + 1
@@ -262,30 +214,10 @@ export default function AdvisorProfilePage() {
                 ))}
               </div>
             </div>
-
-            {/* Inspector Panel - Only show on Step 3 (Personal Bio) */}
-            {currentStep === 3 && (
-              <div className="hidden md:block">
-                <InspectorPanel
-                  isOpen={inspectorOpen}
-                  onClose={() => setInspectorOpen(false)}
-                  type={inspectorType}
-                  data={inspectorData}
-                  onUpdate={(updates) => {
-                    if (inspectorCallbacks?.onUpdate) {
-                      inspectorCallbacks.onUpdate(updates);
-                    }
-                  }}
-                  onDelete={inspectorCallbacks?.onDelete}
-                  inline={true}
-                  currentDevice={inspectorDevice}
-                />
-              </div>
-            )}
           </div>
 
           {/* Content Box (Apple Style) */}
-          <div className="flex-1 bg-white rounded-2xl md:rounded-t-2xl shadow-sm border border-gray-100 md:border-b-0 px-4 md:px-8 lg:px-16 pt-6 md:pt-12 pb-6 md:pb-12 hover:shadow-md transition-shadow duration-300">
+          <div className="flex-1 bg-white rounded-t-2xl shadow-sm border border-gray-100 border-b-0 px-16 pt-12 pb-12 hover:shadow-md transition-shadow duration-300">
             
             {/* Step 1: Personal Information */}
             {currentStep === 1 && (
@@ -603,7 +535,7 @@ export default function AdvisorProfilePage() {
                         <svg className="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                         </svg>
-                        Upload multiple poster images to showcase on your profile. These will be displayed as slides on your profile page. Required size: 1000px width × 500px height
+                        Upload multiple poster images to showcase on your profile. These will be displayed as slides on your profile page. Required size: 1000px width ├ù 500px height
                       </p>
                     </div>
 
@@ -869,39 +801,54 @@ export default function AdvisorProfilePage() {
             {/* Step 3: Personal Bio */}
             {currentStep === 3 && (
               <div>
-                <div className="mb-4 md:mb-6">
-                  <h2 className="text-lg md:text-xl font-semibold text-gray-900 mb-1">Personal Bio</h2>
-                  <p className="text-xs md:text-sm text-gray-600">
-                    Build your professional bio using drag-and-drop widgets. Select columns, then add widgets to create your layout.
+                <div className="mb-6">
+                  <h2 className="text-xl font-semibold text-gray-900 mb-1">Personal Bio</h2>
+                  <p className="text-sm text-gray-600">
+                    Write a compelling bio that showcases your expertise and experience
                   </p>
                 </div>
 
-                {/* Block Editor */}
-                <div className="mb-4 md:mb-6 border border-gray-200 rounded-xl overflow-hidden">
-                  <BlockEditor
-                    data={bioContent}
-                    onChange={setBioContent}
-                    onOpenInspector={(type, data, callbacks, currentDevice) => {
-                      setInspectorType(type);
-                      setInspectorData(data);
-                      setInspectorCallbacks(callbacks);
-                      setInspectorDevice(currentDevice || 'desktop');
-                      setInspectorOpen(true);
+                {/* Bio Textarea */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Your Professional Bio *
+                  </label>
+                  <textarea
+                    value={personalBio}
+                    onChange={(e) => {
+                      const text = e.target.value;
+                      if (text.length <= 1000) {
+                        setPersonalBio(text);
+                        setBioCharCount(text.length);
+                      }
                     }}
+                    rows={12}
+                    maxLength={1000}
+                    placeholder="Tell clients about your background, expertise, achievements, and what makes you unique as an advisor...&#10;&#10;Example:&#10;I am a certified financial planner with over 10 years of experience helping families secure their financial future. Specializing in retirement planning and investment strategies, I have helped over 500 clients achieve their financial goals. My approach focuses on personalized solutions tailored to each client's unique situation."
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm resize-none"
+                    required
                   />
+                  <div className="flex justify-between items-center mt-2">
+                    <p className="text-xs text-gray-500">
+                      Write a detailed bio to help clients understand your expertise
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      {bioCharCount}/1000 characters
+                    </p>
+                  </div>
                 </div>
 
                 {/* Navigation */}
-                <div className="flex flex-col sm:flex-row gap-3 sm:justify-between pt-4 border-t border-gray-100">
+                <div className="flex justify-between pt-4 border-t border-gray-200">
                   <button
                     onClick={() => setCurrentStep(2)}
-                    className="w-full sm:w-auto px-6 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-900 text-sm font-medium rounded-xl transition-all duration-200"
+                    className="px-6 py-2.5 bg-gray-200 hover:bg-gray-300 text-gray-900 text-sm font-medium rounded-lg"
                   >
                     Back
                   </button>
                   <button
                     onClick={() => setCurrentStep(4)}
-                    className="w-full sm:w-auto px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="px-6 py-2.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg"
                   >
                     Next
                   </button>

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { MessageCircle, Eye, Star, Share2, User } from "lucide-react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { CommentsModal } from "./comments-modal";
 
 interface LoopCardProps {
@@ -11,6 +12,7 @@ interface LoopCardProps {
     role: string;
     avatar: string;
     verified?: boolean;
+    slug?: string;
   };
   content: string;
   images?: string[];
@@ -23,8 +25,15 @@ interface LoopCardProps {
 }
 
 export function LoopCard({ author, content, images, stats, timestamp }: LoopCardProps) {
+  const router = useRouter();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
+
+  const handleViewProfile = () => {
+    if (author.slug) {
+      router.push(`/advisor/${author.slug}`);
+    }
+  };
 
   // Dummy comments data
   const allComments = [
@@ -129,7 +138,10 @@ export function LoopCard({ author, content, images, stats, timestamp }: LoopCard
           
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
-            <button className="ripple flex items-center gap-1 md:gap-1.5 px-3 py-1.5 md:px-4 md:py-2 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 text-xs md:text-sm font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 shadow-sm">
+            <button 
+              onClick={handleViewProfile}
+              className="ripple flex items-center gap-1 md:gap-1.5 px-3 py-1.5 md:px-4 md:py-2 bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 text-xs md:text-sm font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-800 transition-all hover:scale-105 active:scale-95 shadow-sm"
+            >
               <User className="w-3 h-3 md:w-4 md:h-4" />
               View Profile
             </button>

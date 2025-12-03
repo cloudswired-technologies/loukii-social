@@ -12,7 +12,6 @@ import {
   HelpCircle, 
   Settings,
   LogOut,
-  FileText
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
@@ -51,12 +50,6 @@ export function AdvisorDashboardSidebar() {
       label: "Messages",
       icon: MessageSquare,
       href: "/dashboard/advisor/messages",
-    },
-    {
-      id: "insights",
-      label: "Manage Insights",
-      icon: FileText,
-      href: "/dashboard/advisor/insights",
     },
     {
       id: "notifications",

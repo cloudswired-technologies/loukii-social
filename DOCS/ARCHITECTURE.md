@@ -5,11 +5,15 @@
 ### Technology Stack
 
 ```
-Frontend Framework: Next.js 14 (App Router)
+Frontend Framework: Next.js 15+ (App Router)
 Language: TypeScript
 Styling: Tailwind CSS
+UI Components: Radix UI
 Icons: Lucide React
-State Management: React Hooks (useState, usePathname)
+Rich Text Editor: Tiptap
+Database: Supabase (PostgreSQL)
+Authentication: Supabase Auth
+State Management: React Hooks (useState, useEffect)
 Image Optimization: Next.js Image Component
 Deployment: Vercel
 ```
@@ -27,40 +31,73 @@ Desktop: ≥ 1024px  (lg)
 ```
 loukii-social/
 ├── app/
-│   ├── layout.tsx              # Root layout with SEO metadata
-│   ├── page.tsx                # Advisors feed (homepage)
-│   ├── insights/
-│   │   └── page.tsx           # Insights/articles feed
-│   └── globals.css            # Global styles & Tailwind
+│   ├── layout.tsx                    # Root layout with SEO metadata
+│   ├── page.tsx                      # Advisors feed (homepage)
+│   ├── globals.css                   # Global styles & Tailwind
+│   ├── advisor/[slug]/              # Dynamic advisor profile pages
+│   ├── auth/                        # Authentication pages
+│   │   ├── login/
+│   │   ├── register/
+│   │   ├── forgot-password/
+│   │   ├── callback/               # OAuth callback
+│   │   └── confirm/                # Email confirmation
+│   ├── dashboard/advisor/          # Advisor dashboard
+│   │   ├── page.tsx               # Overview with analytics
+│   │   ├── profile/               # Profile management
+│   │   ├── insights/              # Content creation
+│   │   ├── reviews/               # Review management
+│   │   ├── messages/              # Messaging system
+│   │   ├── notifications/         # Notifications
+│   │   ├── support/               # Support tickets
+│   │   └── account/               # Account settings
+│   ├── insights/                   # Public insights feed
+│   ├── legal/                      # Legal pages
+│   │   ├── page.tsx               # Legal hub
+│   │   ├── terms-for-reviewers/
+│   │   ├── terms-for-advisors/
+│   │   └── terms-for-everyone/
+│   ├── what-is-loukii/            # About page
+│   ├── faq/                        # FAQ page
+│   ├── contact/                    # Contact page
+│   ├── privacy/                    # Privacy policy
+│   └── terms/                      # Terms of service
 │
 ├── components/
-│   ├── top-header.tsx         # Main navigation with dynamic filters
-│   ├── left-navigation.tsx    # Desktop sidebar navigation
-│   ├── mobile-bottom-nav.tsx  # Mobile bottom navigation bar
-│   ├── right-sidebar.tsx      # Homepage trending sidebar
-│   ├── insights-sidebar.tsx   # Insights page sidebar
-│   ├── loop-card.tsx          # Advisor profile card
-│   ├── article-card.tsx       # Article preview card
-│   ├── comments-modal.tsx     # Reviews modal dialog
-│   ├── search-sidebar.tsx     # Mobile/tablet search sidebar
-│   ├── filter-dropdown.tsx    # Desktop filter dropdown
-│   └── user-menu.tsx          # User profile menu
+│   ├── editors/
+│   │   └── tiptap-editor.tsx      # Tiptap rich text editor
+│   ├── ui/                         # Radix UI components
+│   ├── top-header.tsx             # Main navigation
+│   ├── left-navigation.tsx        # Desktop sidebar
+│   ├── mobile-bottom-nav.tsx      # Mobile navigation
+│   ├── right-sidebar.tsx          # Trending sidebar
+│   ├── insights-sidebar.tsx       # Insights sidebar
+│   ├── loop-card.tsx              # Advisor profile card
+│   ├── article-card.tsx           # Article preview card
+│   ├── comments-modal.tsx         # Reviews modal
+│   ├── search-sidebar.tsx         # Mobile search
+│   ├── filter-dropdown.tsx        # Filter dropdown
+│   ├── user-menu.tsx              # User menu
+│   ├── legal-sidebar.tsx          # Legal pages sidebar
+│   ├── landing-header.tsx         # Landing page header
+│   ├── advisor-dashboard-sidebar.tsx  # Dashboard sidebar
+│   └── dashboard-header.tsx       # Dashboard header
 │
-├── docs/
-│   ├── README.md              # Complete documentation
-│   ├── DEPLOYMENT.md          # Deployment guide
-│   ├── CONTRIBUTING.md        # Contribution guidelines
-│   ├── CHANGELOG.md           # Version history
-│   ├── OPTIMIZATION-SUMMARY.md # Performance & SEO
-│   ├── MOBILE-OPTIMIZATION.md  # Mobile/tablet guide
-│   ├── FOLDER-STRUCTURE.md     # Documentation organization
-│   ├── ARCHITECTURE.md         # This file
-│   └── FINAL-SUMMARY.md        # Project completion summary
+├── lib/
+│   ├── supabase/
+│   │   ├── client.ts              # Client-side Supabase
+│   │   ├── server.ts              # Server-side Supabase
+│   │   └── middleware.ts          # Auth middleware
+│   └── utils.ts                    # Utility functions
+│
+├── DOCS/
+│   ├── ARCHITECTURE.md            # This file
+│   ├── README.md                  # Project documentation
+│   └── [assets]                   # Images and logos
 │
 ├── public/
-│   └── docs/                  # Sample images and assets
+│   └── docs/                      # Public assets
 │
-└── [config files]             # Next.js, TypeScript, Tailwind configs
+└── [config files]                 # Next.js, TypeScript, Tailwind
 ```
 
 ## 🎨 Component Architecture
@@ -299,18 +336,53 @@ Component → Local State → Render
 Component → API Call → Supabase → Response → State → Render
 ```
 
+## ✅ Implemented Features
+
+- [x] Supabase integration
+- [x] User authentication (Email + Google OAuth)
+- [x] Advisor dashboard with analytics
+- [x] Profile management system
+- [x] Tiptap rich text editor
+- [x] Dynamic advisor profiles
+- [x] Review system
+- [x] Legal pages structure
+- [x] Security headers
+- [x] Image optimization
+- [x] Responsive design
+
 ## 🔄 Future Enhancements
 
-- [ ] Supabase integration
-- [ ] Real-time updates
-- [ ] User authentication
-- [ ] Actual search functionality
+- [ ] Real-time messaging
+- [ ] Advanced search with filters
 - [ ] Filter persistence
-- [ ] Analytics integration
+- [ ] Analytics dashboard improvements
 - [ ] PWA support
 - [ ] Internationalization (i18n)
+- [ ] Email notifications
+- [ ] Payment integration
+
+## 🧹 Recent Optimizations (Nov 2024)
+
+### Removed:
+- **Lexical Editor** - Full playground with 257 files removed
+- **Excalidraw** - Drawing integration not needed
+- **Protected/Tutorial pages** - Supabase template pages
+- **Unused dependencies** - Reduced from 60+ to 30 packages
+- **Template components** - deploy-button, env-var-warning, etc.
+
+### Consolidated:
+- **Single Editor** - Tiptap for all rich text editing
+- **Optimized imports** - Package optimization in next.config
+- **Security** - Added comprehensive security headers
+- **Dependencies** - Removed 30+ unused packages
+
+### Performance Impact:
+- **Bundle size** - Reduced by ~60%
+- **node_modules** - Significantly smaller
+- **Build time** - Faster builds
+- **Runtime** - Improved page load times
 
 ---
 
-**Last Updated**: November 12, 2024
-**Version**: 1.0.0
+**Last Updated**: November 24, 2024
+**Version**: 2.0.0

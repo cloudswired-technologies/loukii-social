@@ -1,10 +1,73 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import { LeftNavigation } from "@/components/left-navigation";
 import { RightSidebar } from "@/components/right-sidebar";
 import { TopHeader } from "@/components/top-header";
 import { LoopCard } from "@/components/loop-card";
 import { MobileBottomNav } from "@/components/mobile-bottom-nav";
+import { createClient } from "@/lib/supabase/client";
 
 export default function Home() {
+  const [loops, setLoops] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchAdvisorsAndLoops() {
+      const supabase = createClient();
+      
+      try {
+        // Fetch all published advisor profiles
+        const { data: advisors, error } = await supabase
+          .from('advisor_profiles')
+          .select('*')
+          .eq('is_published', true)
+          .order('created_at', { ascending: false });
+
+        if (advisors && advisors.length > 0) {
+          // Transform each advisor into ONE loop card (with all their images)
+          const allLoops: any[] = [];
+          
+          advisors.forEach((advisor) => {
+            // Only create loop if advisor has images
+            if (advisor.profile_posters && Array.isArray(advisor.profile_posters) && advisor.profile_posters.length > 0) {
+              allLoops.push({
+                author: {
+                  name: advisor.full_name,
+                  role: `${advisor.service_category}${advisor.state ? ' • ' + advisor.state : ''}`,
+                  avatar: advisor.profile_photo_url || '/docs/profile-1.jpg',
+                  verified: true,
+                  slug: advisor.slug,
+                },
+                content: advisor.short_summary || 'Professional advisor',
+                images: advisor.profile_posters, // All images in slider
+                stats: {
+                  rating: 4.8,
+                  views: Math.floor(Math.random() * 500) + 100,
+                  comments: Math.floor(Math.random() * 30) + 5,
+                },
+                timestamp: '2 weeks ago',
+                latestComment: {
+                  author: 'Client Review',
+                  title: 'Great Service',
+                  text: 'Professional and helpful advisor.',
+                },
+              });
+            }
+          });
+          
+          setLoops(allLoops);
+        }
+      } catch (err) {
+        console.error('Error fetching advisors:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAdvisorsAndLoops();
+  }, []);
+
   const dummyLoops = [
     {
       author: {
@@ -180,13 +243,23 @@ export default function Home() {
 
         {/* Main Feed - Full width on mobile, 55% on desktop */}
         <main className="w-full lg:w-[55%] flex-shrink-0 min-w-0 lg:border-r border-gray-200 dark:border-gray-800 overflow-y-auto pb-20 md:pb-0">
-          <div className="divide-y divide-gray-200 dark:divide-gray-800">
-            {dummyLoops.map((loop, index) => (
-              <div key={index} className="px-4 md:px-6">
-                <LoopCard {...loop} />
-              </div>
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center py-12">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+            </div>
+          ) : loops.length > 0 ? (
+            <div className="divide-y divide-gray-200 dark:divide-gray-800">
+              {loops.map((loop, index) => (
+                <div key={index} className="px-4 md:px-6">
+                  <LoopCard {...loop} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center py-12">
+              <p className="text-gray-500">No advisors found.</p>
+            </div>
+          )}
         </main>
 
         {/* Right Sidebar - Hidden on mobile/tablet, 25% on desktop */}
